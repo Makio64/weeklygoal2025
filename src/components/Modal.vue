@@ -27,7 +27,8 @@ export default {
 .Modal
 	position fixed
 	inset 0
-	background rgba(0, 0, 0, 0.5)
+	background rgba(255, 255, 255, 0.2)
+	backdrop-filter blur(10px)
 	display flex
 	align-items center
 	justify-content center
@@ -35,10 +36,10 @@ export default {
 	padding 20px
 
 	.modalContent
-		background #FFFFFF
 		border-radius 12px
 		width 100%
 		max-width 375px
+		min-height 70vh
 		position relative
 		overflow hidden
 

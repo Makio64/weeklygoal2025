@@ -1,7 +1,7 @@
 import { execSync } from 'child_process'
 import { existsSync } from 'fs'
 
-const projectPath = 'ios/App/App.xcodeproj/project.pbxproj'
+const projectPath = 'ios/App/WeeklyGoal.xcodeproj/project.pbxproj'
 
 if ( !existsSync( projectPath ) ) {
 	console.log( '⚠️  iOS project not found. Run "npx cap add ios" first.' )
@@ -11,7 +11,7 @@ if ( !existsSync( projectPath ) ) {
 try {
 	// Get current build number
 	const currentBuild = execSync(
-		`xcodebuild -project ios/App/App.xcodeproj -showBuildSettings | grep CURRENT_PROJECT_VERSION | awk '{print $3}' | head -1`,
+		`xcodebuild -project ios/App/WeeklyGoal.xcodeproj -showBuildSettings | grep CURRENT_PROJECT_VERSION | awk '{print $3}' | head -1`,
 		{ encoding: 'utf-8' },
 	).trim()
 

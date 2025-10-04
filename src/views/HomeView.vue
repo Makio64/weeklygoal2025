@@ -29,17 +29,19 @@
 				</div>
 			</template>
 			<template v-else>
-				<Goal
-					v-for="goal in goals"
-					:key="goal.id"
-					:name="goal.name"
-					:icon="goal.icon"
-					:repetitions="goal.repetitions"
-					:progress="goal.progress"
-					@update="updateGoal(goal.id, $event)"
-					@edit="editGoal(goal.id)"
-					@remove="removeGoal(goal.id)"
-				/>
+				<div class="goals">
+					<Goal
+						v-for="goal in goals"
+						:key="goal.id"
+						:name="goal.name"
+						:icon="goal.icon"
+						:repetitions="goal.repetitions"
+						:progress="goal.progress"
+						@update="updateGoal(goal.id, $event)"
+						@edit="editGoal(goal.id)"
+						@remove="removeGoal(goal.id)"
+					/>
+				</div>
 			</template>
 			<AddNewGoal @click="addNewGoal" />
 		</div>
@@ -128,7 +130,8 @@ export default {
 	background #f6f7ff
 	min-height 100vh
 	position relative
-
+	.goals
+		margin-bottom 20px
 	.header
 		padding 40px 24px 20px
 		text-align center

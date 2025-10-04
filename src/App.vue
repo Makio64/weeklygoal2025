@@ -1,6 +1,6 @@
 <template>
 	<div class="view">
-		<TinyRouter v-if="basicLoaded" :routes="routes" :redirects="redirects" />
+		<TinyRouter v-if="basicLoaded" :routes="routes" :redirects="redirects" @route-changed="scrollToTop" />
 	</div>
 </template>
 
@@ -63,6 +63,12 @@ export default {
 		}
 	},
 	methods: {
+		scrollToTop() {
+			const appElement = document.getElementById( 'app' )
+			if ( appElement ) {
+				appElement.scrollTo( { top: 0, behavior: 'instant' } )
+			}
+		},
 		hideInitialLoader() {
 			const loader = document.getElementById( 'initial-loader' )
 			if ( loader ) {

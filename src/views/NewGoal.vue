@@ -559,10 +559,12 @@ export default {
 			transform scale(0.98)
 
 	.modal
-		background linear-gradient(135deg, #FFB399 0%, #FFD4A3 100%)
-		min-height 400px
+		background linear-gradient(261deg, #FFBF84 16.31%, #FFB9A3 76.83%)
+		min-height 70vh
 		display flex
 		flex-direction column
+		align-items center
+		justify-content center
 		padding-top 24px
 
 		.modalHead
@@ -584,6 +586,7 @@ export default {
 			.cardTitle
 				font-family 'Jost', sans-serif
 				font-size 40px
+				line-height 1.2
 				font-weight 500
 				color #fff
 				margin-bottom 40px
@@ -598,7 +601,7 @@ export default {
 				display flex
 				justify-content center
 				gap 8px
-				margin-bottom 24px
+				margin-bottom 60px
 
 				.ck
 					width 16px
@@ -612,7 +615,7 @@ export default {
 				font-size 16px
 				line-height 20px
 				color #fff
-				margin-bottom 24px
+				margin-bottom 30px
 
 			.btn
 				width 100%
