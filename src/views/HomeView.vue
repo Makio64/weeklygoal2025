@@ -23,17 +23,24 @@
 		</div>
 
 		<div class="goalList">
-			<Goal
-				v-for="goal in goals"
-				:key="goal.id"
-				:name="goal.name"
-				:icon="goal.icon"
-				:repetitions="goal.repetitions"
-				:progress="goal.progress"
-				@update="updateGoal(goal.id, $event)"
-				@edit="editGoal(goal.id)"
-				@remove="removeGoal(goal.id)"
-			/>
+			<template v-if="goals.length === 0">
+				<div class="emptyState">
+					<img src="/img/nothing-here.png" alt="No goals yet" class="emptyIllustration">
+				</div>
+			</template>
+			<template v-else>
+				<Goal
+					v-for="goal in goals"
+					:key="goal.id"
+					:name="goal.name"
+					:icon="goal.icon"
+					:repetitions="goal.repetitions"
+					:progress="goal.progress"
+					@update="updateGoal(goal.id, $event)"
+					@edit="editGoal(goal.id)"
+					@remove="removeGoal(goal.id)"
+				/>
+			</template>
 			<AddNewGoal @click="addNewGoal" />
 		</div>
 
@@ -52,7 +59,7 @@ import DevelopmentTip from '@/components/DevelopmentTip.vue'
 import FeedbackCTA from '@/components/FeedbackCTA.vue'
 import Goal from '@/components/Goal.vue'
 import GoalDone from '@/components/GoalDone.vue'
-import { goals } from '@/store'
+import { goals, initializeGoals } from '@/store'
 
 export default {
 	name: 'HomeView',
@@ -77,19 +84,8 @@ export default {
 			return this.totalRepetitions ? Math.round( ( this.totalProgress / this.totalRepetitions ) * 100 ) : 0
 		},
 	},
-	mounted() {
-		// Sample data
-		if ( this.goals.length === 0 ) {
-			this.goals.push(
-				{ id: 1, name: 'Reading', icon: '📚', repetitions: 5, progress: 3 },
-				{ id: 2, name: 'Drawing', icon: '✏️', repetitions: 3, progress: 0 },
-				{ id: 3, name: 'Exercices', icon: '🔴', repetitions: 3, progress: 0 },
-				{ id: 4, name: 'Play Drum', icon: '🥁', repetitions: 2, progress: 0 },
-				{ id: 5, name: 'Cook vegan...', icon: '🥕', repetitions: 5, progress: 0 },
-				{ id: 6, name: 'Cycling', icon: '🚴', repetitions: 3, progress: 0 },
-				{ id: 7, name: 'Call mom', icon: '📞', repetitions: 1, progress: 0 },
-			)
-		}
+	async mounted() {
+		await initializeGoals()
 	},
 	methods: {
 		updateGoal( id, progress ) {
@@ -165,7 +161,19 @@ export default {
 
 	.goalList
 		padding 0 23px
-		margin-bottom 10px
+		margin-bottom 40px
+
+		.emptyState
+			display flex
+			justify-content center
+			align-items center
+			padding 40px 0
+			margin-bottom 20px
+
+			.emptyIllustration
+				max-width 200px
+				width 100%
+				height auto
 
 	.ctaSection
 		display flex

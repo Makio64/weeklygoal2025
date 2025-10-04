@@ -1,0 +1,287 @@
+[
+	{
+		"id": 1,
+		"icon": "📚",
+		"name": "Read more"
+	},
+	{
+		"id": 2,
+		"icon": "🛁",
+		"name": "Pamper myself"
+	},
+	{
+		"id": 3,
+		"icon": "🥙",
+		"name": "Cook vegetarian food"
+	},
+	{
+		"id": 4,
+		"icon": "🏐",
+		"name": "Do some sport"
+	},
+	{
+		"id": 5,
+		"icon": "🧘",
+		"name": "Meditate more"
+	},
+	{
+		"id": 6,
+		"icon": "🥒",
+		"name": "Have meat-less diet"
+	},
+	{
+		"id": 7,
+		"icon": "📷",
+		"name": "Work on personal project"
+	},
+	{
+		"id": 8,
+		"icon": "💧",
+		"name": "Drink more water"
+	},
+	{
+		"id": 9,
+		"icon": "🚶",
+		"name": "Walk 10,000 steps"
+	},
+	{
+		"id": 10,
+		"icon": "✍️",
+		"name": "Write in journal"
+	},
+	{
+		"id": 11,
+		"icon": "🌅",
+		"name": "Wake up early"
+	},
+	{
+		"id": 12,
+		"icon": "😴",
+		"name": "Sleep 8 hours"
+	},
+	{
+		"id": 13,
+		"icon": "🍎",
+		"name": "Eat healthy meals"
+	},
+	{
+		"id": 14,
+		"icon": "🚫",
+		"name": "No social media"
+	},
+	{
+		"id": 15,
+		"icon": "📱",
+		"name": "Limit screen time"
+	},
+	{
+		"id": 16,
+		"icon": "🎨",
+		"name": "Practice drawing"
+	},
+	{
+		"id": 17,
+		"icon": "🎸",
+		"name": "Play instrument"
+	},
+	{
+		"id": 18,
+		"icon": "🧹",
+		"name": "Clean the house"
+	},
+	{
+		"id": 19,
+		"icon": "🌱",
+		"name": "Water plants"
+	},
+	{
+		"id": 20,
+		"icon": "💪",
+		"name": "Go to the gym"
+	},
+	{
+		"id": 21,
+		"icon": "🏃",
+		"name": "Go for a run"
+	},
+	{
+		"id": 22,
+		"icon": "🚴",
+		"name": "Ride bike"
+	},
+	{
+		"id": 23,
+		"icon": "🧘‍♀️",
+		"name": "Do yoga"
+	},
+	{
+		"id": 24,
+		"icon": "🏊",
+		"name": "Go swimming"
+	},
+	{
+		"id": 25,
+		"icon": "📖",
+		"name": "Read before bed"
+	},
+	{
+		"id": 26,
+		"icon": "🎓",
+		"name": "Learn something new"
+	},
+	{
+		"id": 27,
+		"icon": "🌍",
+		"name": "Practice a language"
+	},
+	{
+		"id": 28,
+		"icon": "🎵",
+		"name": "Listen to podcast"
+	},
+	{
+		"id": 29,
+		"icon": "📝",
+		"name": "Plan tomorrow"
+	},
+	{
+		"id": 30,
+		"icon": "🙏",
+		"name": "Practice gratitude"
+	},
+	{
+		"id": 31,
+		"icon": "☕",
+		"name": "Limit coffee intake"
+	},
+	{
+		"id": 32,
+		"icon": "🥗",
+		"name": "Eat vegetables"
+	},
+	{
+		"id": 33,
+		"icon": "🍰",
+		"name": "Avoid sugar"
+	},
+	{
+		"id": 34,
+		"icon": "🚭",
+		"name": "Don't smoke"
+	},
+	{
+		"id": 35,
+		"icon": "🍺",
+		"name": "Don't drink alcohol"
+	},
+	{
+		"id": 36,
+		"icon": "🧼",
+		"name": "Skincare routine"
+	},
+	{
+		"id": 37,
+		"icon": "🦷",
+		"name": "Floss teeth"
+	},
+	{
+		"id": 38,
+		"icon": "🧴",
+		"name": "Stretch muscles"
+	},
+	{
+		"id": 39,
+		"icon": "👨‍👩‍👧",
+		"name": "Call family"
+	},
+	{
+		"id": 40,
+		"icon": "👫",
+		"name": "Meet with friends"
+	},
+	{
+		"id": 41,
+		"icon": "💌",
+		"name": "Send a kind message"
+	},
+	{
+		"id": 42,
+		"icon": "🎁",
+		"name": "Do something nice"
+	},
+	{
+		"id": 43,
+		"icon": "🗑️",
+		"name": "Declutter space"
+	},
+	{
+		"id": 44,
+		"icon": "💼",
+		"name": "Work on side project"
+	},
+	{
+		"id": 45,
+		"icon": "💰",
+		"name": "Track expenses"
+	},
+	{
+		"id": 46,
+		"icon": "📊",
+		"name": "Review goals"
+	},
+	{
+		"id": 47,
+		"icon": "🧠",
+		"name": "Brain training"
+	},
+	{
+		"id": 48,
+		"icon": "🎬",
+		"name": "Watch documentary"
+	},
+	{
+		"id": 49,
+		"icon": "🌳",
+		"name": "Spend time in nature"
+	},
+	{
+		"id": 50,
+		"icon": "🌤️",
+		"name": "Get morning sunlight"
+	},
+	{
+		"id": 51,
+		"icon": "🛏️",
+		"name": "Make bed"
+	},
+	{
+		"id": 52,
+		"icon": "🍳",
+		"name": "Cook breakfast"
+	},
+	{
+		"id": 53,
+		"icon": "🧊",
+		"name": "Take cold shower"
+	},
+	{
+		"id": 54,
+		"icon": "📵",
+		"name": "Phone-free morning"
+	},
+	{
+		"id": 55,
+		"icon": "🕯️",
+		"name": "Evening wind-down"
+	},
+	{
+		"id": 56,
+		"icon": "📆",
+		"name": "Time-block schedule"
+	},
+	{
+		"id": 57,
+		"icon": "⏰",
+		"name": "Use pomodoro timer"
+	}
+]

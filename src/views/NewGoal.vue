@@ -7,46 +7,68 @@
 				<div class="subtitle">This week I will</div>
 			</div>
 
-			<!-- Selected at top -->
-			<div v-if="selectedGoals.length > 0" class="selectedGoals">
-				<div v-for="goal in selectedGoals" :key="goal.id" class="goalItem selected" @click="unselectGoal(goal)">
-					<span class="icon">{{ goal.icon }}</span>
-					<span class="name">{{ goal.name }}</span>
+			<!-- Selected goal at top (using Goal component style) -->
+			<div v-if="selectedGoal" class="selectedGoalWrap">
+				<div class="selectedGoal">
+					<div class="goalContent">
+						<div class="iconName">
+							<span class="icon">{{ selectedGoal.icon }}</span>
+							<span class="name">{{ selectedGoal.name }}</span>
+						</div>
+						<div v-if="showRepetitionSelector" class="checks">
+							<CheckGoal
+								v-for="i in selectedGoal.reps"
+								:key="i"
+								:done="false"
+							/>
+						</div>
+					</div>
+					<div class="progressBar">
+						<div class="progressFill" :style="{ width: '0%' }" />
+					</div>
+				</div>
+
+				<!-- Repetition selector (shown after first continue click) -->
+				<div v-if="showRepetitionSelector" class="repetitionSelector">
+					<div class="repLabel">I want to do it</div>
+					<div class="repCounter">
+						<button class="repBtn" @click="decr">−</button>
+						<span class="repValue">{{ selectedGoal.reps }}</span>
+						<button class="repBtn" @click="incr">+</button>
+					</div>
+					<div class="repLabel">times</div>
 				</div>
 			</div>
 
-			<!-- Swipeable categories -->
-			<div class="categoriesWrap">
-				<div ref="categoriesEl" class="categories" :style="{ transform: `translateX(-${currentCat * 100}%)` }">
-					<div v-for="(cat, idx) in categories" :key="idx" class="categoryPage">
-						<div
-							v-for="goal in cat.goals"
-							v-show="!isSelected(goal)"
-							:key="goal.id"
-							class="goalItem"
-							@click="selectGoal(goal)"
-						>
-							<span class="icon">{{ goal.icon }}</span>
-							<span class="name">{{ goal.name }}</span>
-						</div>
-					</div>
+			<input v-if="!showRepetitionSelector" v-model="customGoal" class="writeOwn" placeholder="Write your own goal!" @keyup.enter="addCustomGoal">
+
+			<!-- Illustration (shown when repetition selector is visible) -->
+			<div v-if="showRepetitionSelector" class="illustrationWrap">
+				<img src="/img/toohard.png" alt="You can do it!" class="illustration">
+			</div>
+
+			<!-- Category pills (inline buttons) -->
+			<div v-if="!showRepetitionSelector" ref="categoriesEl" class="categoriesWrap">
+				<div class="categoryButtons">
+					<button
+						v-for="goal in currentPageGoals"
+						:key="goal.id"
+						class="categoryPill"
+						@click="selectGoal(goal)"
+					>
+						{{ goal.icon }} {{ goal.name }}
+					</button>
 				</div>
 			</div>
 
 			<!-- Pager -->
-			<div class="pager">
-				<div v-for="(c, i) in categories" :key="i" class="dot" :class="{ active: i === currentCat }" @click="currentCat = i" />
+			<div v-if="!showRepetitionSelector" class="pager">
+				<div v-for="(p, i) in totalPages" :key="i" class="dot" :class="{ active: i === currentPage }" @click="currentPage = i" />
 			</div>
 
-			<!-- Tips -->
-			<div class="tips">
-				<span class="star">⭐</span>
-				<div class="text">Don't be too harsh on yourself, be it easy and you can!</div>
-				<span class="star">⭐</span>
-			</div>
-
-			<button class="writeOwn" @click="writeOwn">Write your own goal!</button>
-			<button class="continue" :disabled="!selectedGoals.length" @click="goStep2">Continue →</button>
+			<button class="continue" :disabled="!selectedGoal" @click="handleContinue">
+				{{ showRepetitionSelector ? 'I will success' : 'Continue' }}
+			</button>
 		</div>
 
 		<!-- Step 2 -->
@@ -85,15 +107,14 @@
 		<!-- Modal -->
 		<Modal :show="showModal" @close="showModal = false">
 			<div class="modal">
-				<div class="modalHead">My weekly goal lists</div>
 				<div class="card">
-					<div class="cardIcon">{{ current.icon }}</div>
+					<!-- <div class="cardIcon">{{ current.icon }}</div> -->
 					<div class="cardTitle">{{ current.name }}</div>
 					<div class="cardSub">{{ current.reps }} times this week !</div>
 					<div class="cardChecks">
-						<div v-for="n in 5" :key="n" class="ck" :class="{ on: n <= current.reps }" />
+						<div v-for="n in current.reps" :key="n" class="ck" :class="{ on: n <= current.reps }" />
 					</div>
-					<div class="cardTxt">Remember, what give you the will to achieve your goals is when they feel easy to achieve!</div>
+					<div class="cardTxt">Remember what goal you want to acheive and why you want to acheive it. The best motivation is you !</div>
 					<button class="btn" @click="confirm">I will do it!</button>
 				</div>
 			</div>
@@ -102,54 +123,45 @@
 </template>
 
 <script>
+import CheckGoal from '@/components/CheckGoal.vue'
 import Modal from '@/components/Modal.vue'
+import goalsList from '@/data/goals.json'
 import { goals } from '@/store'
 
 export default {
 	name: 'NewGoal',
-	components: { Modal },
+	components: { Modal, CheckGoal },
 	data() {
 		return {
 			step: 1,
-			currentCat: 0,
-			selectedGoals: [],
-			currentIdx: 0,
+			currentPage: 0,
+			itemsPerPage: 10,
+			selectedGoal: null,
+			customGoal: '',
 			showModal: false,
+			showRepetitionSelector: false,
 			touchX: 0,
-			categories: [
-				{
-					goals: [
-						{ id: 1, icon: '🥕', name: 'Cook vegetarian food', reps: 3 },
-						{ id: 2, icon: '🌱', name: 'Read more', reps: 5 },
-						{ id: 3, icon: '💅', name: 'Pamper myself', reps: 2 },
-						{ id: 4, icon: '🥕', name: 'Cook vegetarian food', reps: 3 },
-					],
-				},
-				{
-					goals: [
-						{ id: 5, icon: '🏃', name: 'Do some sport', reps: 3 },
-						{ id: 6, icon: '🧘', name: 'Meditate more', reps: 5 },
-						{ id: 7, icon: '🥗', name: 'Have meals less diet', reps: 4 },
-						{ id: 8, icon: '🚴', name: 'Cycling', reps: 3 },
-					],
-				},
-				{
-					goals: [
-						{ id: 9, icon: '💼', name: 'Work on personal project', reps: 3 },
-						{ id: 10, icon: '📚', name: 'Read books', reps: 5 },
-						{ id: 11, icon: '✍️', name: 'Write journal', reps: 4 },
-						{ id: 12, icon: '🎨', name: 'Practice drawing', reps: 3 },
-					],
-				},
-			],
+			allGoals: goalsList,
 		}
 	},
 	computed: {
 		current() {
-			return this.selectedGoals[this.currentIdx] || {}
+			return this.selectedGoal || {}
+		},
+		totalPages() {
+			return Math.ceil( this.allGoals.length / this.itemsPerPage )
+		},
+		currentPageGoals() {
+			const start = this.currentPage * this.itemsPerPage
+			const end = start + this.itemsPerPage
+			return this.allGoals.slice( start, end )
 		},
 	},
 	mounted() {
+		// Select random goal by default
+		const randomIndex = Math.floor( Math.random() * goalsList.length )
+		this.selectedGoal = { ...goalsList[randomIndex], reps: 1 }
+
 		this.$refs.categoriesEl?.addEventListener( 'touchstart', this.onTouchStart )
 		this.$refs.categoriesEl?.addEventListener( 'touchmove', this.onTouchMove )
 		this.$refs.categoriesEl?.addEventListener( 'touchend', this.onTouchEnd )
@@ -160,50 +172,53 @@ export default {
 		this.$refs.categoriesEl?.removeEventListener( 'touchend', this.onTouchEnd )
 	},
 	methods: {
-		isSelected( g ) {
-			return this.selectedGoals.some( s => s.id === g.id )
-		},
 		selectGoal( g ) {
-			if ( !this.isSelected( g ) ) {
-				this.selectedGoals.push( { ...g } )
-			}
+			this.selectedGoal = { ...g, reps: 1 }
 		},
-		unselectGoal( g ) {
-			const idx = this.selectedGoals.findIndex( s => s.id === g.id )
-			if ( idx > -1 ) this.selectedGoals.splice( idx, 1 )
+		addCustomGoal() {
+			if ( this.customGoal.trim() ) {
+				this.selectedGoal = {
+					id: Date.now(),
+					icon: '📝',
+					name: this.customGoal.trim(),
+					reps: 1,
+				}
+				this.customGoal = ''
+			}
 		},
 		onTouchStart( e ) {
 			this.touchX = e.touches[0].clientX
 		},
 		onTouchMove( e ) {
 			const diff = this.touchX - e.touches[0].clientX
-			if ( diff > 50 && this.currentCat < this.categories.length - 1 ) {
-				this.currentCat++
+			if ( diff > 50 && this.currentPage < this.totalPages - 1 ) {
+				this.currentPage++
 				this.touchX = e.touches[0].clientX
-			} else if ( diff < -50 && this.currentCat > 0 ) {
-				this.currentCat--
+			} else if ( diff < -50 && this.currentPage > 0 ) {
+				this.currentPage--
 				this.touchX = e.touches[0].clientX
 			}
 		},
 		onTouchEnd() {},
-		writeOwn() {
-			const name = prompt( 'Enter your goal:' )
-			if ( name ) {
-				const g = { id: Date.now(), icon: '📝', name, reps: 3 }
-				this.selectedGoals.push( g )
+		handleContinue() {
+			if ( !this.showRepetitionSelector ) {
+				// First click: show repetition selector
+				this.showRepetitionSelector = true
+			} else {
+				// Second click: open modal
+				this.openModal()
 			}
 		},
 		goStep2() {
-			if ( this.selectedGoals.length ) {
+			if ( this.selectedGoal ) {
 				this.step = 2
-				this.currentIdx = 0
 			}
 		},
 		incr() {
-			if ( this.current.reps < 5 ) this.current.reps++
+			if ( this.selectedGoal.reps < 5 ) this.selectedGoal.reps++
 		},
 		decr() {
-			if ( this.current.reps > 1 ) this.current.reps--
+			if ( this.selectedGoal.reps > 1 ) this.selectedGoal.reps--
 		},
 		openModal() {
 			this.showModal = true
@@ -216,12 +231,7 @@ export default {
 				repetitions: this.current.reps,
 				progress: 0,
 			} )
-			if ( this.currentIdx < this.selectedGoals.length - 1 ) {
-				this.currentIdx++
-				this.showModal = false
-			} else {
-				this.$router.push( '/' )
-			}
+			this.$router.push( '/' )
 		},
 	},
 }
@@ -229,82 +239,178 @@ export default {
 
 <style lang="stylus" scoped>
 .NewGoal
-	background #F6F7FF
-	min-height 100vh
-	padding 20px
+	max-width 375px
+	margin 0 auto
+	padding 0
 	display flex
 	flex-direction column
 
 	.header
 		text-align center
-		margin-bottom 30px
+		padding-top 100px
+		margin-bottom 20px
 
 		.title
 			font-family 'Jost', sans-serif
 			font-size 32px
 			font-weight 400
+			line-height 40px
 			color #010101
-			margin-bottom 8px
+			margin-bottom 0
 
 		.subtitle
 			font-family 'Jost', sans-serif
-			font-size 14px
-			color #A0A0A0
+			font-size 20px
+			font-weight 400
+			line-height 28px
+			color #888
+			margin-top 20px
 
 	.step1
 		flex 1
 		display flex
 		flex-direction column
 
-	.selectedGoals
+	.selectedGoalWrap
 		margin-bottom 16px
 
-	.goalItem
-		background #FFF
+	.selectedGoal
+		background #F6F6F6
 		border 1px solid #F3F3FF
 		border-radius 6px
-		padding 12px 16px
-		margin-bottom 8px
+		overflow hidden
+
+		.goalContent
+			padding 18px 16px
+			min-height 64px
+			box-sizing border-box
+			display flex
+			align-items center
+			justify-content space-between
+			gap 12px
+
+			.iconName
+				display flex
+				align-items center
+				gap 8px
+				flex 1
+
+				.icon
+					font-size 20px
+
+				.name
+					font-family 'Nunito', sans-serif
+					font-size 16px
+					font-weight 600
+					color #3445E1
+
+			.checks
+				display flex
+				gap 4px
+				flex-shrink 0
+
+		.progressBar
+			height 6px
+			background #E2E4F0
+			width 100%
+			position relative
+
+			.progressFill
+				height 100%
+				background #3445E1
+				transition width 0.3s
+
+	.repetitionSelector
+		padding 24px 16px
 		display flex
 		align-items center
+		justify-content center
 		gap 12px
-		cursor pointer
-		transition 0.2s
+		// background #F6F6F6
 
-		&.selected
-			background #E8EAFF
-			border-color #5D73E7
-
-		&:active
-			transform scale(0.98)
-
-		.icon
-			font-size 20px
-
-		.name
+		.repLabel
 			font-family 'Jost', sans-serif
 			font-size 16px
-			flex 1
+			font-weight 400
+			color #000
+
+		.repCounter
+			display flex
+			align-items center
+			gap 12px
+
+			.repBtn
+				width 36px
+				height 36px
+				border-radius 50%
+				border 1px solid #E2E4F0
+				background #FFF
+				font-size 24px
+				color #3445E1
+				cursor pointer
+				display flex
+				align-items center
+				justify-content center
+				transition transform 0.1s
+
+				&:active
+					transform scale(0.9)
+
+			.repValue
+				font-family 'Jost', sans-serif
+				font-size 24px
+				font-weight 600
+				color #3445E1
+				min-width 30px
+				text-align center
+
+	.illustrationWrap
+		flex 1
+		display flex
+		align-items center
+		justify-content center
+		padding 20px
+		min-height 250px
+
+		.illustration
+			max-width 200px
+			width 100%
+			height auto
 
 	.categoriesWrap
-		overflow hidden
-		flex 1
 		margin-bottom 20px
+		height 250px
+		overflow hidden
 
-	.categories
+	.categoryButtons
 		display flex
-		transition transform 0.3s
+		flex-wrap wrap
+		gap 8px
+		align-items flex-start
+		align-content flex-start
+		height 100%
 
-	.categoryPage
-		min-width 100%
-		display flex
-		flex-direction column
+		.categoryPill
+			background #FFF
+			border 1px solid #E2E4F0
+			border-radius 4px
+			padding 10px 13px
+			font-family 'Nunito', sans-serif
+			font-size 16px
+			font-weight 600
+			color #3445E1
+			cursor pointer
+			transition transform 0.1s
+			white-space nowrap
+
+			&:active
+				transform scale(0.95)
 
 	.pager
 		display flex
 		justify-content center
 		gap 8px
-		margin-bottom 20px
+		margin-bottom 92px
 
 		.dot
 			width 8px
@@ -315,54 +421,42 @@ export default {
 			transition 0.2s
 
 			&.active
-				background #5D73E7
+				background #FF69B4
 				width 24px
 				border-radius 4px
 
-	.tips
-		display flex
-		align-items center
-		justify-content center
-		gap 12px
-		margin-bottom 20px
-		padding 16px
-
-		.star
-			font-size 20px
-
-		.text
-			font-family 'Jost', sans-serif
-			font-size 14px
-			color #666
-			text-align center
-			max-width 250px
-
 	.writeOwn
 		width 100%
-		padding 14px
+		padding 12px
+		box-sizing border-box
 		background #FFF
-		border 2px dashed #5D73E7
-		border-radius 6px
+		border 1px solid #E2E4F0
+		border-radius 4px
 		font-family 'Jost', sans-serif
 		font-size 16px
-		color #5D73E7
-		cursor pointer
+		font-weight 400
+		line-height 28px
+		color #9D9D9D
+		text-align center
 		margin-bottom 16px
 
-		&:active
-			transform scale(0.98)
+		&::placeholder
+			color #9D9D9D
 
 	.continue
 		width 100%
-		padding 16px
+		padding 20px
 		background #3445E1
 		border none
-		border-radius 6px
+		border-radius 4px
+		box-shadow 0px 4px 30px 0px rgba(0, 0, 0, 0.24)
 		font-family 'Jost', sans-serif
-		font-size 18px
-		font-weight 500
+		font-size 20px
+		font-weight 400
+		line-height 16px
 		color #FFF
 		cursor pointer
+		margin-bottom 60px
 
 		&:disabled
 			opacity 0.5
@@ -406,9 +500,6 @@ export default {
 					border 2px solid #E2E4F0
 					border-radius 2px
 
-					&.on
-						background #5D73E7
-						border-color #5D73E7
 
 		.freq
 			display flex
@@ -482,8 +573,6 @@ export default {
 			margin-bottom 24px
 
 		.card
-			background rgba(255, 255, 255, 0.9)
-			border-radius 12px
 			padding 32px 24px
 			margin 0 16px 24px
 			text-align center
@@ -494,15 +583,15 @@ export default {
 
 			.cardTitle
 				font-family 'Jost', sans-serif
-				font-size 24px
+				font-size 40px
 				font-weight 500
-				color #000
-				margin-bottom 8px
+				color #fff
+				margin-bottom 40px
 
 			.cardSub
 				font-family 'Jost', sans-serif
-				font-size 16px
-				color #666
+				font-size 20px
+				color #fff
 				margin-bottom 16px
 
 			.cardChecks
@@ -514,29 +603,27 @@ export default {
 				.ck
 					width 16px
 					height 16px
-					border 2px solid #FFA07A
+					border 2px solid #FFFFFF
 					border-radius 3px
 
-					&.on
-						background #FFA07A
 
 			.cardTxt
 				font-family 'Jost', sans-serif
-				font-size 14px
+				font-size 16px
 				line-height 20px
-				color #666
+				color #fff
 				margin-bottom 24px
 
 			.btn
 				width 100%
-				padding 14px
+				padding 16px
 				background #FFF
 				border none
 				border-radius 6px
 				font-family 'Jost', sans-serif
-				font-size 16px
+				font-size 20px
 				font-weight 500
-				color #FF8B6A
+				color #FFBF84
 				cursor pointer
 
 				&:active
