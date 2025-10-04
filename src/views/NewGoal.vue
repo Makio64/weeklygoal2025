@@ -348,8 +348,6 @@ export default {
 		display flex
 		flex-wrap wrap
 		gap 8px
-		align-items flex-start
-		align-content flex-start
 
 		.categoryPill
 			background #FFF

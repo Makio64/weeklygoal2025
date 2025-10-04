@@ -16,12 +16,12 @@
 		"name": "Walk"
 	},
 	{
-		"icon": "✍️",
-		"name": "Write in journal"
+		"icon": "✏️",
+		"name": "Draw"
 	},
 	{
-		"icon": "🎨",
-		"name": "Draw"
+		"icon": "✍️",
+		"name": "Write in journal"
 	},
 	{
 		"icon": "🎸",
@@ -144,8 +144,8 @@
 		"name": "Photo session"
 	},
 	{
-		"icon": "🎨",
-		"name": "Art session"
+		"icon": "🖌️",
+		"name": "Art"
 	},
 	{
 		"icon": "📝",
@@ -262,5 +262,13 @@
 	{
 		"icon": "👥",
 		"name": "Social activity"
+	},
+	{
+		"icon": "🎤",
+		"name": "Singing"
+	},
+	{
+		"icon": "🍱",
+		"name": "Meal prep"
 	}
 ]
