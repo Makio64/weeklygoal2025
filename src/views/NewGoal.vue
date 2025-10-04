@@ -51,8 +51,8 @@
 			<div v-if="!showRepetitionSelector" ref="categoriesEl" class="categoriesWrap">
 				<div class="categoryButtons">
 					<button
-						v-for="goal in currentPageGoals"
-						:key="goal.id"
+						v-for="(goal, idx) in currentPageGoals"
+						:key="idx"
 						class="categoryPill"
 						@click="selectGoal(goal)"
 					>
@@ -160,7 +160,7 @@ export default {
 	mounted() {
 		// Select random goal by default
 		const randomIndex = Math.floor( Math.random() * goalsList.length )
-		this.selectedGoal = { ...goalsList[randomIndex], reps: 1 }
+		this.selectedGoal = { ...goalsList[randomIndex], id: Date.now(), reps: 1 }
 
 		this.$refs.categoriesEl?.addEventListener( 'touchstart', this.onTouchStart )
 		this.$refs.categoriesEl?.addEventListener( 'touchmove', this.onTouchMove )
@@ -173,7 +173,7 @@ export default {
 	},
 	methods: {
 		selectGoal( g ) {
-			this.selectedGoal = { ...g, reps: 1 }
+			this.selectedGoal = { ...g, id: Date.now(), reps: 1 }
 		},
 		addCustomGoal() {
 			if ( this.customGoal.trim() ) {
