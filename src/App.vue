@@ -121,8 +121,6 @@ export default {
 body, html
 	user-select none
 	font-display() // define in global.styl
-	height 100%
-	min-height 100%
 	margin 0
 	padding 0
 	scroll-behavior smooth
@@ -131,7 +129,6 @@ body, html
 		scroll-behavior: auto
 
 #app
-	height 100%
 	overflow-y auto
 	overflow-x hidden
 	padding-bottom var(--saib)
@@ -145,7 +142,7 @@ html
 	.view
 		color #010101
 		display flex
-		min-height 100vh
+		min-height 100%
 		flex-direction column
 		justify-content flex-start
 		align-items center

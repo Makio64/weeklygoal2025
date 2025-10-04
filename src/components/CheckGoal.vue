@@ -1,7 +1,9 @@
 <template>
-	<div class="check">
-		<img src="/img/Checkbox.png" alt="checkbox" class="checkbox">
-		<img v-if="done" src="/img/Checkmark.png" alt="checked" class="checkmark">
+	<div class="checkWrap">
+		<div class="check">
+			<img src="/img/Checkbox.png" alt="checkbox" class="checkbox">
+			<img v-if="done" src="/img/Checkmark.png" alt="checked" class="checkmark">
+		</div>
 	</div>
 </template>
 
@@ -15,28 +17,35 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.check
-	width 21.43px
-	height 19.6px
-	position relative
-	display flex
-	align-items center
-	justify-content center
-	flex-shrink 0
+.checkWrap
+	padding 8px
+	margin -8px
 	cursor pointer
-	transition transform 0.1s
+	transition transform 0.15s ease-out
+	user-select none
+	-webkit-tap-highlight-color transparent
 
 	&:active
-		transform scale(0.9)
+		transform scale(0.85)
 
-	.checkbox
-		width 100%
-		height 100%
-		display block
+	.check
+		width 21.43px
+		height 19.6px
+		position relative
+		display flex
+		align-items center
+		justify-content center
+		flex-shrink 0
+		pointer-events none
 
-	.checkmark
-		position absolute
-		width 50%
-		height 50%
-		display block
+		.checkbox
+			width 100%
+			height 100%
+			display block
+
+		.checkmark
+			position absolute
+			width 50%
+			height 50%
+			display block
 </style>

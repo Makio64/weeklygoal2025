@@ -208,7 +208,6 @@ export default {
 
 	.header
 		text-align center
-		padding-top 100px
 		margin-bottom 20px
 
 		.title

@@ -128,12 +128,11 @@ export default {
 	max-width 375px
 	margin 0 auto
 	background #f6f7ff
-	min-height 100vh
 	position relative
 	.goals
 		margin-bottom 20px
 	.header
-		padding 40px 24px 20px
+		padding 0 24px 20px
 		text-align center
 
 		.title

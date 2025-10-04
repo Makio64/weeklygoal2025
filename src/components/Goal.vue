@@ -45,17 +45,23 @@ export default {
 		return {
 			swiped: false,
 			startX: 0,
+			startY: 0,
+			isSwiping: false,
 		}
 	},
 	mounted() {
-		this.$el.addEventListener( 'touchstart', this.handleTouchStart )
-		this.$el.addEventListener( 'touchmove', this.handleTouchMove )
-		this.$el.addEventListener( 'touchend', this.handleTouchEnd )
+		this.$el.addEventListener( 'touchstart', this.handleTouchStart, { passive: true } )
+		this.$el.addEventListener( 'touchmove', this.handleTouchMove, { passive: false } )
+		this.$el.addEventListener( 'touchend', this.handleTouchEnd, { passive: true } )
+		document.addEventListener( 'click', this.handleClickOutside )
+		window.addEventListener( 'goal-swiped', this.handleOtherGoalSwiped )
 	},
 	beforeUnmount() {
 		this.$el.removeEventListener( 'touchstart', this.handleTouchStart )
 		this.$el.removeEventListener( 'touchmove', this.handleTouchMove )
 		this.$el.removeEventListener( 'touchend', this.handleTouchEnd )
+		document.removeEventListener( 'click', this.handleClickOutside )
+		window.removeEventListener( 'goal-swiped', this.handleOtherGoalSwiped )
 	},
 	methods: {
 		handleCheckClick( checkIndex ) {
@@ -71,17 +77,51 @@ export default {
 		},
 		handleTouchStart( e ) {
 			this.startX = e.touches[0].clientX
+			this.startY = e.touches[0].clientY
+			this.isSwiping = false
 		},
 		handleTouchMove( e ) {
-			const diff = this.startX - e.touches[0].clientX
-			if ( diff > 50 ) {
-				this.swiped = true
-			} else if ( diff < -20 ) {
-				this.swiped = false
+			const diffX = this.startX - e.touches[0].clientX
+			const diffY = this.startY - e.touches[0].clientY
+
+			// Only trigger swipe if horizontal movement is greater than vertical
+			if ( !this.isSwiping && Math.abs( diffY ) > Math.abs( diffX ) ) {
+				// User is scrolling vertically, don't interfere
+				return
+			}
+
+			// User is swiping horizontally
+			if ( Math.abs( diffX ) > 10 ) {
+				this.isSwiping = true
+
+				// Only prevent default if the event is cancelable
+				if ( e.cancelable ) {
+					e.preventDefault()
+				}
+
+				if ( diffX > 50 ) {
+					this.swiped = true
+					// Notify other goals to close
+					window.dispatchEvent( new CustomEvent( 'goal-swiped', { detail: { id: this._uid } } ) )
+				} else if ( diffX < -20 ) {
+					this.swiped = false
+				}
 			}
 		},
 		handleTouchEnd() {
-			// Keep swiped state
+			this.isSwiping = false
+		},
+		handleClickOutside( e ) {
+			// Close if clicking outside this goal
+			if ( this.swiped && !this.$el.contains( e.target ) ) {
+				this.swiped = false
+			}
+		},
+		handleOtherGoalSwiped( e ) {
+			// Close this goal if another goal was swiped
+			if ( e.detail.id !== this._uid && this.swiped ) {
+				this.swiped = false
+			}
 		},
 	},
 }
@@ -99,11 +139,8 @@ export default {
 	overflow hidden
 	user-select none
 	cursor pointer
-	transition all 0.2s
 	height 48px
-
-	&:active
-		transform scale(0.98)
+	touch-action pan-y
 
 	.goalContent
 		flex 1
