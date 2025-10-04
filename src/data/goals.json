@@ -53,7 +53,7 @@
 	},
 	{
 		"icon": "🧘‍♀️",
-		"name": "Yoga session"
+		"name": "Yoga"
 	},
 	{
 		"icon": "🏊",
@@ -194,5 +194,73 @@
 	{
 		"icon": "💪",
 		"name": "Muscle 15min"
+	},
+	{
+		"icon": "📞",
+		"name": "Call mom"
+	},
+	{
+		"icon": "⚡",
+		"name": "HIIT"
+	},
+	{
+		"icon": "🛁",
+		"name": "Relax bath"
+	},
+	{
+		"icon": "🎧",
+		"name": "Audio Book"
+	},
+	{
+		"icon": "🔧",
+		"name": "DIY project"
+	},
+	{
+		"icon": "🏋️",
+		"name": "Planks"
+	},
+	{
+		"icon": "💪",
+		"name": "Push-ups"
+	},
+	{
+		"icon": "🔥",
+		"name": "Core Abs"
+	},
+	{
+		"icon": "🧺",
+		"name": "Laundry"
+	},
+	{
+		"icon": "🤝",
+		"name": "Networking"
+	},
+	{
+		"icon": "🎭",
+		"name": "Exhibition"
+	},
+	{
+		"icon": "🏛️",
+		"name": "Museum"
+	},
+	{
+		"icon": "🗺️",
+		"name": "Explore"
+	},
+	{
+		"icon": "💵",
+		"name": "Budget review"
+	},
+	{
+		"icon": "🏠",
+		"name": "Interior Design"
+	},
+	{
+		"icon": "☕",
+		"name": "Cafe"
+	},
+	{
+		"icon": "👥",
+		"name": "Social activity"
 	}
 ]

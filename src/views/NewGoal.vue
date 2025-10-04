@@ -48,10 +48,10 @@
 			</div>
 
 			<!-- Category pills (inline buttons) -->
-			<div v-if="!showRepetitionSelector" ref="categoriesEl" class="categoriesWrap">
+			<div v-if="!showRepetitionSelector" class="categoriesWrap">
 				<div class="categoryButtons">
 					<button
-						v-for="(goal, idx) in currentPageGoals"
+						v-for="(goal, idx) in allGoals"
 						:key="idx"
 						class="categoryPill"
 						@click="selectGoal(goal)"
@@ -59,11 +59,6 @@
 						{{ goal.icon }} {{ goal.name }}
 					</button>
 				</div>
-			</div>
-
-			<!-- Pager -->
-			<div v-if="!showRepetitionSelector" class="pager">
-				<div v-for="(p, i) in totalPages" :key="i" class="dot" :class="{ active: i === currentPage }" @click="currentPage = i" />
 			</div>
 
 			<button class="continue" :disabled="!selectedGoal" @click="handleContinue">
@@ -134,13 +129,10 @@ export default {
 	data() {
 		return {
 			step: 1,
-			currentPage: 0,
-			itemsPerPage: 10,
 			selectedGoal: null,
 			customGoal: '',
 			showModal: false,
 			showRepetitionSelector: false,
-			touchX: 0,
 			allGoals: goalsList,
 		}
 	},
@@ -148,28 +140,11 @@ export default {
 		current() {
 			return this.selectedGoal || {}
 		},
-		totalPages() {
-			return Math.ceil( this.allGoals.length / this.itemsPerPage )
-		},
-		currentPageGoals() {
-			const start = this.currentPage * this.itemsPerPage
-			const end = start + this.itemsPerPage
-			return this.allGoals.slice( start, end )
-		},
 	},
 	mounted() {
 		// Select random goal by default
 		const randomIndex = Math.floor( Math.random() * goalsList.length )
 		this.selectedGoal = { ...goalsList[randomIndex], id: Date.now(), reps: 1 }
-
-		this.$refs.categoriesEl?.addEventListener( 'touchstart', this.onTouchStart )
-		this.$refs.categoriesEl?.addEventListener( 'touchmove', this.onTouchMove )
-		this.$refs.categoriesEl?.addEventListener( 'touchend', this.onTouchEnd )
-	},
-	beforeUnmount() {
-		this.$refs.categoriesEl?.removeEventListener( 'touchstart', this.onTouchStart )
-		this.$refs.categoriesEl?.removeEventListener( 'touchmove', this.onTouchMove )
-		this.$refs.categoriesEl?.removeEventListener( 'touchend', this.onTouchEnd )
 	},
 	methods: {
 		selectGoal( g ) {
@@ -186,20 +161,6 @@ export default {
 				this.customGoal = ''
 			}
 		},
-		onTouchStart( e ) {
-			this.touchX = e.touches[0].clientX
-		},
-		onTouchMove( e ) {
-			const diff = this.touchX - e.touches[0].clientX
-			if ( diff > 50 && this.currentPage < this.totalPages - 1 ) {
-				this.currentPage++
-				this.touchX = e.touches[0].clientX
-			} else if ( diff < -50 && this.currentPage > 0 ) {
-				this.currentPage--
-				this.touchX = e.touches[0].clientX
-			}
-		},
-		onTouchEnd() {},
 		handleContinue() {
 			if ( !this.showRepetitionSelector ) {
 				// First click: show repetition selector
@@ -379,8 +340,9 @@ export default {
 
 	.categoriesWrap
 		margin-bottom 20px
-		height 250px
-		overflow hidden
+		height 350px
+		overflow-y auto
+		overflow-x hidden
 
 	.categoryButtons
 		display flex
@@ -388,7 +350,6 @@ export default {
 		gap 8px
 		align-items flex-start
 		align-content flex-start
-		height 100%
 
 		.categoryPill
 			background #FFF
@@ -405,25 +366,6 @@ export default {
 
 			&:active
 				transform scale(0.95)
-
-	.pager
-		display flex
-		justify-content center
-		gap 8px
-		margin-bottom 92px
-
-		.dot
-			width 8px
-			height 8px
-			border-radius 50%
-			background #D1D5DB
-			cursor pointer
-			transition 0.2s
-
-			&.active
-				background #FF69B4
-				width 24px
-				border-radius 4px
 
 	.writeOwn
 		width 100%
