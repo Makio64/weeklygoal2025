@@ -1,0 +1,18 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run security audit and attempt to auto-fix vulnerabilities
+echo "🔒 Running security audit..."
+pnpm audit --fix
+
+# Check if there are still vulnerabilities after auto-fix
+if pnpm audit --audit-level=high 2>/dev/null; then
+  echo "✅ No high or critical vulnerabilities found"
+else
+  echo "⚠️  High or critical vulnerabilities found that couldn't be auto-fixed"
+  echo "Please review and fix manually before committing"
+  exit 1
+fi
+
+# Run lint-staged for code quality checks
+pnpm exec lint-staged

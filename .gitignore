@@ -1,0 +1,33 @@
+.DS_Store
+node_modules
+/dist
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local Netlify folder
+.netlify
+stats.html
+.npmrc
+
+# Security and audit reports
+audit-report.json
+security-report.txt
+vulnerability-scan.log
