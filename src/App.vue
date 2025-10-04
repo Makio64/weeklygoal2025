@@ -125,8 +125,6 @@ body, html
 	padding 0
 	scroll-behavior smooth
 	background #F6F7FF
-	@media screen and (prefers-reduced-motion: reduce)
-		scroll-behavior: auto
 
 #app
 	overflow-y auto

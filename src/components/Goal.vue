@@ -91,19 +91,14 @@ export default {
 			}
 
 			// User is swiping horizontally
-			if ( Math.abs( diffX ) > 10 ) {
+			if ( Math.abs( diffX ) >= 20 ) {
 				this.isSwiping = true
 
-				// Only prevent default if the event is cancelable
-				if ( e.cancelable ) {
-					e.preventDefault()
-				}
-
-				if ( diffX > 50 ) {
+				if ( diffX >= 20 ) {
 					this.swiped = true
 					// Notify other goals to close
 					window.dispatchEvent( new CustomEvent( 'goal-swiped', { detail: { id: this._uid } } ) )
-				} else if ( diffX < -20 ) {
+				} else {
 					this.swiped = false
 				}
 			}
