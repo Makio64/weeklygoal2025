@@ -1,5 +1,5 @@
 <template>
-	<div class="Goal" :class="{ swiped }" @click="handleClick">
+	<div class="Goal" :class="{ swiped }">
 		<div ref="content" class="goalContent">
 			<div class="iconName">
 				<span class="icon">{{ icon }}</span>
@@ -10,6 +10,7 @@
 					v-for="i in repetitions"
 					:key="i"
 					:done="i <= progress"
+					@click.stop="handleCheckClick(i)"
 				/>
 			</div>
 		</div>
@@ -57,9 +58,15 @@ export default {
 		this.$el.removeEventListener( 'touchend', this.handleTouchEnd )
 	},
 	methods: {
-		handleClick() {
-			if ( !this.swiped && this.progress < this.repetitions ) {
-				this.$emit( 'update', this.progress + 1 )
+		handleCheckClick( checkIndex ) {
+			if ( this.swiped ) return
+
+			// If clicking on a checked box, decrease progress
+			if ( checkIndex <= this.progress ) {
+				this.$emit( 'update', checkIndex - 1 )
+			} else {
+				// If clicking on an unchecked box, set progress to that index
+				this.$emit( 'update', checkIndex )
 			}
 		},
 		handleTouchStart( e ) {

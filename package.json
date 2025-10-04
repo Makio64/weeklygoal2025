@@ -15,7 +15,11 @@
 		"optimizeAudio": "node nodejs-tools/optimizeAudio.js",
 		"copyDropbox": "node nodejs-tools/copyDropbox.js",
 		"updateTrad": "node nodejs-tools/updateTrad.mjs",
-		"prepare": "husky"
+		"prepare": "husky",
+		"cap:sync": "pnpm build && npx cap sync",
+		"cap:open:ios": "npx cap open ios",
+		"cap:run:ios": "pnpm cap:sync && npx cap run ios --target=480F5924-C1A0-4C18-8508-204E17B48404",
+		"ios": "pnpm cap:run:ios"
 	},
 	"dependencies": {
 		"@capacitor/cli": "^7.4.3",

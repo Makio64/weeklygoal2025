@@ -128,6 +128,8 @@ body, html
 	height 100%
 	overflow-y auto
 	overflow-x hidden
+	padding-bottom var(--saib)
+	padding-top var(--sait)
 
 html
 	-webkit-font-smoothing antialiased

@@ -1,9 +1,16 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.weeklygoal.app',
+  appId: 'io.makio.weeklygoal',
   appName: 'Weekly Goal',
-  webDir: 'dist'
+  webDir: 'dist',
+  server: {
+    androidScheme: 'https'
+  },
+  ios: {
+    contentInset: 'automatic',
+    backgroundColor: '#F6F7FF'
+  }
 };
 
 export default config;

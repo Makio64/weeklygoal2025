@@ -104,7 +104,17 @@ export default {
 			if ( index > -1 ) this.goals.splice( index, 1 )
 		},
 		openFeedback() {
-			console.log( 'Open feedback' )
+			const subject = encodeURIComponent( 'Weekly Goal - Feedback' )
+			const body = encodeURIComponent( 'Hi,\n\nI would like to share my feedback about the Weekly Goal app:\n\n' )
+			const mailtoLink = `mailto:davronai@gmail.com?subject=${subject}&body=${body}`
+
+			// Create a temporary link element and click it (works better on iOS)
+			const link = document.createElement( 'a' )
+			link.href = mailtoLink
+			link.target = '_blank'
+			document.body.appendChild( link )
+			link.click()
+			document.body.removeChild( link )
 		},
 		addNewGoal() {
 			this.$router.push( '/new-goal' )
@@ -124,7 +134,7 @@ export default {
 	position relative
 
 	.header
-		padding 100px 24px 20px
+		padding 40px 24px 20px
 		text-align center
 
 		.title

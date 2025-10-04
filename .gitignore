@@ -31,3 +31,9 @@ stats.html
 audit-report.json
 security-report.txt
 vulnerability-scan.log
+
+# Capacitor
+ios/App/Pods
+ios/App/build
+ios/App/App.xcworkspace/xcuserdata
+*.xcuserstate

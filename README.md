@@ -1,12 +1,65 @@
-# Vue3 | Vite | Three | Pixi Boilerplate
+# Weekly Goal 2025 - Vue3 + Vite + Capacitor
 
-Starter for Visual Experiments / Website
+Weekly goal tracking app built with Vue 3, Vite, and Capacitor for iOS deployment.
 
-## Basic commands 
+## Basic commands
 
 - `pnpm i` : install all packages & dependencies
 - `pnpm dev` : start dev server with hotreload
 - `pnpm build` : build the productions files in /dist
+
+## iOS Development with Capacitor
+
+### Prerequisites
+- macOS with Xcode installed (latest version recommended)
+- CocoaPods: `sudo gem install cocoapods`
+- iOS Simulator or a physical iOS device for testing
+
+### Capacitor Commands
+
+- `pnpm ios` : Build web app, sync to iOS, and run on simulator/device (shortcut)
+- `pnpm cap:sync` : Build the web app and sync to iOS project
+- `pnpm cap:open:ios` : Open the iOS project in Xcode
+- `pnpm cap:run:ios` : Build, sync, and run the app on iOS
+
+### First Time Setup
+
+1. Install dependencies:
+   ```bash
+   pnpm i
+   ```
+
+2. Build the web app and sync to iOS:
+   ```bash
+   pnpm cap:sync
+   ```
+
+3. Open in Xcode to configure signing:
+   ```bash
+   pnpm cap:open:ios
+   ```
+   - In Xcode, select the "App" target
+   - Go to "Signing & Capabilities"
+   - Select your development team
+   - Xcode will automatically create a provisioning profile
+
+4. Run the app:
+   ```bash
+   pnpm ios
+   ```
+
+### Development Workflow
+
+1. Make changes to your web app in `src/`
+2. Run `pnpm cap:sync` to rebuild and sync changes to iOS
+3. The app will hot-reload in the simulator/device
+
+### Important Notes
+
+- The iOS project is located in the `ios/` directory
+- Native iOS code can be modified in Xcode if needed
+- App configuration is in `capacitor.config.ts`
+- Always run `pnpm cap:sync` after making changes to ensure iOS project is updated
 
 ## Optimize Commands
 

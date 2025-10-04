@@ -23,6 +23,11 @@ export default {
 	align-items center
 	justify-content center
 	flex-shrink 0
+	cursor pointer
+	transition transform 0.1s
+
+	&:active
+		transform scale(0.9)
 
 	.checkbox
 		width 100%
