@@ -6,10 +6,7 @@
 </template>
 
 <script>
-import gsap, { Quad } from 'gsap'
-
-import DrawSVGPlugin from '@/lib/gsap-bonus/DrawSVGPlugin'
-gsap.registerPlugin( DrawSVGPlugin )
+import { animate, utils } from 'animejs'
 
 export default {
 	name: 'SVGCircle',
@@ -27,12 +24,21 @@ export default {
 			default: 2,
 		},
 	},
+	mounted() {
+		// Calculate total path length for stroke animation
+		const pathLength = this.$refs.progress.getTotalLength()
+		this.$refs.progress.style.strokeDasharray = pathLength
+		this.$refs.progress.style.strokeDashoffset = pathLength
+	},
 	methods: {
 		setPercent( value, instant = true ) {
+			const pathLength = this.$refs.progress.getTotalLength()
+			const offset = pathLength * ( 1 - value / 100 )
+
 			if ( instant ) {
-				gsap.set( this.$refs.progress, { drawSVG: `100% ${100 - value}%` } )
+				utils.set( this.$refs.progress, { strokeDashoffset: offset } )
 			} else {
-				gsap.to( this.$refs.progress, { ease: Quad.easeOut, drawSVG: `100% ${100 - value}%` } )
+				animate( this.$refs.progress, { strokeDashoffset: offset, duration: 0.3, ease: 'outQuad' } )
 			}
 		},
 	},

@@ -1,42 +1,113 @@
 <template>
 	<div class="HomeView view">
-		<div ref="title" class="title">{{ $t('title') }}</div>
-		<div ref="subtitle" class="subtitle">{{ $t('subtitle') }}</div>
+		<div class="header">
+			<div class="title">My weekly goal lists</div>
+			<div class="subtitle">Track your week with us, see it<br>you can do it!</div>
+		</div>
+
+		<div class="progressSection">
+			<div class="progressBar">
+				<div class="progressFill" :style="{ width: completionPercent + '%' }" />
+			</div>
+			<div class="progressText">{{ completionPercent }}% done!</div>
+		</div>
+
+		<div class="stats">
+			<GoalDone :count="goalsDone" />
+			<DailyStrike :days="strikesDays" />
+		</div>
+
+		<div class="sendCard">
+			<span class="icon">🎄 💌</span>
+			<span>Send xmas card</span>
+		</div>
+
+		<div class="goalList">
+			<Goal
+				v-for="goal in goals"
+				:key="goal.id"
+				:name="goal.name"
+				:icon="goal.icon"
+				:repetitions="goal.repetitions"
+				:progress="goal.progress"
+				@update="updateGoal(goal.id, $event)"
+				@edit="editGoal(goal.id)"
+				@remove="removeGoal(goal.id)"
+			/>
+			<AddNewGoal @click="addNewGoal" />
+		</div>
+
+		<div class="ctaSection">
+			<DevelopmentTip />
+		</div>
+
+		<FeedbackCTA @click="openFeedback" />
 	</div>
 </template>
 
 <script>
-import { stagger, utils, waapi } from 'animejs'
-
-import { contentLoaded } from '@/store'
+import AddNewGoal from '@/components/AddNewGoal.vue'
+import DailyStrike from '@/components/DailyStrike.vue'
+import DevelopmentTip from '@/components/DevelopmentTip.vue'
+import FeedbackCTA from '@/components/FeedbackCTA.vue'
+import Goal from '@/components/Goal.vue'
+import GoalDone from '@/components/GoalDone.vue'
+import { goals } from '@/store'
 
 export default {
 	name: 'HomeView',
-	async mounted() {
-		utils.set( this.elts, { opacity: 0 } )
-
-		contentLoaded.value = true
-		this.transitionIn()
-		const { default: Manager3D } = await import( '@/3d/Manager3D' )
-		this.Manager3D = Manager3D
-		await this.Manager3D.init()
-		Manager3D.show()
+	components: { Goal, GoalDone, DailyStrike, FeedbackCTA, DevelopmentTip, AddNewGoal },
+	data() {
+		return {
+			goals,
+			strikesDays: 3,
+		}
 	},
 	computed: {
-		elts() {
-			return [this.$refs.title, this.$refs.subtitle]
+		goalsDone() {
+			return this.goals.filter( g => g.progress >= g.repetitions ).length
+		},
+		totalProgress() {
+			return this.goals.reduce( ( sum, g ) => sum + g.progress, 0 )
+		},
+		totalRepetitions() {
+			return this.goals.reduce( ( sum, g ) => sum + g.repetitions, 0 )
+		},
+		completionPercent() {
+			return this.totalRepetitions ? Math.round( ( this.totalProgress / this.totalRepetitions ) * 100 ) : 0
 		},
 	},
+	mounted() {
+		// Sample data
+		if ( this.goals.length === 0 ) {
+			this.goals.push(
+				{ id: 1, name: 'Reading', icon: '📚', repetitions: 5, progress: 3 },
+				{ id: 2, name: 'Drawing', icon: '✏️', repetitions: 3, progress: 0 },
+				{ id: 3, name: 'Exercices', icon: '🔴', repetitions: 3, progress: 0 },
+				{ id: 4, name: 'Play Drum', icon: '🥁', repetitions: 2, progress: 0 },
+				{ id: 5, name: 'Cook vegan...', icon: '🥕', repetitions: 5, progress: 0 },
+				{ id: 6, name: 'Cycling', icon: '🚴', repetitions: 3, progress: 0 },
+				{ id: 7, name: 'Call mom', icon: '📞', repetitions: 1, progress: 0 },
+			)
+		}
+	},
 	methods: {
-		async transitionIn() {
-			waapi.animate( this.elts, { opacity: [0.001, 1], translateY: [50, 0], duration: 0.7, delay: stagger( 0.1 ), ease: 'outQuad' } )
+		updateGoal( id, progress ) {
+			const goal = this.goals.find( g => g.id === id )
+			if ( goal ) goal.progress = progress
 		},
-		transitionOut( cb ) {
-			waapi.animate( this.elts, { opacity: 0.001, y: -50, duration: 0.5, delay: stagger( 0.05 ), ease: 'inQuad' } )
-			this.Manager3D?.hide( cb )
+		editGoal( id ) {
+			console.log( 'Edit goal', id )
 		},
-		beforeRouteLeave( next ) {
-			this.transitionOut( next )
+		removeGoal( id ) {
+			const index = this.goals.findIndex( g => g.id === id )
+			if ( index > -1 ) this.goals.splice( index, 1 )
+		},
+		openFeedback() {
+			console.log( 'Open feedback' )
+		},
+		addNewGoal() {
+			this.$router.push( '/new-goal' )
 		},
 	},
 }
@@ -44,13 +115,52 @@ export default {
 
 <style lang="stylus" scoped>
 .HomeView
-	.title
-		font-size 3rem
-	.subtitle
-		font-size 1.5rem
-	.bottom
-		position absolute
-		bottom 20px
-		left 0
-		right 0
+	padding 0
+	width 100%
+	max-width 375px
+	margin 0 auto
+	background #f6f7ff
+	min-height 100vh
+	position relative
+
+	.header
+		padding 100px 24px 20px
+		text-align center
+
+		.title
+			font-family 'Jost', sans-serif
+			font-size 32px
+			font-weight 400
+			line-height 40px
+			color #010101
+			margin-bottom 12px
+
+		.subtitle
+			font-family 'Jost', sans-serif
+			font-size 14px
+			font-weight 400
+			line-height 20px
+			color #A0A0A0
+			width 249px
+			margin 0 auto
+
+	.progressSection
+		display none
+
+	.stats
+		display none
+
+	.sendCard
+		display none
+
+	.goalList
+		padding 0 23px
+		margin-bottom 10px
+
+	.ctaSection
+		display flex
+		flex-direction column
+		gap 12px
+		padding 0 24px
+		margin-bottom 20px
 </style>

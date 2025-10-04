@@ -8,13 +8,20 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AddNewGoal: typeof import('./src/components/AddNewGoal.vue')['default']
     BurgerButton: typeof import('./src/components/ui/BurgerButton.vue')['default']
     ButtonFX: typeof import('./src/components/ui/ButtonFX.vue')['default']
+    CheckGoal: typeof import('./src/components/CheckGoal.vue')['default']
+    DailyStrike: typeof import('./src/components/DailyStrike.vue')['default']
+    DevelopmentTip: typeof import('./src/components/DevelopmentTip.vue')['default']
+    FeedbackCTA: typeof import('./src/components/FeedbackCTA.vue')['default']
+    Goal: typeof import('./src/components/Goal.vue')['default']
+    GoalDone: typeof import('./src/components/GoalDone.vue')['default']
     GradientButton: typeof import('./src/components/ui/GradientButton.vue')['default']
     ImgNext: typeof import('./src/components/ui/ImgNext.vue')['default']
+    Modal: typeof import('./src/components/Modal.vue')['default']
+    NewGoalButton: typeof import('./src/components/NewGoalButton.vue')['default']
     ProgressBar: typeof import('./src/components/ui/ProgressBar.vue')['default']
-    RouterLink: typeof import('vue-router')['RouterLink']
-    RouterView: typeof import('vue-router')['RouterView']
     Spinner: typeof import('./src/components/ui/Spinner.vue')['default']
     SVGCircle: typeof import('./src/components/ui/SVGCircle.vue')['default']
   }

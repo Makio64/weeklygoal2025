@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { gsap, Quad } from 'gsap'
+import { animate } from 'animejs'
 
 export default {
 	name: 'ProgressBar',
@@ -41,13 +41,13 @@ export default {
 	methods: {
 		// value from 0 to 1, 1 stands for 100%
 		setPercent( value ) {
-			gsap.to( this.$refs.progress, { scaleX: value } )
+			animate( this.$refs.progress, { scaleX: value } )
 		},
 		show() {
-			gsap.to( this.$refs.container, { ease: Quad.easeInOut, duration: 0.8, scaleX: 1 } )
+			animate( this.$refs.container, { scaleX: 1, duration: 0.8, ease: 'inOutQuad' } )
 		},
 		hide() {
-			gsap.to( this.$refs.container, { ease: Quad.easeIn, duration: 0.5, scaleX: 0 } )
+			animate( this.$refs.container, { scaleX: 0, duration: 0.5, ease: 'inQuad' } )
 		},
 	},
 }

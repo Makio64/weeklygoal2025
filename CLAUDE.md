@@ -115,6 +115,7 @@ Custom Three.js Shading Language nodes in `src/makio/tsl/`:
 - Signal-based state management (custom implementation)
 - Modular architecture with clear separation of concerns
 - WebGPU-first approach for 3D graphics
+- **Component Subdivision**: Follow the KISS principle - subdivide UI into small, focused components as much as possible. Each component should have a single responsibility. Extract reusable sections into separate components (e.g., buttons, cards, tips) rather than keeping them inline in views.
 
 ## Common Tasks
 

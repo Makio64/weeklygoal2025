@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { gsap, Quad } from 'gsap'
+import { animate, utils } from 'animejs'
 export default {
 	name: 'GradientButton',
 	props: {
@@ -36,15 +36,15 @@ export default {
 		if ( this.showAuto ) {
 			this.show()
 		} else {
-			gsap.set( this.$el, { opacity: 0 } )
+			utils.set( this.$el, { opacity: 0 } )
 		}
 	},
 	methods: {
 		show() {
-			gsap.from( this.$el, { opacity: 0, y: 20, delay: 0.1, duration: 0.5, ease: Quad.easeOut } )
+			animate( this.$el, { opacity: { from: 0 }, translateY: { from: 20 }, delay: 0.1, duration: 0.5, ease: 'outQuad' } )
 		},
 		hide() {
-			gsap.to( this.$el, { opacity: 0, y: -20, duration: 0.5, ease: Quad.easeOut } )
+			animate( this.$el, { opacity: 0, translateY: -20, duration: 0.5, ease: 'outQuad' } )
 		},
 	},
 }

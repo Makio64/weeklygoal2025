@@ -9,7 +9,6 @@ import { animate, engine } from 'animejs'
 import { TinyRouter } from 'vue-tiny-router'
 import { loadTranslations } from 'vue-tiny-translation'
 
-import injectFonts from '@/makio/utils/injectFonts'
 import { contentLoaded } from '@/store'
 
 import { detectLang } from './makio/utils/detect'
@@ -18,6 +17,7 @@ import { detectLang } from './makio/utils/detect'
 engine.timeUnit = 's'
 
 import HomeView from '@/views/HomeView'
+import NewGoal from '@/views/NewGoal'
 //const HomeView = defineAsyncComponent( () => import( '@/views/HomeView' ) )
 
 
@@ -35,6 +35,10 @@ export default {
 				{
 					path: '/',
 					component: HomeView,
+				},
+				{
+					path: '/new-goal',
+					component: NewGoal,
 				},
 				// {
 				// 	path: '/pixi',
@@ -76,16 +80,7 @@ export default {
 	},
 	async mounted() {
 		// Load important stuff in parallel
-		await Promise.all( [
-			injectFonts(
-				[
-					// Order optimize for the font use on the home
-					{ name: 'Black Han Sans', url: 'fonts/subset-BlackHanSans-Regular', weight: 'normal' },
-				],
-				true,
-			),
-			loadTranslations( `translations/${detectLang( ['en', 'fr'] )}.json` ),
-		] )
+		await loadTranslations( `translations/${detectLang( ['en', 'fr'] )}.json` )
 		this.basicLoaded = true
 	},
 	components: {
@@ -95,6 +90,14 @@ export default {
 </script>
 
 <style lang="stylus">
+
+@font-face {
+	font-family: 'Jost';
+	src: url('/fonts/Jost-VariableFont_wght.ttf') format('truetype');
+	font-weight: 100 900;
+	font-style: normal;
+	font-display: swap;
+}
 
 :root {
 	// Safe Area Inset sent by Webview Custom Code (Android & iOS)
@@ -109,32 +112,36 @@ export default {
   --sair: var(--webviewr, env(safe-area-inset-right))
 }
 
-body, html, #app
+body, html
 	user-select none
 	font-display() // define in global.styl
 	height 100%
 	min-height 100%
 	margin 0
 	padding 0
-	overflow hidden
 	scroll-behavior smooth
+	background #F6F7FF
 	@media screen and (prefers-reduced-motion: reduce)
 		scroll-behavior: auto
 
+#app
+	height 100%
+	overflow-y auto
+	overflow-x hidden
+
 html
-	touch-action none // Disable Pinch Zoom
 	-webkit-font-smoothing antialiased
 	-moz-osx-font-smoothing grayscale
 	text-align center
-	background #000
 
 	.view
-		color #fff
+		color #010101
 		display flex
-		min-height 100%
+		min-height 100vh
 		flex-direction column
-		justify-content center
+		justify-content flex-start
 		align-items center
+		background #F6F7FF
 
 	.loader
 		user-select none

@@ -12,7 +12,7 @@
     <link rel="dns-prefetch" href="//starter2024.netlify.app">
     
     <!-- Preload critical assets to avoid sequential loading -->
-    <link rel="preload" href="/fonts/subset-BlackHanSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/Jost-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin>
     
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
@@ -29,56 +29,30 @@
     
     <!-- Critical CSS -->
     <style>
-      body, html, #app {
+      body, html {
         user-select: none;
         height: 100%;
         min-height: 100%;
         margin: 0;
         padding: 0;
-        overflow: hidden;
         scroll-behavior: smooth;
-      }
-
-      html {
-        touch-action: none; /* Disable Pinch Zoom */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        background: #000;
+        background: #F6F7FF;
+      }
+
+      #app {
+        height: 100%;
+        min-height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
       }
     </style>
   </head>
   <body>
     <div id="app"></div>
     
-    <!-- Loading spinner - shows instantly while Vue loads -->
-    <div id="initial-loader" style="
-      user-select: none;
-      pointer-events: none;
-      position: fixed;
-      z-index: 10000;
-      top: calc(50% - 37px);
-      left: calc(50% - 37px);
-      ">
-      <div style="
-        margin: auto;
-        width: 74px;
-        height: 74px;
-        border-radius: 50%;
-        background: radial-gradient(farthest-side,#ff5379 94%,#0000) top/9px 9px no-repeat, conic-gradient(#0000 30%,#ff5379);
-        -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 0);
-        animation: spinner-c7wet2 1s infinite linear;
-        " role="status" aria-label="Loading">
-      </div>
-    </div>
-    
-    <style>
-      @keyframes spinner-c7wet2 {
-        100% {
-          transform: rotate(1turn);
-        }
-      }
-    </style>
     
     <script type="module" src="/src/main.js"></script>
   </body>

@@ -1,0 +1,335 @@
+<template>
+	<div class="NewGoal view">
+		<div v-if="!editMode" class="selection">
+			<div class="header">
+				<div class="title">New goal</div>
+				<div class="subtitle">This week I will</div>
+			</div>
+
+			<div class="suggestions">
+				<div
+					v-for="(goal, i) in suggestions"
+					:key="i"
+					class="suggestion"
+					:class="{ selected: goal.selected }"
+					@click="toggleGoal(i)"
+				>
+					<span class="icon">{{ goal.icon }}</span>
+					<span class="name">{{ goal.name }}</span>
+					<div v-if="goal.selected" class="checks">
+						<div v-for="n in 5" :key="n" class="check" :class="{ active: n <= goal.repetitions }" />
+					</div>
+				</div>
+			</div>
+
+			<div class="dots">
+				<div class="dot active" />
+				<div class="dot" />
+				<div class="dot" />
+			</div>
+
+			<div class="tips">
+				<span class="star">⭐</span>
+				<div class="text">Don't be too harsh on yourself, be it easy and you can!</div>
+				<span class="star">⭐</span>
+			</div>
+
+			<NewGoalButton @click="addNewGoal" />
+
+			<button class="continue" @click="continueToWeek">
+				Continue
+				<span class="arrow">→</span>
+			</button>
+		</div>
+
+		<div v-else class="edit">
+			<div class="header">
+				<div class="title">New goal</div>
+				<div class="subtitle">This week I will</div>
+			</div>
+
+			<div class="goalEdit">
+				<div class="goalHeader">
+					<span class="icon">{{ editingGoal.icon }}</span>
+					<input v-model="editingGoal.name" class="nameInput">
+					<div class="checks">
+						<div v-for="n in 5" :key="n" class="check" :class="{ active: n <= editingGoal.repetitions }" />
+					</div>
+				</div>
+
+				<div class="frequency">
+					<span>I want to do it</span>
+					<input v-model.number="editingGoal.repetitions" type="number" min="1" max="5" class="numInput">
+					<span>times</span>
+				</div>
+			</div>
+
+			<div class="character">
+				<div class="characterImg">🙂</div>
+			</div>
+
+			<button class="continue" @click="saveGoal">
+				I will success
+				<span class="arrow">→</span>
+			</button>
+		</div>
+	</div>
+</template>
+
+<script>
+import NewGoalButton from '@/components/NewGoalButton.vue'
+import { goals } from '@/store'
+
+export default {
+	name: 'NewGoal',
+	components: { NewGoalButton },
+	data() {
+		return {
+			editMode: false,
+			editingGoal: null,
+			suggestions: [
+				{ icon: '🥕', name: 'Cook vegetarian food', selected: false, repetitions: 3 },
+				{ icon: '🌱', name: 'Read more', selected: false, repetitions: 5 },
+				{ icon: '💅', name: 'Pamper myself', selected: false, repetitions: 2 },
+				{ icon: '🥕', name: 'Cook vegetarian food', selected: false, repetitions: 3 },
+				{ icon: '🏃', name: 'Do some sport', selected: false, repetitions: 3 },
+				{ icon: '🧘', name: 'Meditate more', selected: false, repetitions: 5 },
+				{ icon: '🥗', name: 'Have meals less diet', selected: false, repetitions: 4 },
+				{ icon: '💼', name: 'Work on personal project', selected: false, repetitions: 3 },
+			],
+		}
+	},
+	methods: {
+		toggleGoal( index ) {
+			this.suggestions[index].selected = !this.suggestions[index].selected
+		},
+		addNewGoal() {
+			this.editMode = true
+			this.editingGoal = { icon: '📝', name: '', repetitions: 5 }
+		},
+		saveGoal() {
+			if ( this.editingGoal.name.trim() ) {
+				this.suggestions.push( { ...this.editingGoal, selected: true } )
+			}
+			this.editMode = false
+			this.editingGoal = null
+		},
+		continueToWeek() {
+			const selected = this.suggestions.filter( g => g.selected )
+			selected.forEach( ( goal, i ) => {
+				goals.value.push( {
+					id: Date.now() + i,
+					name: goal.name,
+					icon: goal.icon,
+					repetitions: goal.repetitions,
+					progress: 0,
+				} )
+			} )
+			this.$router.push( '/' )
+		},
+	},
+}
+</script>
+
+<style lang="stylus" scoped>
+.NewGoal
+	padding 100px 20px 20px
+	width 100%
+	max-width 375px
+	margin 0 auto
+	background white
+	min-height 100vh
+
+	.header
+		margin-bottom 30px
+		text-align center
+
+		.title
+			font-family 'Jost', sans-serif
+			font-size 32px
+			font-weight 400
+			line-height 40px
+			color #010101
+			margin-bottom 12px
+
+		.subtitle
+			font-family 'Jost', sans-serif
+			font-size 20px
+			font-weight 400
+			line-height 28px
+			color #000
+
+	.suggestions
+		display flex
+		flex-wrap wrap
+		gap 8px
+		margin-bottom 30px
+		justify-content flex-start
+
+		.suggestion
+			background white
+			border 1px solid #e2e4f0
+			padding 10px 12px
+			border-radius 4px
+			display inline-flex
+			align-items center
+			gap 8px
+			cursor pointer
+			transition all 0.2s
+
+			&:active
+				transform scale(0.95)
+
+			&.selected
+				background #3445e1
+				border-color #3445e1
+				color white
+
+			.icon
+				font-size 16px
+
+			.name
+				font-family 'Nunito', sans-serif
+				font-size 16px
+				font-weight 600
+				white-space nowrap
+
+			.checks
+				display flex
+				gap 4px
+
+				.check
+					width 15px
+					height 15px
+					border 2px solid rgba(255,255,255,0.5)
+					border-radius 3px
+
+					&.active
+						background white
+
+	.dots
+		display flex
+		justify-content center
+		gap 8px
+		margin-bottom 20px
+
+		.dot
+			width 8px
+			height 8px
+			border-radius 50%
+			background #ddd
+
+			&.active
+				background #5B5FFF
+
+	.tips
+		background #FFF5E6
+		padding 16px
+		border-radius 8px
+		display flex
+		gap 8px
+		align-items center
+		margin-bottom 20px
+
+		.star
+			font-size 18px
+
+		.text
+			font-family 'Jost', sans-serif
+			font-size 12px
+			font-weight 400
+			line-height 16px
+			color #a0a0a0
+			flex 1
+
+	.continue
+		width 100%
+		padding 20px
+		background #3445e1
+		color white
+		border none
+		border-radius 4px
+		font-family 'Jost', sans-serif
+		font-size 20px
+		font-weight 400
+		cursor pointer
+		display flex
+		align-items center
+		justify-content center
+		gap 8px
+		margin-top 20px
+		box-shadow 0px 4px 30px rgba(0, 0, 0, 0.24)
+
+		&:active
+			transform scale(0.98)
+
+	.edit
+		.goalEdit
+			background #f6f6f6
+			border 1px solid #f3f3ff
+			padding 20px
+			border-radius 6px
+			margin-bottom 30px
+
+			.goalHeader
+				display flex
+				align-items center
+				gap 12px
+				margin-bottom 20px
+
+				.icon
+					font-size 24px
+
+				.nameInput
+					flex 1
+					border none
+					background transparent
+					font-family 'Nunito', sans-serif
+					font-size 16px
+					font-weight 600
+					color #3445e1
+					outline none
+
+				.checks
+					display flex
+					gap 4px
+
+					.check
+						width 15px
+						height 15px
+						border 2px solid #d0d1dc
+						border-radius 3px
+						background white
+
+						&.active
+							background #6a6af8
+							border-color #6a6af8
+
+			.frequency
+				display flex
+				align-items center
+				gap 8px
+				font-family 'Jost', sans-serif
+				font-size 20px
+				font-weight 400
+
+				.numInput
+					width 60px
+					padding 12px
+					border 2px solid #f3f3ff
+					background #f0f1f8
+					border-radius 6px
+					text-align center
+					font-family 'Jost', sans-serif
+					font-size 16px
+					font-weight 400
+					color #000
+
+		.character
+			display flex
+			justify-content center
+			margin-bottom 30px
+
+			.characterImg
+				font-size 120px
+</style>
