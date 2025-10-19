@@ -1,25 +1,15 @@
 <template>
 	<div class="HomeView view">
 		<div class="header">
-			<div class="title">My weekly goal lists</div>
-			<div class="subtitle">Track your week with us, see it<br>you can do it!</div>
+			<div class="title">WeeklyGoal</div>
+			<div class="subtitle">Simple step leads to higher goals</div>
 		</div>
 
 		<div class="progressSection">
+			<div class="progressText">{{ completionPercent }}% done!</div>
 			<div class="progressBar">
 				<div class="progressFill" :style="{ width: completionPercent + '%' }" />
 			</div>
-			<div class="progressText">{{ completionPercent }}% done!</div>
-		</div>
-
-		<div class="stats">
-			<GoalDone :count="goalsDone" />
-			<DailyStrike :days="strikesDays" />
-		</div>
-
-		<div class="sendCard">
-			<span class="icon">🎄 💌</span>
-			<span>Send xmas card</span>
 		</div>
 
 		<div class="goalList">
@@ -32,7 +22,9 @@
 				<div class="goals">
 					<Goal
 						v-for="goal in goals"
+						:id="goal.id"
 						:key="goal.id"
+						ref="goalRefs"
 						:name="goal.name"
 						:icon="goal.icon"
 						:repetitions="goal.repetitions"
@@ -55,21 +47,13 @@
 </template>
 
 <script>
-import AddNewGoal from '@/components/AddNewGoal.vue'
-import DailyStrike from '@/components/DailyStrike.vue'
-import DevelopmentTip from '@/components/DevelopmentTip.vue'
-import FeedbackCTA from '@/components/FeedbackCTA.vue'
-import Goal from '@/components/Goal.vue'
-import GoalDone from '@/components/GoalDone.vue'
-import { goals, initializeGoals } from '@/store'
+import { goals, goalSwiped, initializeGoals } from '@/store'
 
 export default {
 	name: 'HomeView',
-	components: { Goal, GoalDone, DailyStrike, FeedbackCTA, DevelopmentTip, AddNewGoal },
 	data() {
 		return {
 			goals,
-			strikesDays: 3,
 		}
 	},
 	computed: {
@@ -87,9 +71,23 @@ export default {
 		},
 	},
 	async mounted() {
+		goalSwiped.add( this.handleGoalSwiped )
 		await initializeGoals()
 	},
+	beforeUnmount() {
+		goalSwiped.remove( this.handleGoalSwiped )
+	},
 	methods: {
+		handleGoalSwiped( id ) {
+			const refs = this.$refs.goalRefs || []
+			const goalComponents = Array.isArray( refs ) ? refs : [refs]
+			goalComponents.forEach( ( goalComponent ) => {
+				if ( !goalComponent ) return
+				if ( goalComponent.$props?.id !== id ) {
+					goalComponent.closeSwipe?.()
+				}
+			} )
+		},
 		updateGoal( id, progress ) {
 			const goal = this.goals.find( g => g.id === id )
 			if ( goal ) goal.progress = progress
@@ -141,7 +139,7 @@ export default {
 			font-weight 400
 			line-height 40px
 			color #010101
-			margin-bottom 12px
+			margin-bottom 5px
 
 		.subtitle
 			font-family 'Jost', sans-serif
@@ -153,7 +151,29 @@ export default {
 			margin 0 auto
 
 	.progressSection
-		display none
+		padding 0 24px 24px
+		width calc(100% - 50px)
+
+		.progressBar
+			width 100%
+			height 12px
+			background #E8E9F3
+			border-radius 100px
+			overflow hidden
+			margin-bottom 8px
+
+			.progressFill
+				height 100%
+				background linear-gradient(90deg, #6C5CE7 0%, #A29BFE 100%)
+				border-radius 100px
+				transition width 0.3s ease
+
+		.progressText
+			font-family 'Jost', sans-serif
+			font-size 14px
+			font-weight 500
+			color #6C5CE7
+			text-align center
 
 	.stats
 		display none

@@ -1,5 +1,6 @@
 import { ref, watch } from 'vue'
 
+import Signal from './makio/core/Signal'
 import { storage } from './utils/storage'
 
 export const contentLoaded = ref( false )
@@ -7,6 +8,7 @@ export const contentLoaded = ref( false )
 // Goals store
 export const goals = ref( [] )
 export const weekStartDate = ref( new Date().toISOString() )
+export const goalSwiped = new Signal()
 
 // Initialize goals from storage
 export async function initializeGoals() {

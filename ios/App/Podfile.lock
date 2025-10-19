@@ -2,12 +2,15 @@ PODS:
   - Capacitor (7.4.3):
     - CapacitorCordova
   - CapacitorCordova (7.4.3)
+  - CapacitorLocalNotifications (7.0.3):
+    - Capacitor
   - CapacitorPreferences (7.0.2):
     - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/.pnpm/@capacitor+ios@7.4.3_@capacitor+core@7.4.3/node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../../node_modules/.pnpm/@capacitor+ios@7.4.3_@capacitor+core@7.4.3/node_modules/@capacitor/ios`)"
+  - "CapacitorLocalNotifications (from `../../node_modules/.pnpm/@capacitor+local-notifications@7.0.3_@capacitor+core@7.4.3/node_modules/@capacitor/local-notifications`)"
   - "CapacitorPreferences (from `../../node_modules/.pnpm/@capacitor+preferences@7.0.2_@capacitor+core@7.4.3/node_modules/@capacitor/preferences`)"
 
 EXTERNAL SOURCES:
@@ -15,14 +18,17 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/.pnpm/@capacitor+ios@7.4.3_@capacitor+core@7.4.3/node_modules/@capacitor/ios"
   CapacitorCordova:
     :path: "../../node_modules/.pnpm/@capacitor+ios@7.4.3_@capacitor+core@7.4.3/node_modules/@capacitor/ios"
+  CapacitorLocalNotifications:
+    :path: "../../node_modules/.pnpm/@capacitor+local-notifications@7.0.3_@capacitor+core@7.4.3/node_modules/@capacitor/local-notifications"
   CapacitorPreferences:
     :path: "../../node_modules/.pnpm/@capacitor+preferences@7.0.2_@capacitor+core@7.4.3/node_modules/@capacitor/preferences"
 
 SPEC CHECKSUMS:
   Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  CapacitorLocalNotifications: 0811aef56ab2e5f7f9ae72f47d3473ab50c29038
   CapacitorPreferences: 65107ed7437d96ee72583df5763985e3c0ff2bc2
 
-PODFILE CHECKSUM: b573451ca959d6fcc8f876796aac5b692e719d4c
+PODFILE CHECKSUM: a16322148b5890ddd755f779cc55a3296104488d
 
 COCOAPODS: 1.16.2

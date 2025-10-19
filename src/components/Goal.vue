@@ -18,9 +18,9 @@
 			<div class="progressFill" :style="{ width: (progress / repetitions * 100) + '%' }" />
 		</div>
 		<div class="actions">
-			<button class="edit" @click.stop="$emit('edit')">
+			<!-- <button class="edit" @click.stop="$emit('edit')">
 				<img src="/img/edit.png" alt="edit">
-			</button>
+			</button> -->
 			<button class="remove" @click.stop="$emit('remove')">
 				<img src="/img/bin.png" alt="delete">
 			</button>
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { goalSwiped } from '@/store'
+
 import CheckGoal from './CheckGoal.vue'
 
 export default {
@@ -36,6 +38,7 @@ export default {
 	components: { CheckGoal },
 	emits: ['update', 'edit', 'remove'],
 	props: {
+		id: { type: [Number, String], required: true },
 		name: String,
 		icon: { type: String, default: '📝' },
 		repetitions: { type: Number, default: 5 },
@@ -54,26 +57,17 @@ export default {
 		this.$el.addEventListener( 'touchmove', this.handleTouchMove, { passive: false } )
 		this.$el.addEventListener( 'touchend', this.handleTouchEnd, { passive: true } )
 		document.addEventListener( 'click', this.handleClickOutside )
-		window.addEventListener( 'goal-swiped', this.handleOtherGoalSwiped )
 	},
 	beforeUnmount() {
 		this.$el.removeEventListener( 'touchstart', this.handleTouchStart )
 		this.$el.removeEventListener( 'touchmove', this.handleTouchMove )
 		this.$el.removeEventListener( 'touchend', this.handleTouchEnd )
 		document.removeEventListener( 'click', this.handleClickOutside )
-		window.removeEventListener( 'goal-swiped', this.handleOtherGoalSwiped )
 	},
 	methods: {
 		handleCheckClick( checkIndex ) {
 			if ( this.swiped ) return
-
-			// If clicking on a checked box, decrease progress
-			if ( checkIndex <= this.progress ) {
-				this.$emit( 'update', checkIndex - 1 )
-			} else {
-				// If clicking on an unchecked box, set progress to that index
-				this.$emit( 'update', checkIndex )
-			}
+			this.$emit( 'update', checkIndex <= this.progress ? checkIndex - 1 : checkIndex )
 		},
 		handleTouchStart( e ) {
 			this.startX = e.touches[0].clientX
@@ -86,18 +80,15 @@ export default {
 
 			// Only trigger swipe if horizontal movement is greater than vertical
 			if ( !this.isSwiping && Math.abs( diffY ) > Math.abs( diffX ) ) {
-				// User is scrolling vertically, don't interfere
 				return
 			}
 
-			// User is swiping horizontally
 			if ( Math.abs( diffX ) >= 20 ) {
 				this.isSwiping = true
 
 				if ( diffX >= 20 ) {
 					this.swiped = true
-					// Notify other goals to close
-					window.dispatchEvent( new CustomEvent( 'goal-swiped', { detail: { id: this._uid } } ) )
+					goalSwiped.dispatch( this.id )
 				} else {
 					this.swiped = false
 				}
@@ -112,11 +103,8 @@ export default {
 				this.swiped = false
 			}
 		},
-		handleOtherGoalSwiped( e ) {
-			// Close this goal if another goal was swiped
-			if ( e.detail.id !== this._uid && this.swiped ) {
-				this.swiped = false
-			}
+		closeSwipe() {
+			this.swiped = false
 		},
 	},
 }
@@ -152,10 +140,10 @@ export default {
 		margin-right -2px
 
 	&.swiped .goalContent
-		transform translateX(-120px)
+		transform translateX(-60px)
 
 	&.swiped .progressBar
-		transform translateX(-120px)
+		transform translateX(-60px)
 
 	.iconName
 		display flex
