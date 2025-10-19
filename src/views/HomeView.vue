@@ -27,6 +27,7 @@
 						ref="goalRefs"
 						:name="goal.name"
 						:icon="goal.icon"
+						:category="goal.category"
 						:repetitions="goal.repetitions"
 						:progress="goal.progress"
 						@update="updateGoal(goal.id, $event)"
@@ -38,11 +39,11 @@
 			<AddNewGoal @click="addNewGoal" />
 		</div>
 
-		<div class="ctaSection">
+		<!-- <div class="ctaSection">
 			<DevelopmentTip />
-		</div>
+		</div> -->
 
-		<FeedbackCTA />
+		<!-- <FeedbackCTA /> -->
 	</div>
 </template>
 

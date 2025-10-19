@@ -47,18 +47,25 @@
 				<img src="/img/toohard.png" alt="You can do it!" class="illustration">
 			</div>
 
-			<!-- Category pills (inline buttons) -->
+			<!-- Goals organized by category -->
 			<div v-if="!showRepetitionSelector" class="categoriesWrap">
-				<div class="categoryButtons">
-					<button
-						v-for="(goal, idx) in allGoals"
-						:key="idx"
-						class="categoryPill"
-						:class="{ selected: isGoalSelected(goal) }"
-						@click="selectGoal(goal)"
-					>
-						{{ goal.icon }} {{ goal.name }}
-					</button>
+				<div v-for="category in categoriesWithGoals" :key="category.id" class="categorySection">
+					<div class="categoryTitle">
+						<span class="categoryIcon">{{ category.icon }}</span>
+						<span class="categoryName">{{ category.name }}</span>
+						<div class="categoryLine" :style="{ backgroundColor: category.color }" />
+					</div>
+					<div class="categoryButtons">
+						<button
+							v-for="(goal, idx) in category.goals"
+							:key="idx"
+							class="categoryPill"
+							:class="{ selected: isGoalSelected(goal, category.id) }"
+							@click="selectGoal(goal, category.id)"
+						>
+							{{ goal.icon }} {{ goal.name }}
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -121,7 +128,7 @@
 <script>
 import CheckGoal from '@/components/CheckGoal.vue'
 import Modal from '@/components/Modal.vue'
-import goalsList from '@/data/goals.json'
+import categoriesGoals from '@/data/categories-goals.json'
 import { goals } from '@/store'
 
 export default {
@@ -134,7 +141,7 @@ export default {
 			customGoal: '',
 			showModal: false,
 			showRepetitionSelector: false,
-			allGoals: goalsList,
+			categoriesWithGoals: categoriesGoals,
 		}
 	},
 	computed: {
@@ -144,17 +151,21 @@ export default {
 	},
 	mounted() {
 		// Select random goal by default
-		const randomIndex = Math.floor( Math.random() * goalsList.length )
-		this.selectedGoal = { ...goalsList[randomIndex], id: Date.now(), reps: 1 }
+		const allGoals = this.categoriesWithGoals.flatMap( cat =>
+			cat.goals.map( g => ( { ...g, category: cat.id } ) )
+		)
+		const randomIndex = Math.floor( Math.random() * allGoals.length )
+		this.selectedGoal = { ...allGoals[randomIndex], id: Date.now(), reps: 1 }
 	},
 	methods: {
-		isGoalSelected( goal ) {
+		isGoalSelected( goal, categoryId ) {
 			return this.selectedGoal &&
 				this.selectedGoal.name === goal.name &&
-				this.selectedGoal.icon === goal.icon
+				this.selectedGoal.icon === goal.icon &&
+				this.selectedGoal.category === categoryId
 		},
-		selectGoal( g ) {
-			this.selectedGoal = { ...g, id: Date.now(), reps: 1 }
+		selectGoal( goal, categoryId ) {
+			this.selectedGoal = { ...goal, category: categoryId, id: Date.now(), reps: 1 }
 		},
 		addCustomGoal() {
 			if ( this.customGoal.trim() ) {
@@ -195,6 +206,7 @@ export default {
 				id: this.current.id,
 				name: this.current.name,
 				icon: this.current.icon,
+				category: this.current.category,
 				repetitions: this.current.reps,
 				progress: 0,
 			} )
@@ -245,7 +257,7 @@ export default {
 		overflow hidden
 
 		.goalContent
-			padding 18px 16px
+			padding 0 16px
 			min-height 64px
 			display flex
 			align-items center
@@ -341,6 +353,44 @@ export default {
 		height 350px
 		overflow-y auto
 		overflow-x hidden
+		padding-right 4px
+
+		&::-webkit-scrollbar
+			width 4px
+
+		&::-webkit-scrollbar-track
+			background #F0F0F0
+			border-radius 2px
+
+		&::-webkit-scrollbar-thumb
+			background #D0D0D0
+			border-radius 2px
+
+	.categorySection
+		margin-bottom 24px
+
+		.categoryTitle
+			display flex
+			align-items center
+			gap 8px
+			margin-bottom 12px
+			position relative
+
+			.categoryIcon
+				font-size 20px
+
+			.categoryName
+				font-family 'Jost', sans-serif
+				font-size 16px
+				font-weight 600
+				color #333
+				flex-shrink 0
+
+			.categoryLine
+				flex 1
+				height 2px
+				opacity 0.3
+				margin-left 4px
 
 	.categoryButtons
 		display flex

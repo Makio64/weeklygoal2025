@@ -19,7 +19,7 @@
 		"cap:sync": "pnpm build && npx cap sync && node nodejs-tools/incrementBuild.js",
 		"cap:open:ios": "npx cap open ios",
 		"cap:run:ios": "pnpm cap:sync && npx cap run ios --target=480F5924-C1A0-4C18-8508-204E17B48404",
-		"ios": "pnpm cap:run:ios"
+		"ios": "pnpm cap:sync && pnpm cap:run:ios"
 	},
 	"dependencies": {
 		"@capacitor/cli": "^7.4.3",

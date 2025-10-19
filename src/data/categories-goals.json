@@ -1,0 +1,121 @@
+[
+	{
+		"id": "fitness",
+		"name": "Fitness & Movement",
+		"icon": "🏃",
+		"color": "#FF6B6B",
+		"goals": [
+			{ "icon": "💪", "name": "Workout" },
+			{ "icon": "🏃", "name": "Run" },
+			{ "icon": "🚴", "name": "Bike" },
+			{ "icon": "🧘‍♀️", "name": "Yoga" },
+			{ "icon": "🧘‍♂️", "name": "Pilates" },
+			{ "icon": "🏊", "name": "Swim" },
+			{ "icon": "🧗", "name": "Climbing" },
+			{ "icon": "🏋️", "name": "Gym" },
+			{ "icon": "🤸", "name": "Stretch" },
+			{ "icon": "💃", "name": "Dance" },
+			{ "icon": "🔥", "name": "Abs" }
+		]
+	},
+	{
+		"id": "wellness",
+		"name": "Mindfulness & Wellness",
+		"icon": "🧘",
+		"color": "#4ECDC4",
+		"goals": [
+			{ "icon": "🧘", "name": "Meditate" },
+			{ "icon": "🧼", "name": "Skincare" },
+			{ "icon": "🌳", "name": "Go outside" },
+			{ "icon": "🌤️", "name": "Wakeup early" },
+			{ "icon": "🍵", "name": "Tea ceremony" },
+			{ "icon": "📔", "name": "Journal" },
+			{ "icon": "🛁", "name": "Relax bath" },
+			{ "icon": "🚶", "name": "10k steps" }
+		]
+	},
+	{
+		"id": "creative",
+		"name": "Creative & Hobbies",
+		"icon": "🎨",
+		"color": "#FFD93D",
+		"goals": [
+			{ "icon": "✏️", "name": "Draw" },
+			{ "icon": "🎸", "name": "Play music" },
+			{ "icon": "🎨", "name": "Painting" },
+			{ "icon": "🧩", "name": "Puzzle" },
+			{ "icon": "🎲", "name": "Board game" },
+			{ "icon": "📷", "name": "Photo" },
+			{ "icon": "🖌️", "name": "Art" },
+			{ "icon": "🏺", "name": "Pottery" },
+			{ "icon": "♟️", "name": "Chess" },
+			{ "icon": "🧶", "name": "Knitting" },
+			{ "icon": "🔧", "name": "DIY project" },
+			{ "icon": "🎤", "name": "Singing" }
+		]
+	},
+	{
+		"id": "learning",
+		"name": "Learning & Growth",
+		"icon": "📚",
+		"color": "#6C63FF",
+		"goals": [
+			{ "icon": "📚", "name": "Read" },
+			{ "icon": "🎓", "name": "Study session" },
+			{ "icon": "🌍", "name": "Language practice" },
+			{ "icon": "🎵", "name": "Listen podcast" },
+			{ "icon": "🎤", "name": "TED Talk" },
+			{ "icon": "🎧", "name": "Audio Book" }
+		]
+	},
+	{
+		"id": "home",
+		"name": "Home & Organization",
+		"icon": "🏠",
+		"color": "#95E1D3",
+		"goals": [
+			{ "icon": "🥙", "name": "Cooking" },
+			{ "icon": "🛏️", "name": "Make bed" },
+			{ "icon": "🧹", "name": "Cleaning" },
+			{ "icon": "🌱", "name": "Water plants" },
+			{ "icon": "🗑️", "name": "Declutter" },
+			{ "icon": "🧺", "name": "Laundry" },
+			{ "icon": "📝", "name": "Weekly retro" },
+			{ "icon": "🏠", "name": "Decoration" }
+		]
+	},
+	{
+		"id": "social",
+		"name": "Social & Relationships",
+		"icon": "👥",
+		"color": "#FD79A8",
+		"goals": [
+			{ "icon": "👨‍👩‍👧", "name": "Call family" },
+			{ "icon": "💌", "name": "Send goodvibes" },
+			{ "icon": "🍳", "name": "Brunch" },
+			{ "icon": "📞", "name": "Catch-up call" },
+			{ "icon": "📞", "name": "Call mom" },
+			{ "icon": "🤝", "name": "Networking" },
+			{ "icon": "🎭", "name": "Exhibition" },
+			{ "icon": "🏛️", "name": "Museum" },
+			{ "icon": "🗺️", "name": "Explore" },
+			{ "icon": "☕", "name": "Cafe" },
+			{ "icon": "👥", "name": "Social activity" }
+		]
+	},
+	{
+		"id": "work",
+		"name": "Work & Productivity",
+		"icon": "💼",
+		"color": "#A29BFE",
+		"goals": [
+			{ "icon": "✍️", "name": "Write in journal" },
+			{ "icon": "📖", "name": "Blog post" },
+			{ "icon": "💼", "name": "Side project" },
+			{ "icon": "📊", "name": "Review goals" },
+			{ "icon": "💻", "name": "Vibe Coding" },
+			{ "icon": "💰", "name": "Tax check" },
+			{ "icon": "💵", "name": "Budget review" }
+		]
+	}
+]

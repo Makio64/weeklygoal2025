@@ -1,5 +1,6 @@
 <template>
 	<div class="Goal" :class="{ swiped }">
+		<div v-if="categoryColor" class="categoryIndicator" :style="{ backgroundColor: categoryColor }" />
 		<div ref="content" class="goalContent">
 			<div class="iconName">
 				<span class="icon">{{ icon }}</span>
@@ -29,6 +30,7 @@
 </template>
 
 <script>
+import categoriesGoals from '@/data/categories-goals.json'
 import { goalSwiped } from '@/store'
 
 import CheckGoal from './CheckGoal.vue'
@@ -41,6 +43,7 @@ export default {
 		id: { type: [Number, String], required: true },
 		name: String,
 		icon: { type: String, default: '📝' },
+		category: String,
 		repetitions: { type: Number, default: 5 },
 		progress: { type: Number, default: 0 },
 	},
@@ -51,6 +54,13 @@ export default {
 			startY: 0,
 			isSwiping: false,
 		}
+	},
+	computed: {
+		categoryColor() {
+			if ( !this.category ) return null
+			const cat = categoriesGoals.find( c => c.id === this.category )
+			return cat ? cat.color : null
+		},
 	},
 	mounted() {
 		this.$el.addEventListener( 'touchstart', this.handleTouchStart, { passive: true } )
@@ -124,6 +134,14 @@ export default {
 	cursor pointer
 	height 48px
 	touch-action pan-y
+
+	.categoryIndicator
+		position absolute
+		left 0
+		top 0
+		bottom 0
+		width 3px
+		z-index 3
 
 	.goalContent
 		flex 1
