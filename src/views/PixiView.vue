@@ -59,6 +59,5 @@ export default {
 	.bottom
 		position absolute
 		bottom 20px
-		left 0
-		right 0
+		inset-x 0
 </style>

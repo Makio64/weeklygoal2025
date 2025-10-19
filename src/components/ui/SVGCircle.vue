@@ -56,11 +56,10 @@ export default {
 .percent
 	width 46px
 	height 46px
-	font-family: 'Neue Montreal'
-	font-style: normal
-	font-weight: bold
-	font-size: 12px
-	text-align: center
+	font-family 'Neue Montreal'
+	font-weight bold
+	font-size 12px
+	text-align center
 	position absolute
 	top 20px
 	left 20px
@@ -74,11 +73,9 @@ export default {
 			opacity 0.4
 		&.progress
 			opacity 0.6
-	&.dark{
-		.progress{
+	&.dark
+		.progress
 			stroke #FF5379
-		}
 		color #FF5379
-		border-color: rgba(1, 1, 1, 0.25)
-	}
+		border-color rgba(1, 1, 1, 0.25)
 </style>

@@ -34,7 +34,6 @@ export default {
 		text-align center
 		font-family 'Jost', sans-serif
 		font-size 14px
-		font-weight 400
 		line-height 16px
 		color #000
 </style>

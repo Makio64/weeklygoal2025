@@ -52,13 +52,12 @@ export default {
 
 <style lang="stylus" scoped>
 .ButtonFX
-	text-align: center
+	text-align center
 	cursor pointer
 	.buttonAnim
 		transition transform 0.2s
 	.isDown
 		transform scale(.96)
-		transform-origin center center
 		&.strong
 			transform scale(.85)
 		&.strongInverted

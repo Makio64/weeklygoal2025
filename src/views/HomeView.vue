@@ -42,7 +42,7 @@
 			<DevelopmentTip />
 		</div>
 
-		<FeedbackCTA @click="openFeedback" />
+		<FeedbackCTA />
 	</div>
 </template>
 
@@ -99,19 +99,6 @@ export default {
 			const index = this.goals.findIndex( g => g.id === id )
 			if ( index > -1 ) this.goals.splice( index, 1 )
 		},
-		openFeedback() {
-			const subject = encodeURIComponent( 'Weekly Goal - Feedback' )
-			const body = encodeURIComponent( 'Hi,\n\nI would like to share my feedback about the Weekly Goal app:\n\n' )
-			const mailtoLink = `mailto:davronai@gmail.com?subject=${subject}&body=${body}`
-
-			// Create a temporary link element and click it (works better on iOS)
-			const link = document.createElement( 'a' )
-			link.href = mailtoLink
-			link.target = '_blank'
-			document.body.appendChild( link )
-			link.click()
-			document.body.removeChild( link )
-		},
 		addNewGoal() {
 			this.$router.push( '/new-goal' )
 		},
@@ -160,8 +147,7 @@ export default {
 			.progressFill
 				height 100%
 				background linear-gradient(90deg, #6C5CE7 0%, #A29BFE 100%)
-				border-radius inherit
-				transition width 0.3s ease
+				transition width 0.3s
 
 		.progressText
 			font-size 14px

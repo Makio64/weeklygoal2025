@@ -96,31 +96,26 @@ export default {
 </script>
 
 <style lang="stylus">
+@font-face
+	font-family 'Jost'
+	src url('/fonts/Jost-VariableFont_wght.ttf') format('truetype')
+	font-weight 100 900
+	font-style normal
+	font-display swap
 
-@font-face {
-	font-family: 'Jost';
-	src: url('/fonts/Jost-VariableFont_wght.ttf') format('truetype');
-	font-weight: 100 900;
-	font-style: normal;
-	font-display: swap;
-}
-
-:root {
-	// Safe Area Inset sent by Webview Custom Code (Android & iOS)
-  --webviewt: var(--android-safe-area-inset-top, var(--ios-safe-area-inset-top))
-  --webviewb: var(--android-safe-area-inset-bottom, var(--ios-safe-area-inset-bottom))
-  --webviewl: var(--android-safe-area-inset-left, var(--ios-safe-area-inset-left))
-  --webviewr: var(--android-safe-area-inset-right, var(--ios-safe-area-inset-right))
-
-  --sait: var(--webviewt, env(safe-area-inset-top))
-  --saib: var(--webviewb, env(safe-area-inset-bottom))
-  --sail: var(--webviewl, env(safe-area-inset-left))
-  --sair: var(--webviewr, env(safe-area-inset-right))
-}
+:root
+	--webviewt var(--android-safe-area-inset-top, var(--ios-safe-area-inset-top))
+	--webviewb var(--android-safe-area-inset-bottom, var(--ios-safe-area-inset-bottom))
+	--webviewl var(--android-safe-area-inset-left, var(--ios-safe-area-inset-left))
+	--webviewr var(--android-safe-area-inset-right, var(--ios-safe-area-inset-right))
+	--sait var(--webviewt, env(safe-area-inset-top))
+	--saib var(--webviewb, env(safe-area-inset-bottom))
+	--sail var(--webviewl, env(safe-area-inset-left))
+	--sair var(--webviewr, env(safe-area-inset-right))
 
 body, html
 	user-select none
-	font-display() // define in global.styl
+	font-display()
 	margin 0
 	padding 0
 	scroll-behavior smooth
@@ -153,7 +148,7 @@ html
 		z-index 10000
 		top calc(50% - 37px)
 		left calc(50% - 37px)
-		transition all 1.5s ease
+		transition all 1.5s
 		&.hide
 			transform scale(1.2)
 			opacity 0
@@ -162,9 +157,10 @@ html
 		position absolute
 		inset 0
 		z-index -1
-	//Three canvas under pixi canvas for animation purpose only
+
 	.three
 		z-index -2
+
 	.pixi
-		opacity 0 // for first transition
+		opacity 0
 </style>

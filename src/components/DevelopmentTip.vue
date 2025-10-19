@@ -17,13 +17,10 @@ export default {
 
 <style lang="stylus" scoped>
 .DevelopmentTip
-
 	.ctaTitle
 		font-family 'Jost', sans-serif
-		font-weight 400
 		font-size 20px
-		line-height normal
-		color #000000
+		color #000
 		margin-bottom 8px
 		text-align center
 
@@ -31,12 +28,10 @@ export default {
 		font-family 'Jost', sans-serif
 		font-size 16px
 		line-height 20px
-		font-weight 400
-		color #FFFFFF
+		color #FFF
 		text-align center
 		padding 20px 16px
 		border-radius 6px
 		border 1px solid #F3F3FF
-		background linear-gradient(222deg, #69E0BC 3.32%, #65D6DD 101.77%);
-
+		background linear-gradient(222deg, #69E0BC 3.32%, #65D6DD 101.77%)
 </style>

@@ -54,6 +54,7 @@
 						v-for="(goal, idx) in allGoals"
 						:key="idx"
 						class="categoryPill"
+						:class="{ selected: isGoalSelected(goal) }"
 						@click="selectGoal(goal)"
 					>
 						{{ goal.icon }} {{ goal.name }}
@@ -147,6 +148,11 @@ export default {
 		this.selectedGoal = { ...goalsList[randomIndex], id: Date.now(), reps: 1 }
 	},
 	methods: {
+		isGoalSelected( goal ) {
+			return this.selectedGoal &&
+				this.selectedGoal.name === goal.name &&
+				this.selectedGoal.icon === goal.icon
+		},
 		selectGoal( g ) {
 			this.selectedGoal = { ...g, id: Date.now(), reps: 1 }
 		},
@@ -213,7 +219,6 @@ export default {
 		.title
 			font-family 'Jost', sans-serif
 			font-size 32px
-			font-weight 400
 			line-height 40px
 			color #010101
 			margin-bottom 0
@@ -221,12 +226,11 @@ export default {
 		.subtitle
 			font-family 'Jost', sans-serif
 			font-size 20px
-			font-weight 400
 			line-height 28px
 			color #888
 			margin-top 20px
 
-	.step1
+	.step1, .step2
 		flex 1
 		display flex
 		flex-direction column
@@ -243,7 +247,6 @@ export default {
 		.goalContent
 			padding 18px 16px
 			min-height 64px
-			box-sizing border-box
 			display flex
 			align-items center
 			justify-content space-between
@@ -273,7 +276,6 @@ export default {
 			height 6px
 			background #E2E4F0
 			width 100%
-			position relative
 
 			.progressFill
 				height 100%
@@ -286,12 +288,10 @@ export default {
 		align-items center
 		justify-content center
 		gap 12px
-		// background #F6F6F6
 
 		.repLabel
 			font-family 'Jost', sans-serif
 			font-size 16px
-			font-weight 400
 			color #000
 
 		.repCounter
@@ -335,7 +335,6 @@ export default {
 		.illustration
 			max-width 200px
 			width 100%
-			height auto
 
 	.categoriesWrap
 		margin-bottom 20px
@@ -358,8 +357,13 @@ export default {
 			font-weight 600
 			color #3445E1
 			cursor pointer
-			transition transform 0.1s
+			transition all 0.2s
 			white-space nowrap
+
+			&.selected
+				background #3445E1
+				color #FFF
+				border-color #3445E1
 
 			&:active
 				transform scale(0.95)
@@ -367,13 +371,11 @@ export default {
 	.writeOwn
 		width 100%
 		padding 12px
-		box-sizing border-box
 		background #FFF
 		border 1px solid #E2E4F0
 		border-radius 4px
 		font-family 'Jost', sans-serif
 		font-size 16px
-		font-weight 400
 		line-height 28px
 		color #9D9D9D
 		text-align center
@@ -388,10 +390,9 @@ export default {
 		background #3445E1
 		border none
 		border-radius 4px
-		box-shadow 0px 4px 30px 0px rgba(0, 0, 0, 0.24)
+		box-shadow 0 4px 30px rgba(0, 0, 0, 0.24)
 		font-family 'Jost', sans-serif
 		font-size 20px
-		font-weight 400
 		line-height 16px
 		color #FFF
 		cursor pointer
@@ -402,11 +403,6 @@ export default {
 
 		&:not(:disabled):active
 			transform scale(0.98)
-
-	.step2
-		flex 1
-		display flex
-		flex-direction column
 
 	.goalCard
 		background #FFF
@@ -438,7 +434,6 @@ export default {
 					height 12px
 					border 2px solid #E2E4F0
 					border-radius 2px
-
 
 		.freq
 			display flex
@@ -545,9 +540,8 @@ export default {
 				.ck
 					width 16px
 					height 16px
-					border 2px solid #FFFFFF
+					border 2px solid #FFF
 					border-radius 3px
-
 
 			.cardTxt
 				font-family 'Jost', sans-serif

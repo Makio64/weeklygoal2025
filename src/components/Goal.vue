@@ -127,21 +127,17 @@ export default {
 
 	.goalContent
 		flex 1
-		padding 0 16px 0 16px
+		padding 0 16px
 		display flex
 		justify-content space-between
 		align-items center
 		transition transform 0.3s
 		background #F0F1F8
 		z-index 2
-		position relative
 		border-radius 6px 6px 0 0
-		box-sizing border-box
 		margin-right -2px
 
-	&.swiped .goalContent
-		transform translateX(-60px)
-
+	&.swiped .goalContent,
 	&.swiped .progressBar
 		transform translateX(-60px)
 
@@ -159,9 +155,8 @@ export default {
 		.name
 			font-family 'Jost', sans-serif
 			font-size 16px
-			font-weight 400
 			line-height 16px
-			color #000000
+			color #000
 			overflow hidden
 			text-overflow ellipsis
 			white-space nowrap
@@ -178,7 +173,6 @@ export default {
 		background #E2E4F0
 		border-radius 0 0 6px 6px
 		overflow hidden
-		position relative
 		transition transform 0.3s
 		z-index 1
 		margin-right -2px
@@ -205,7 +199,7 @@ export default {
 			cursor pointer
 			transition all 0.2s
 			height 100%
-			background #FFFFFF
+			background #FFF
 			display flex
 			align-items center
 			justify-content center
@@ -222,5 +216,4 @@ export default {
 			img
 				width 12px
 				height 12px
-				display block
 </style>

@@ -22,9 +22,7 @@ export default {
 	margin 0 auto
 	padding 0
 	background rgba(226, 228, 240, 0.2)
-	border 1px solid rgba(138, 144, 199, 0.16)
-	// add dashes
-	border-style: dashed;
+	border 1px dashed rgba(138, 144, 199, 0.16)
 	border-radius 6px
 	cursor pointer
 	display flex
@@ -40,7 +38,6 @@ export default {
 	.icon
 		width 24px
 		height 24px
-		display block
 
 	.text
 		font-family 'Jost', sans-serif
@@ -48,5 +45,4 @@ export default {
 		font-weight 400
 		line-height 16px
 		color #3445E1
-		text-align center
 </style>

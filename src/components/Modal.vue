@@ -40,12 +40,11 @@ export default {
 		width 100%
 		max-width 375px
 		min-height 70vh
-		position relative
 		overflow hidden
 
 .modal-enter-active,
 .modal-leave-active
-	transition opacity 0.3s ease
+	transition opacity 0.3s
 
 .modal-enter-from,
 .modal-leave-to
@@ -53,7 +52,7 @@ export default {
 
 .modal-enter-active .modalContent,
 .modal-leave-active .modalContent
-	transition transform 0.3s ease
+	transition transform 0.3s
 
 .modal-enter-from .modalContent,
 .modal-leave-to .modalContent

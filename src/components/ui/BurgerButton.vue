@@ -41,35 +41,34 @@ export default {
 	position absolute
 	top 20px
 	right 20px
-	box-sizing: border-box
-	width: 30px
-	height: 30px
-	cursor: pointer
+	width 30px
+	height 30px
+	cursor pointer
 	@media screen and (min-width: 600px)
 		display none
 
 	span
-		background-color: black
-		height: 2px
-		position: absolute
-		width: 100%
-		left: 0
-		transition: all 0.3s ease
+		background black
+		height 2px
+		position absolute
+		width 100%
+		left 0
+		transition all 0.3s ease
 		&:first-child
-			top: 0
+			top 0
 		&:nth-child(2)
-			top: 6px
+			top 6px
 		&:last-child
-			top: 12px
+			top 12px
 
 	&.cross
 		span:nth-child(2)
-			opacity: 0
+			opacity 0
 		span:first-child,
 		span:last-child
-			top: 6px
+			top 6px
 		span:first-child
-			transform: rotate(45deg)
+			transform rotate(45deg)
 		span:last-child
-			transform: rotate(-45deg)
+			transform rotate(-45deg)
 </style>

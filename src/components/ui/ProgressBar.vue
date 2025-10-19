@@ -59,12 +59,12 @@ export default {
 	.container
 		height 100%
 		border-radius 7px
-		overflow hidden //doesnt work on IOS..
-		transform-origin: left center
-		will-change: transform
+		overflow hidden
+		transform-origin left center
+		will-change transform
 		.progress
-			height: 100%
-			will-change: transform
-			transform: scaleX(0)
-			transform-origin: left center
+			height 100%
+			will-change transform
+			transform scaleX(0)
+			transform-origin left center
 </style>

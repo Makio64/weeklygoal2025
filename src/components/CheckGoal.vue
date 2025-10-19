@@ -41,11 +41,9 @@ export default {
 		.checkbox
 			width 100%
 			height 100%
-			display block
 
 		.checkmark
 			position absolute
 			width 50%
 			height 50%
-			display block
 </style>
