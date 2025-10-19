@@ -121,41 +121,36 @@ export default {
 
 <style lang="stylus" scoped>
 .HomeView
-	padding 0
-	width 100%
 	max-width 375px
 	margin 0 auto
 	background #f6f7ff
-	position relative
-	.goals
-		margin-bottom 20px
+	font-family 'Jost', sans-serif
+
+	.header, .progressSection, .ctaSection
+		padding 0 24px
+
 	.header
-		padding 0 24px 20px
+		padding-bottom 20px
 		text-align center
 
 		.title
-			font-family 'Jost', sans-serif
 			font-size 32px
-			font-weight 400
 			line-height 40px
 			color #010101
 			margin-bottom 5px
 
 		.subtitle
-			font-family 'Jost', sans-serif
 			font-size 14px
-			font-weight 400
 			line-height 20px
 			color #A0A0A0
 			width 249px
 			margin 0 auto
 
 	.progressSection
-		padding 0 24px 24px
+		padding-bottom 24px
 		width calc(100% - 50px)
 
 		.progressBar
-			width 100%
 			height 12px
 			background #E8E9F3
 			border-radius 100px
@@ -165,42 +160,35 @@ export default {
 			.progressFill
 				height 100%
 				background linear-gradient(90deg, #6C5CE7 0%, #A29BFE 100%)
-				border-radius 100px
+				border-radius inherit
 				transition width 0.3s ease
 
 		.progressText
-			font-family 'Jost', sans-serif
 			font-size 14px
 			font-weight 500
 			color #6C5CE7
 			text-align center
 
-	.stats
-		display none
-
-	.sendCard
-		display none
-
 	.goalList
 		padding 0 23px
 		margin-bottom 40px
 
+		.goals
+			margin-bottom 20px
+
 		.emptyState
 			display flex
 			justify-content center
-			align-items center
 			padding 40px 0
 			margin-bottom 20px
 
 			.emptyIllustration
 				max-width 200px
 				width 100%
-				height auto
 
 	.ctaSection
 		display flex
 		flex-direction column
 		gap 12px
-		padding 0 24px
 		margin-bottom 20px
 </style>
