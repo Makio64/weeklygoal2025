@@ -22,6 +22,7 @@ declare module 'vue' {
     Modal: typeof import('./src/components/Modal.vue')['default']
     NewGoalButton: typeof import('./src/components/NewGoalButton.vue')['default']
     ProgressBar: typeof import('./src/components/ui/ProgressBar.vue')['default']
+    ResetWeek: typeof import('./src/components/ResetWeek.vue')['default']
     Spinner: typeof import('./src/components/ui/Spinner.vue')['default']
     SVGCircle: typeof import('./src/components/ui/SVGCircle.vue')['default']
   }
