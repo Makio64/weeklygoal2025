@@ -1,7 +1,5 @@
-import { ref, watch } from 'vue'
-
 import Signal from './makio/core/Signal'
-import { storage } from './utils/storage'
+import { goalsRepository } from './utils/goalsRepository'
 
 export const contentLoaded = ref( false )
 
@@ -12,17 +10,10 @@ export const goalSwiped = new Signal()
 
 // Initialize goals from storage
 export async function initializeGoals() {
-	const savedGoals = await storage.loadGoals()
-	if ( savedGoals !== null ) {
-		goals.value = savedGoals
-	} else {
-		// First time: start with "Call mom" goal
-		goals.value = [{ id: 1, name: 'Call mom', icon: '📞', repetitions: 1, progress: 0 },]
-		await storage.saveGoals( goals.value )
-	}
+	goals.value = await goalsRepository.load()
 }
 
-// Watch for changes and save to storage
-watch( goals, async ( newGoals ) => {
-	await storage.saveGoals( newGoals )
-}, { deep: true } )
+// Save goals to storage
+export async function saveGoals() {
+	return await goalsRepository.save( goals.value )
+}

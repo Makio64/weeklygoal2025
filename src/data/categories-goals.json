@@ -31,7 +31,8 @@
 			{ "icon": "🍵", "name": "Tea ceremony" },
 			{ "icon": "📔", "name": "Journal" },
 			{ "icon": "🛁", "name": "Relax bath" },
-			{ "icon": "🚶", "name": "10k steps" }
+			{ "icon": "🚶", "name": "10k steps" },
+			{ "icon": "😴", "name": "Sleep early" }
 		]
 	},
 	{
@@ -80,7 +81,6 @@
 			{ "icon": "🌱", "name": "Water plants" },
 			{ "icon": "🗑️", "name": "Declutter" },
 			{ "icon": "🧺", "name": "Laundry" },
-			{ "icon": "📝", "name": "Weekly retro" },
 			{ "icon": "🏠", "name": "Decoration" }
 		]
 	},
@@ -109,9 +109,16 @@
 		"icon": "💼",
 		"color": "#A29BFE",
 		"goals": [
+			{ "icon": "🧠", "name": "Deep work" },
+			{ "icon": "🚀", "name": "Launch project" },
+			{ "icon": "💼", "name": "Side project" },
+			{ "icon": "📝", "name": "Weekly retro" },
+			{ "icon": "📅", "name": "Plan weekly" },
+			{ "icon": "📧", "name": "Inbox zero" },
+			{ "icon": "🗂️", "name": "Organize files" },
+			{ "icon": "🐦", "name": "Tweet" },
 			{ "icon": "✍️", "name": "Write in journal" },
 			{ "icon": "📖", "name": "Blog post" },
-			{ "icon": "💼", "name": "Side project" },
 			{ "icon": "📊", "name": "Review goals" },
 			{ "icon": "💻", "name": "Vibe Coding" },
 			{ "icon": "💰", "name": "Tax check" },

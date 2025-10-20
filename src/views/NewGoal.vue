@@ -130,6 +130,7 @@ import CheckGoal from '@/components/CheckGoal.vue'
 import Modal from '@/components/Modal.vue'
 import categoriesGoals from '@/data/categories-goals.json'
 import { goals } from '@/store'
+import { saveAndNotify } from '@/utils/goalHelpers'
 
 export default {
 	name: 'NewGoal',
@@ -201,7 +202,7 @@ export default {
 		openModal() {
 			this.showModal = true
 		},
-		confirm() {
+		async confirm() {
 			goals.value.push( {
 				id: this.current.id,
 				name: this.current.name,
@@ -210,6 +211,7 @@ export default {
 				repetitions: this.current.reps,
 				progress: 0,
 			} )
+			await saveAndNotify()
 			this.$router.push( '/' )
 		},
 	},

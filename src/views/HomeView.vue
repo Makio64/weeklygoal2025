@@ -36,25 +36,30 @@
 					/>
 				</div>
 			</template>
+			<!-- <ResetWeek @click="resetWeek" /> -->
 			<AddNewGoal @click="addNewGoal" />
 		</div>
 
-		<!-- <div class="ctaSection">
-			<DevelopmentTip />
-		</div> -->
+		<div class="ctaSection">
+			<!-- <DevelopmentTip /> -->
+			<NotificationToggle />
+		</div>
 
 		<!-- <FeedbackCTA /> -->
 	</div>
 </template>
 
 <script>
-import { goals, goalSwiped, initializeGoals } from '@/store'
+import { goals, goalSwiped, initializeGoals, saveGoals } from '@/store'
+import { createGoalsSnapshot, handleGoalChange } from '@/utils/goalHelpers'
+import notificationManager from '@/utils/notifications'
 
 export default {
 	name: 'HomeView',
 	data() {
 		return {
 			goals,
+			previousGoalsSnapshot: null,
 		}
 	},
 	computed: {
@@ -74,11 +79,18 @@ export default {
 	async mounted() {
 		goalSwiped.add( this.handleGoalSwiped )
 		await initializeGoals()
+		await notificationManager.init()
+
+		// Take initial snapshot for detecting significant changes
+		this.previousGoalsSnapshot = createGoalsSnapshot()
 	},
 	beforeUnmount() {
 		goalSwiped.remove( this.handleGoalSwiped )
 	},
 	methods: {
+		async onGoalChange() {
+			this.previousGoalsSnapshot = await handleGoalChange( this.previousGoalsSnapshot )
+		},
 		handleGoalSwiped( id ) {
 			const refs = this.$refs.goalRefs || []
 			const goalComponents = Array.isArray( refs ) ? refs : [refs]
@@ -89,19 +101,33 @@ export default {
 				}
 			} )
 		},
-		updateGoal( id, progress ) {
+		async updateGoal( id, progress ) {
 			const goal = this.goals.find( g => g.id === id )
-			if ( goal ) goal.progress = progress
+			if ( goal ) {
+				goal.progress = progress
+				await saveGoals()
+			}
 		},
 		editGoal( id ) {
 			console.log( 'Edit goal', id )
 		},
-		removeGoal( id ) {
+		async removeGoal( id ) {
 			const index = this.goals.findIndex( g => g.id === id )
-			if ( index > -1 ) this.goals.splice( index, 1 )
+			if ( index > -1 ) {
+				this.goals.splice( index, 1 )
+				await this.onGoalChange()
+			}
 		},
 		addNewGoal() {
 			this.$router.push( '/new-goal' )
+		},
+		resetWeek() {
+			// Reset all goals progress to 0
+			this.goals.forEach( goal => {
+				goal.progress = 0
+			} )
+			// Show notification
+			notificationManager.showResetNotification()
 		},
 	},
 }
