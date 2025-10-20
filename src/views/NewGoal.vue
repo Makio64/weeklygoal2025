@@ -66,7 +66,10 @@
 							v-for="(goal, idx) in category.goals"
 							:key="idx"
 							class="categoryPill"
-							:class="{ selected: isGoalSelected(goal, category.id) }"
+							:class="{
+								selected: isGoalSelected(goal, category.id),
+								inList: isGoalInList(goal, category.id)
+							}"
 							@click="selectGoal(goal, category.id)"
 						>
 							{{ goal.icon }} {{ goal.name }}
@@ -99,7 +102,7 @@
 					<span>I want to do it</span>
 					<div class="cnt">
 						<button @click="decr">−</button>
-						<input v-model.number="current.reps" type="number" min="1" max="5" readonly>
+						<input v-model.number="current.reps" type="number" min="1" max="6" readonly>
 						<button @click="incr">+</button>
 					</div>
 					<span>times</span>
@@ -171,6 +174,13 @@ export default {
 				this.selectedGoal.icon === goal.icon &&
 				this.selectedGoal.category === categoryId
 		},
+		isGoalInList( goal, categoryId ) {
+			return goals.value.some( g =>
+				g.name === goal.name &&
+				g.icon === goal.icon &&
+				g.category === categoryId
+			)
+		},
 		selectGoal( goal, categoryId ) {
 			this.selectedGoal = { ...goal, category: categoryId, id: Date.now(), reps: 1 }
 		},
@@ -200,7 +210,7 @@ export default {
 			}
 		},
 		incr() {
-			if ( this.selectedGoal.reps < 5 ) this.selectedGoal.reps++
+			if ( this.selectedGoal.reps < 6 ) this.selectedGoal.reps++
 		},
 		decr() {
 			if ( this.selectedGoal.reps > 1 ) this.selectedGoal.reps--
@@ -269,7 +279,7 @@ export default {
 
 		.goalContent
 			padding 0 16px
-			min-height 64px
+			min-height 40px
 			display flex
 			align-items center
 			justify-content space-between
@@ -371,12 +381,15 @@ export default {
 			width 4px
 
 		&::-webkit-scrollbar-track
-			background #F0F0F0
+			background #E2E4F0
 			border-radius 2px
 
 		&::-webkit-scrollbar-thumb
-			background #D0D0D0
+			background #7B8AED
 			border-radius 2px
+
+			&:hover
+				background #3445E1
 
 	.categorySection
 		margin-bottom 24px
@@ -417,17 +430,24 @@ export default {
 			border-radius 4px
 			padding 10px 13px
 			font-family 'Nunito', sans-serif
-			font-size 16px
+			font-size 14px
 			font-weight 600
 			color #3445E1
 			cursor pointer
 			transition all 0.2s
 			white-space nowrap
 
+			&.inList
+				background #34D399
+				color #FFF
+				border-color #34D399
+				opacity 0.7
+
 			&.selected
 				background #3445E1
 				color #FFF
 				border-color #3445E1
+				opacity 1
 
 			&:active
 				transform scale(0.95)
