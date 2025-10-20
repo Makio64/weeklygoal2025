@@ -33,11 +33,8 @@
 import categoriesGoals from '@/data/categories-goals.json'
 import { goalSwiped } from '@/store'
 
-import CheckGoal from './CheckGoal.vue'
-
 export default {
 	name: 'Goal',
-	components: { CheckGoal },
 	emits: ['update', 'edit', 'remove'],
 	props: {
 		id: { type: [Number, String], required: true },
@@ -169,6 +166,8 @@ export default {
 		.icon
 			font-size 20px
 			flex-shrink 0
+			pointer-events none
+			user-select none
 
 		.name
 			font-family 'Jost', sans-serif
@@ -178,6 +177,8 @@ export default {
 			overflow hidden
 			text-overflow ellipsis
 			white-space nowrap
+			user-select none
+			pointer-events none
 
 	.checks
 		display flex
