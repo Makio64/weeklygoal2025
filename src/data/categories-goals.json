@@ -1,9 +1,27 @@
 [
 	{
+		"id": "social",
+		"name": "Social & Relationships",
+		"icon": "👥",
+		"color": "#FFD93D",
+		"goals": [
+			{ "icon": "👨‍👩‍👧", "name": "Call family" },
+			{ "icon": "💌", "name": "Send goodvibes" },
+			{ "icon": "🍳", "name": "Brunch" },
+			{ "icon": "📞", "name": "Catch-up call" },
+			{ "icon": "📞", "name": "Call mom" },
+			{ "icon": "🤝", "name": "Networking" },
+			{ "icon": "🏛️", "name": "Museum/Expo" },
+			{ "icon": "🗺️", "name": "Explore" },
+			{ "icon": "☕", "name": "Cafe" },
+			{ "icon": "👥", "name": "Social activity" }
+		]
+	},
+	{
 		"id": "fitness",
 		"name": "Fitness & Movement",
 		"icon": "🏃",
-		"color": "#FF6B6B",
+		"color": "#FB923C",
 		"goals": [
 			{ "icon": "💪", "name": "Workout" },
 			{ "icon": "🏃", "name": "Run" },
@@ -19,6 +37,28 @@
 			{ "icon": "🎾", "name": "Tennis" },
 			{ "icon": "🏸", "name": "Badminton" },
 			{ "icon": "🔥", "name": "Abs" }
+		]
+	},
+	{
+		"id": "work",
+		"name": "Work & Productivity",
+		"icon": "💼",
+		"color": "#A29BFE",
+		"goals": [
+			{ "icon": "🧠", "name": "Deep work" },
+			{ "icon": "📝", "name": "Weekly retro" },
+			{ "icon": "📅", "name": "Plan weekly" },
+			{ "icon": "🚀", "name": "Launch project" },
+			{ "icon": "💼", "name": "Side project" },
+			{ "icon": "📧", "name": "Inbox zero" },
+			{ "icon": "🗂️", "name": "Organize files" },
+			{ "icon": "🐦", "name": "Post update" },
+			{ "icon": "✍️", "name": "Write in journal" },
+			{ "icon": "📖", "name": "Blog post" },
+			{ "icon": "📊", "name": "Review goals" },
+			{ "icon": "💻", "name": "Vibe Code" },
+			{ "icon": "📁", "name": "Site/Profile update" },
+			{ "icon": "💰", "name": "Budget/Tax check" }
 		]
 	},
 	{
@@ -62,7 +102,7 @@
 		"id": "learning",
 		"name": "Learning & Growth",
 		"icon": "📚",
-		"color": "#6C63FF",
+		"color": "#60A5FA",
 		"goals": [
 			{ "icon": "📚", "name": "Read" },
 			{ "icon": "🎓", "name": "Study" },
@@ -76,7 +116,7 @@
 		"id": "home",
 		"name": "Home & Organization",
 		"icon": "🏠",
-		"color": "#95E1D3",
+		"color": "#34D399",
 		"goals": [
 			{ "icon": "🥙", "name": "Cook healthy" },
 			{ "icon": "🛏️", "name": "Make bed" },
@@ -85,46 +125,6 @@
 			{ "icon": "🗑️", "name": "Declutter" },
 			{ "icon": "🧺", "name": "Laundry" },
 			{ "icon": "🏠", "name": "Decoration" }
-		]
-	},
-	{
-		"id": "social",
-		"name": "Social & Relationships",
-		"icon": "👥",
-		"color": "#FD79A8",
-		"goals": [
-			{ "icon": "👨‍👩‍👧", "name": "Call family" },
-			{ "icon": "💌", "name": "Send goodvibes" },
-			{ "icon": "🍳", "name": "Brunch" },
-			{ "icon": "📞", "name": "Catch-up call" },
-			{ "icon": "📞", "name": "Call mom" },
-			{ "icon": "🤝", "name": "Networking" },
-			{ "icon": "🏛️", "name": "Museum/Expo" },
-			{ "icon": "🗺️", "name": "Explore" },
-			{ "icon": "☕", "name": "Cafe" },
-			{ "icon": "👥", "name": "Social activity" }
-		]
-	},
-	{
-		"id": "work",
-		"name": "Work & Productivity",
-		"icon": "💼",
-		"color": "#A29BFE",
-		"goals": [
-			{ "icon": "🧠", "name": "Deep work" },
-			{ "icon": "📝", "name": "Weekly retro" },
-			{ "icon": "📅", "name": "Plan weekly" },
-			{ "icon": "🚀", "name": "Launch project" },
-			{ "icon": "💼", "name": "Side project" },
-			{ "icon": "📧", "name": "Inbox zero" },
-			{ "icon": "🗂️", "name": "Organize files" },
-			{ "icon": "🐦", "name": "Post update" },
-			{ "icon": "✍️", "name": "Write in journal" },
-			{ "icon": "📖", "name": "Blog post" },
-			{ "icon": "📊", "name": "Review goals" },
-			{ "icon": "💻", "name": "Vibe Code" },
-			{ "icon": "📁", "name": "Site/Profile update" },
-			{ "icon": "💰", "name": "Budget/Tax check" }
 		]
 	}
 ]

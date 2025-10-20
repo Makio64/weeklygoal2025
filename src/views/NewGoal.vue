@@ -3,7 +3,7 @@
 		<!-- Step 1 -->
 		<div v-if="step === 1" class="step1">
 			<div class="header">
-				<div class="title">I want to</div>
+				<div class="title">This week I will do</div>
 			</div>
 
 			<!-- Selected goal at top (using Goal component style) -->
@@ -49,7 +49,14 @@
 			<!-- Goals organized by category -->
 			<div v-if="!showRepetitionSelector" class="categoriesWrap">
 				<div v-for="category in categoriesWithGoals" :key="category.id" class="categorySection">
-					<div class="categoryTitle">
+					<div
+						class="categoryTitle"
+						:style="{
+							'--cat-color-light': category.color + '40',
+							'--cat-color-lighter': category.color + '15',
+							'border-color': category.color + '60'
+						}"
+					>
 						<span class="categoryIcon">{{ category.icon }}</span>
 						<span class="categoryName">{{ category.name }}</span>
 						<div class="categoryLine" :style="{ backgroundColor: category.color }" />
@@ -228,6 +235,7 @@ export default {
 	.header
 		text-align center
 		margin-bottom 20px
+		flex-shrink 0
 
 		.title
 			font-family 'Jost', sans-serif
@@ -244,12 +252,14 @@ export default {
 			margin-top 20px
 
 	.step1, .step2
-		flex 1
+		height calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) + 10px)
 		display flex
 		flex-direction column
+		padding-bottom env(safe-area-inset-bottom)
 
 	.selectedGoalWrap
 		margin-bottom 16px
+		flex-shrink 0
 
 	.selectedGoal
 		background #F6F6F6
@@ -350,11 +360,12 @@ export default {
 			width 100%
 
 	.categoriesWrap
-		margin-bottom 20px
-		height 350px
+		flex 1
 		overflow-y auto
 		overflow-x hidden
 		padding-right 4px
+		padding-bottom 20px
+		min-height 0
 
 		&::-webkit-scrollbar
 			width 4px
@@ -372,26 +383,28 @@ export default {
 
 		.categoryTitle
 			display flex
-			align-items center
+			align-items start
 			gap 8px
 			margin-bottom 12px
 			position relative
+			padding-left 10px
+			padding-top 20px
+			padding-bottom 10px
+			// border-radius 50px
+			// border 1px solid var(--cat-color-light)
+			// background linear-gradient(135deg, var(--cat-color-light) 0%, var(--cat-color-lighter) 100%)
 
 			.categoryIcon
 				font-size 20px
 
 			.categoryName
-				font-family 'Jost', sans-serif
-				font-size 16px
+				// font-family 'Jost', sans-serif
+				font-size 18px
 				font-weight 600
 				color #333
-				flex-shrink 0
 
 			.categoryLine
-				flex 1
-				height 2px
-				opacity 0.3
-				margin-left 4px
+				display none
 
 	.categoryButtons
 		display flex
@@ -447,7 +460,9 @@ export default {
 		line-height 16px
 		color #FFF
 		cursor pointer
-		margin-bottom 60px
+		margin-top 20px
+		margin-bottom 20px
+		flex-shrink 0
 
 		&:disabled
 			opacity 0.5
