@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Weekl yGoal</string>
+    <string name="title_activity_main">Weekl yGoal</string>
+    <string name="package_name">io.makio.weeklygoal</string>
+    <string name="custom_url_scheme">io.makio.weeklygoal</string>
+</resources>

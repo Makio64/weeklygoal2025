@@ -11,10 +11,13 @@
 			{ "icon": "🧘‍♀️", "name": "Yoga" },
 			{ "icon": "🧘‍♂️", "name": "Pilates" },
 			{ "icon": "🏊", "name": "Swim" },
-			{ "icon": "🧗", "name": "Climbing" },
+			{ "icon": "🧗", "name": "Climb" },
 			{ "icon": "🏋️", "name": "Gym" },
 			{ "icon": "🤸", "name": "Stretch" },
 			{ "icon": "💃", "name": "Dance" },
+			{ "icon": "🥊", "name": "Boxing" },
+			{ "icon": "🎾", "name": "Tennis" },
+			{ "icon": "🏸", "name": "Badminton" },
 			{ "icon": "🔥", "name": "Abs" }
 		]
 	},
@@ -24,15 +27,15 @@
 		"icon": "🧘",
 		"color": "#4ECDC4",
 		"goals": [
+			{ "icon": "🌤️", "name": "Wakeup early" },
+			{ "icon": "😴", "name": "Sleep early" },
+			{ "icon": "🛁", "name": "Relax bath" },
 			{ "icon": "🧘", "name": "Meditate" },
 			{ "icon": "🧼", "name": "Skincare" },
 			{ "icon": "🌳", "name": "Go outside" },
-			{ "icon": "🌤️", "name": "Wakeup early" },
-			{ "icon": "🍵", "name": "Tea ceremony" },
+			{ "icon": "🍵", "name": "Tea ritual" },
 			{ "icon": "📔", "name": "Journal" },
-			{ "icon": "🛁", "name": "Relax bath" },
-			{ "icon": "🚶", "name": "10k steps" },
-			{ "icon": "😴", "name": "Sleep early" }
+			{ "icon": "🚶", "name": "10k steps" }
 		]
 	},
 	{
@@ -62,10 +65,10 @@
 		"color": "#6C63FF",
 		"goals": [
 			{ "icon": "📚", "name": "Read" },
-			{ "icon": "🎓", "name": "Study session" },
+			{ "icon": "🎓", "name": "Study" },
 			{ "icon": "🌍", "name": "Language practice" },
 			{ "icon": "🎵", "name": "Listen podcast" },
-			{ "icon": "🎤", "name": "TED Talk" },
+			{ "icon": "🎤", "name": "Watch a talk" },
 			{ "icon": "🎧", "name": "Audio Book" }
 		]
 	},
@@ -75,9 +78,9 @@
 		"icon": "🏠",
 		"color": "#95E1D3",
 		"goals": [
-			{ "icon": "🥙", "name": "Cooking" },
+			{ "icon": "🥙", "name": "Cook healthy" },
 			{ "icon": "🛏️", "name": "Make bed" },
-			{ "icon": "🧹", "name": "Cleaning" },
+			{ "icon": "🧹", "name": "Clean" },
 			{ "icon": "🌱", "name": "Water plants" },
 			{ "icon": "🗑️", "name": "Declutter" },
 			{ "icon": "🧺", "name": "Laundry" },
@@ -96,8 +99,7 @@
 			{ "icon": "📞", "name": "Catch-up call" },
 			{ "icon": "📞", "name": "Call mom" },
 			{ "icon": "🤝", "name": "Networking" },
-			{ "icon": "🎭", "name": "Exhibition" },
-			{ "icon": "🏛️", "name": "Museum" },
+			{ "icon": "🏛️", "name": "Museum/Expo" },
 			{ "icon": "🗺️", "name": "Explore" },
 			{ "icon": "☕", "name": "Cafe" },
 			{ "icon": "👥", "name": "Social activity" }
@@ -110,19 +112,19 @@
 		"color": "#A29BFE",
 		"goals": [
 			{ "icon": "🧠", "name": "Deep work" },
-			{ "icon": "🚀", "name": "Launch project" },
-			{ "icon": "💼", "name": "Side project" },
 			{ "icon": "📝", "name": "Weekly retro" },
 			{ "icon": "📅", "name": "Plan weekly" },
+			{ "icon": "🚀", "name": "Launch project" },
+			{ "icon": "💼", "name": "Side project" },
 			{ "icon": "📧", "name": "Inbox zero" },
 			{ "icon": "🗂️", "name": "Organize files" },
-			{ "icon": "🐦", "name": "Tweet" },
+			{ "icon": "🐦", "name": "Post update" },
 			{ "icon": "✍️", "name": "Write in journal" },
 			{ "icon": "📖", "name": "Blog post" },
 			{ "icon": "📊", "name": "Review goals" },
-			{ "icon": "💻", "name": "Vibe Coding" },
-			{ "icon": "💰", "name": "Tax check" },
-			{ "icon": "💵", "name": "Budget review" }
+			{ "icon": "💻", "name": "Vibe Code" },
+			{ "icon": "📁", "name": "Site/Profile update" },
+			{ "icon": "💰", "name": "Budget/Tax check" }
 		]
 	}
 ]

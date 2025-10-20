@@ -19,9 +19,13 @@
 		"cap:sync": "pnpm build && npx cap sync && node nodejs-tools/incrementBuild.js",
 		"cap:open:ios": "npx cap open ios",
 		"cap:run:ios": "pnpm cap:sync && npx cap run ios --target=480F5924-C1A0-4C18-8508-204E17B48404",
-		"ios": "pnpm cap:sync && pnpm cap:run:ios"
+		"ios": "pnpm cap:sync && pnpm cap:run:ios",
+		"cap:open:android": "npx cap open android",
+		"cap:run:android": "pnpm cap:sync && npx cap run android",
+		"android": "pnpm cap:sync && pnpm cap:run:android"
 	},
 	"dependencies": {
+		"@capacitor/android": "^7.4.3",
 		"@capacitor/cli": "^7.4.3",
 		"@capacitor/core": "^7.4.3",
 		"@capacitor/ios": "^7.4.3",

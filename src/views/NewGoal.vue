@@ -3,7 +3,7 @@
 		<!-- Step 1 -->
 		<div v-if="step === 1" class="step1">
 			<div class="header">
-				<div class="title">This week I will</div>
+				<div class="title">I want to</div>
 			</div>
 
 			<!-- Selected goal at top (using Goal component style) -->
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 
-			<input v-if="!showRepetitionSelector" v-model="customGoal" class="writeOwn" placeholder="Write your own goal!" @keyup.enter="addCustomGoal">
+			<!-- <input v-if="!showRepetitionSelector" v-model="customGoal" class="writeOwn" placeholder="Write your own goal!" @keyup.enter="addCustomGoal"> -->
 
 			<!-- Illustration (shown when repetition selector is visible) -->
 			<div v-if="showRepetitionSelector" class="illustrationWrap">
