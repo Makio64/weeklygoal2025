@@ -6,7 +6,7 @@
 		"color": "#FFD93D",
 		"goals": [
 			{ "icon": "👨‍👩‍👧", "name": "Call family" },
-			{ "icon": "💌", "name": "Send goodvibes" },
+			{ "icon": "💌", "name": "Send good vibes" },
 			{ "icon": "🍳", "name": "Brunch" },
 			{ "icon": "📞", "name": "Catch-up call" },
 			{ "icon": "📞", "name": "Call mom" },
@@ -14,7 +14,10 @@
 			{ "icon": "🏛️", "name": "Museum/Expo" },
 			{ "icon": "🗺️", "name": "Explore" },
 			{ "icon": "☕", "name": "Cafe" },
-			{ "icon": "👥", "name": "Social activity" }
+			{ "icon": "👥", "name": "Social activity" },
+			{ "icon": "🍷", "name": "Romantic dinner" },
+			{ "icon": "💑", "name": "Surprise your soulmate" },
+			{ "icon": "👥", "name": "Plan with friends" }
 		]
 	},
 	{
@@ -85,6 +88,7 @@
 		"color": "#FFD93D",
 		"goals": [
 			{ "icon": "✏️", "name": "Draw" },
+			{ "icon": "🍩", "name": "3D Practice" },
 			{ "icon": "🎸", "name": "Play music" },
 			{ "icon": "🎨", "name": "Painting" },
 			{ "icon": "🧩", "name": "Puzzle" },
@@ -108,7 +112,7 @@
 			{ "icon": "🎓", "name": "Study" },
 			{ "icon": "🌍", "name": "Language practice" },
 			{ "icon": "🎵", "name": "Listen podcast" },
-			{ "icon": "🎤", "name": "Watch a talk" },
+			{ "icon": "🎤", "name": "TedX talk" },
 			{ "icon": "🎧", "name": "Audio Book" }
 		]
 	},
