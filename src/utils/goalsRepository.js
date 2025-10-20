@@ -3,110 +3,115 @@ import { preferences } from './preferences'
 const GOALS_KEY = 'weekly_goals'
 const GOALS_VERSION_KEY = 'weekly_goals_version'
 const CURRENT_VERSION = 1
+const INITIAL_VERSION = 0
 
-function isValidGoal( goal ) {
+const isString = ( value ) => typeof value === 'string'
+const isNonNegativeNumber = ( value ) => Number.isFinite( value ) && value >= 0
+
+const isValidGoal = ( goal ) => {
+	if ( !goal || typeof goal !== 'object' ) {
+		return false
+	}
+
+	const { id, name, icon, repetitions, progress } = goal
+
 	return (
-		goal &&
-		typeof goal === 'object' &&
-		typeof goal.id === 'number' &&
-		typeof goal.name === 'string' &&
-		typeof goal.icon === 'string' &&
-		typeof goal.repetitions === 'number' &&
-		typeof goal.progress === 'number' &&
-		goal.repetitions >= 0 &&
-		goal.progress >= 0
+		Number.isFinite( id ) &&
+		isString( name ) &&
+		isString( icon ) &&
+		isNonNegativeNumber( repetitions ) &&
+		isNonNegativeNumber( progress )
 	)
 }
 
-function validateGoals( goals ) {
-	if ( !Array.isArray( goals ) ) {
-		return false
-	}
-	return goals.every( isValidGoal )
-}
+const validateGoals = ( goals ) => Array.isArray( goals ) && goals.every( isValidGoal )
 
-function migrateGoals( goals, fromVersion ) {
-	// Future migration logic goes here
-	// Example: if (fromVersion < 2) { /* add new fields */ }
-	if( fromVersion === 0 ) {
+const migrateGoals = ( goals, fromVersion ) => {
+	// Future migration logic goes here; keep immutable by returning new references when needed
+	if ( fromVersion === 0 ) {
 		// No changes needed for version 1
 	}
 	return goals
 }
 
-function getDefaultGoals() {
-	return [
-		{
-			id: 1,
-			name: 'Call mom',
-			icon: '📞',
-			repetitions: 1,
-			progress: 0,
-		},
-	]
-}
+const getDefaultGoals = () => [
+	{
+		id: 1,
+		name: 'Call mom',
+		icon: '📞',
+		repetitions: 1,
+		progress: 0,
+	},
+]
 
-export const goalsRepository = {
+const readStoredGoals = () =>
+	Promise.all( [
+		preferences.get( GOALS_KEY, null ),
+		preferences.get( GOALS_VERSION_KEY, INITIAL_VERSION ),
+	] )
 
-	async load() {
-		try {
-			const goals = await preferences.get( GOALS_KEY, null )
-			const version = await preferences.get( GOALS_VERSION_KEY, 0 )
+const loadGoals = async () => {
+	try {
+		const [storedGoals, storedVersion] = await readStoredGoals()
 
-			// First time user - return defaults
-			if ( goals === null ) {
-				return getDefaultGoals()
-			}
-
-			// Validate goals structure
-			if ( !validateGoals( goals ) ) {
-				console.warn( 'Invalid goals structure detected, resetting to defaults' )
-				return getDefaultGoals()
-			}
-
-			// Migrate if needed
-			if ( version < CURRENT_VERSION ) {
-				const migratedGoals = migrateGoals( goals, version )
-				await this.save( migratedGoals ) // Save migrated version
-				return migratedGoals
-			}
-
-			return goals
-		} catch ( error ) {
-			console.error( 'Failed to load goals:', error )
+		if ( storedGoals === null ) {
 			return getDefaultGoals()
 		}
-	},
 
-	async save( goals ) {
-		if ( !validateGoals( goals ) ) {
-			console.error( 'Cannot save invalid goals structure' )
-			return false
+		if ( !validateGoals( storedGoals ) ) {
+			console.warn( 'Invalid goals structure detected, resetting to defaults' )
+			return getDefaultGoals()
 		}
 
-		try {
-			const goalsSuccess = await preferences.set( GOALS_KEY, goals )
-			const versionSuccess = await preferences.set( GOALS_VERSION_KEY, CURRENT_VERSION )
-			return goalsSuccess && versionSuccess
-		} catch ( error ) {
-			console.error( 'Failed to save goals:', error )
-			return false
+		if ( storedVersion < CURRENT_VERSION ) {
+			const migratedGoals = migrateGoals( storedGoals, storedVersion )
+			await saveGoals( migratedGoals )
+			return migratedGoals
 		}
-	},
 
-	async clear() {
-		try {
-			const goalsSuccess = await preferences.remove( GOALS_KEY )
-			const versionSuccess = await preferences.remove( GOALS_VERSION_KEY )
-			return goalsSuccess && versionSuccess
-		} catch ( error ) {
-			console.error( 'Failed to clear goals:', error )
-			return false
-		}
-	},
+		return storedGoals
+	} catch ( error ) {
+		console.error( 'Failed to load goals:', error )
+		return getDefaultGoals()
+	}
+}
 
-	async reset() {
-		const defaults = getDefaultGoals()
-		return await this.save( defaults )
-	},
+const saveGoals = async ( goals ) => {
+	if ( !validateGoals( goals ) ) {
+		console.error( 'Cannot save invalid goals structure' )
+		return false
+	}
+
+	try {
+		const [goalsSaved, versionSaved] = await Promise.all( [
+			preferences.set( GOALS_KEY, goals ),
+			preferences.set( GOALS_VERSION_KEY, CURRENT_VERSION ),
+		] )
+		return goalsSaved && versionSaved
+	} catch ( error ) {
+		console.error( 'Failed to save goals:', error )
+		return false
+	}
+}
+
+const clearGoals = async () => {
+	try {
+		const [goalsRemoved, versionRemoved] = await Promise.all( [
+			preferences.remove( GOALS_KEY ),
+			preferences.remove( GOALS_VERSION_KEY ),
+		] )
+		return goalsRemoved && versionRemoved
+	} catch ( error ) {
+		console.error( 'Failed to clear goals:', error )
+		return false
+	}
+}
+
+const resetGoals = () => saveGoals( getDefaultGoals() )
+
+export const goalsRepository = {
+	load: loadGoals,
+	save: saveGoals,
+	clear: clearGoals,
+	reset: resetGoals,
 }

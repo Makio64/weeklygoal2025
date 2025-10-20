@@ -3,8 +3,7 @@
 		<!-- Step 1 -->
 		<div v-if="step === 1" class="step1">
 			<div class="header">
-				<div class="title">New goal</div>
-				<div class="subtitle">This week I will</div>
+				<div class="title">This week I will</div>
 			</div>
 
 			<!-- Selected goal at top (using Goal component style) -->
