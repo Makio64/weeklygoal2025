@@ -2,6 +2,8 @@ import { LocalNotifications } from '@capacitor/local-notifications'
 
 import { goals } from '@/store'
 
+import { getLastWeekRecap } from '../weeklyReset'
+
 export function getMondayMessage() {
 	const totalGoals = goals.value.length
 	const motivations = [
@@ -14,6 +16,18 @@ export function getMondayMessage() {
 	return motivations[Math.floor( Math.random() * motivations.length )]
 }
 
+export async function getMondayMessageWithRecap() {
+	const totalGoals = goals.value.length
+	const lastWeek = await getLastWeekRecap()
+
+	if ( lastWeek && lastWeek.stats ) {
+		const { completionPercent, completedTasks, totalTasks } = lastWeek.stats
+		return `Last week: ${completionPercent}% complete (${completedTasks}/${totalTasks} tasks). Ready for ${totalGoals} new goals? 🚀`
+	}
+
+	return getMondayMessage()
+}
+
 export async function scheduleMondayMotivation() {
 	try {
 		const nextMonday = new Date()
@@ -22,12 +36,14 @@ export async function scheduleMondayMotivation() {
 		nextMonday.setDate( nextMonday.getDate() + daysUntilMonday )
 		nextMonday.setHours( 7, 0, 0, 0 )
 
+		const message = await getMondayMessageWithRecap()
+
 		await LocalNotifications.schedule( {
 			notifications: [
 				{
 					id: 2,
-					title: 'Monday Motivation! 🌟',
-					body: getMondayMessage(),
+					title: 'New Week Started! 🌟',
+					body: message,
 					schedule: {
 						at: nextMonday,
 						every: 'week',

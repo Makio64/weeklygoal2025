@@ -46,20 +46,29 @@
 		</div>
 
 		<!-- <FeedbackCTA /> -->
+
+		<WeeklyRecap :show="showRecapModal" :recap="weeklyRecap" @close="closeRecapModal" />
 	</div>
 </template>
 
 <script>
+import WeeklyRecap from '@/components/WeeklyRecap.vue'
 import { goals, goalSwiped, initializeGoals, saveGoals } from '@/store'
 import { createGoalsSnapshot, handleGoalChange } from '@/utils/goalHelpers'
 import notificationManager from '@/utils/notifications'
+import { generateFakeRecap, performWeeklyReset, shouldResetWeek } from '@/utils/weeklyReset'
 
 export default {
 	name: 'HomeView',
+	components: {
+		WeeklyRecap,
+	},
 	data() {
 		return {
 			goals,
 			previousGoalsSnapshot: null,
+			showRecapModal: false,
+			weeklyRecap: null,
 		}
 	},
 	computed: {
@@ -81,11 +90,18 @@ export default {
 		await initializeGoals()
 		await notificationManager.init()
 
+		// Check if we need to reset the week
+		await this.checkWeeklyReset()
+
 		// Take initial snapshot for detecting significant changes
 		this.previousGoalsSnapshot = createGoalsSnapshot()
+
+		// Add keyboard listener for debug
+		window.addEventListener( 'keydown', this.handleKeyPress )
 	},
 	beforeUnmount() {
 		goalSwiped.remove( this.handleGoalSwiped )
+		window.removeEventListener( 'keydown', this.handleKeyPress )
 	},
 	methods: {
 		async onGoalChange() {
@@ -128,6 +144,24 @@ export default {
 			} )
 			// Show notification
 			notificationManager.showResetNotification()
+		},
+		async checkWeeklyReset() {
+			const needsReset = await shouldResetWeek()
+			if ( needsReset ) {
+				this.weeklyRecap = await performWeeklyReset()
+				await saveGoals()
+				this.showRecapModal = true
+			}
+		},
+		closeRecapModal() {
+			this.showRecapModal = false
+		},
+		handleKeyPress( e ) {
+			// Debug: Press 's' to show recap modal with fake data
+			if ( e.key === 's' || e.key === 'S' ) {
+				this.weeklyRecap = generateFakeRecap()
+				this.showRecapModal = true
+			}
 		},
 	},
 }

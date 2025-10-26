@@ -29,5 +29,6 @@ declare module 'vue' {
     ResetWeek: typeof import('./src/components/ResetWeek.vue')['default']
     Spinner: typeof import('./src/components/ui/Spinner.vue')['default']
     SVGCircle: typeof import('./src/components/ui/SVGCircle.vue')['default']
+    WeeklyRecap: typeof import('./src/components/WeeklyRecap.vue')['default']
   }
 }
