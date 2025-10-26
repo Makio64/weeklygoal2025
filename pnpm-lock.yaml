@@ -20,23 +20,23 @@ importers:
   .:
     dependencies:
       '@capacitor/android':
-        specifier: ^7.4.3
-        version: 7.4.3(@capacitor/core@7.4.3)
+        specifier: ^7.4.4
+        version: 7.4.4(@capacitor/core@7.4.4)
       '@capacitor/cli':
-        specifier: ^7.4.3
-        version: 7.4.3
+        specifier: ^7.4.4
+        version: 7.4.4
       '@capacitor/core':
-        specifier: ^7.4.3
-        version: 7.4.3
+        specifier: ^7.4.4
+        version: 7.4.4
       '@capacitor/ios':
-        specifier: ^7.4.3
-        version: 7.4.3(@capacitor/core@7.4.3)
+        specifier: ^7.4.4
+        version: 7.4.4(@capacitor/core@7.4.4)
       '@capacitor/local-notifications':
         specifier: ^7.0.3
-        version: 7.0.3(@capacitor/core@7.4.3)
+        version: 7.0.3(@capacitor/core@7.4.4)
       '@capacitor/preferences':
         specifier: ^7.0.2
-        version: 7.0.2(@capacitor/core@7.4.3)
+        version: 7.0.2(@capacitor/core@7.4.4)
       animejs:
         specifier: ^4.2.2
         version: 4.2.2
@@ -50,8 +50,8 @@ importers:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.5.3)
       vue-tiny-router:
-        specifier: ^1.7.0
-        version: 1.7.0(eslint@9.38.0)(vue@3.5.22(typescript@5.5.3))
+        specifier: ^1.7.1
+        version: 1.7.1(eslint@9.38.0)(vue@3.5.22(typescript@5.5.3))
       vue-tiny-translation:
         specifier: ^1.0.0
         version: 1.0.0(vue@3.5.22(typescript@5.5.3))
@@ -64,7 +64,7 @@ importers:
         version: 5.5.0(eslint@9.38.0)
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
-        version: 6.0.1(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.5.3))
+        version: 6.0.1(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.5.3))
       airtable:
         specifier: ^0.12.2
         version: 0.12.2
@@ -96,8 +96,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       lint-staged:
-        specifier: ^16.2.4
-        version: 16.2.4
+        specifier: ^16.2.6
+        version: 16.2.6
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
@@ -120,20 +120,20 @@ importers:
         specifier: ^30.0.0
         version: 30.0.0(@babel/parser@7.28.4)(vue@3.5.22(typescript@5.5.3))
       vite:
-        specifier: ^7.1.11
-        version: 7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
+        specifier: ^7.1.12
+        version: 7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
       vite-plugin-brotli-size:
         specifier: ^1.1.0
         version: 1.1.0
       vite-plugin-css-injected-by-js:
         specifier: ^3.5.2
-        version: 3.5.2(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))
+        version: 3.5.2(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))
       vite-plugin-mkcert:
         specifier: ^1.17.9
-        version: 1.17.9(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))
+        version: 1.17.9(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))
       vite-plugin-qrcode:
         specifier: ^0.3.0
-        version: 0.3.0(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))
+        version: 0.3.0(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))
       vite-plugin-tsl-operator:
         specifier: ^1.4.3
         version: 1.4.3
@@ -196,21 +196,21 @@ packages:
     resolution: {integrity: sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q==}
     engines: {node: '>=6.9.0'}
 
-  '@capacitor/android@7.4.3':
-    resolution: {integrity: sha512-VpjvnOcmYGPLgvXRhe3CGLs62Cg7sxOyp77NddCr+Y06qqgnoaj6OGeBVTc2DZlqZ6bSmh15JvFu82pkvmdgfQ==}
+  '@capacitor/android@7.4.4':
+    resolution: {integrity: sha512-y8knfV1JXNrd6XZZLZireGT+EBCN0lvOo+HZ/s7L8LkrPBu4nY5UZn0Wxz4yOezItEII9rqYJSHsS5fMJG9gdw==}
     peerDependencies:
       '@capacitor/core': ^7.4.0
 
-  '@capacitor/cli@7.4.3':
-    resolution: {integrity: sha512-SWozpdDgrbQ/ry1nIapugDFvE9z+l22BmU/+fpgL2Zv5487hGdXvCX5+1SluuFBP3IPpx6b4LjsKnBigyJoUWg==}
+  '@capacitor/cli@7.4.4':
+    resolution: {integrity: sha512-J7ciBE7GlJ70sr2s8oz1+H4ZdNk4MGG41fsakUlDHWva5UWgFIZYMiEdDvGbYazAYTaxN3lVZpH9zil9FfZj+Q==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@capacitor/core@7.4.3':
-    resolution: {integrity: sha512-wCWr8fQ9Wxn0466vPg7nMn0tivbNVjNy1yL4GvDSIZuZx7UpU2HeVGNe9QjN/quEd+YLRFeKEBLBw619VqUiNg==}
+  '@capacitor/core@7.4.4':
+    resolution: {integrity: sha512-xzjxpr+d2zwTpCaN0k+C6wKSZzWFAb9OVEUtmO72ihjr/NEDoLvsGl4WLfjWPcCO2zOy0b2X52tfRWjECFUjtw==}
 
-  '@capacitor/ios@7.4.3':
-    resolution: {integrity: sha512-VNm7cHODgh3KK/4ZC2rXU9gBlvHii/mYFLI+XMXwq24nhB679QxHhz+pUuI7PatYoM2q4MAL0NR/dRgehKCaSA==}
+  '@capacitor/ios@7.4.4':
+    resolution: {integrity: sha512-Xp3bGWlSQAwsZGngRMWTdoD2agdMV12Whnm+/xsYPxfQSj+Tksbr7r/8Mso7VWkpnTKO4iMlx762g3PjW+wi4w==}
     peerDependencies:
       '@capacitor/core': ^7.4.0
 
@@ -1560,13 +1560,13 @@ packages:
     resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
     engines: {node: '>=14'}
 
-  lint-staged@16.2.4:
-    resolution: {integrity: sha512-Pkyr/wd90oAyXk98i/2KwfkIhoYQUMtss769FIT9hFM5ogYZwrk+GRE46yKXSg2ZGhcJ1p38Gf5gmI5Ohjg2yg==}
+  lint-staged@16.2.6:
+    resolution: {integrity: sha512-s1gphtDbV4bmW1eylXpVMk2u7is7YsrLl8hzrtvC70h4ByhcMLZFY01Fx05ZUDNuv1H8HO4E+e2zgejV1jVwNw==}
     engines: {node: '>=20.17'}
     hasBin: true
 
-  listr2@9.0.4:
-    resolution: {integrity: sha512-1wd/kpAdKRLwv7/3OKC8zZ5U8e/fajCfWMxacUvB79S5nLrYGPtUI/8chMQhn3LQjsRVErTb9i1ECAwW0ZIHnQ==}
+  listr2@9.0.5:
+    resolution: {integrity: sha512-ME4Fb83LgEgwNw96RKNvKV4VTLuXfoKudAmm2lP8Kk87KaMK0/Xrx/aAkMWmT8mDb+3MlFDspfbCs7adjRxA2g==}
     engines: {node: '>=20.0.0'}
 
   local-pkg@1.1.2:
@@ -2305,8 +2305,8 @@ packages:
   vite-plugin-tsl-operator@1.4.3:
     resolution: {integrity: sha512-+vQJgWtsWXlmmKEzx3MVswuPx75hnZ78rm6QP33rtoW2J3XCIDiu0VE8u+e8NxEFZrR1MFr0kAH8qMNx2bzM5Q==}
 
-  vite@7.1.11:
-    resolution: {integrity: sha512-uzcxnSDVjAopEUjljkWh8EIrg6tlzrjFUfMcR1EVsRDGwf/ccef0qQPRyOrROwhrTDaApueq+ja+KLPlzR/zdg==}
+  vite@7.1.12:
+    resolution: {integrity: sha512-ZWyE8YXEXqJrrSLvYgrRP7p62OziLW7xI5HYGWFzOvupfAlrLvURSzv/FyGyy0eidogEM3ujU+kUG1zuHgb6Ug==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -2351,8 +2351,8 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  vue-tiny-router@1.7.0:
-    resolution: {integrity: sha512-im4o/I0ErSvFJU346atFmRrOiK4M7DoQySfpaxlfwr5OSluw+N+i8gsGAfrUfZXOxk7l0vpxOTaD82mcifi2Iw==}
+  vue-tiny-router@1.7.1:
+    resolution: {integrity: sha512-WQwPjPAMHaTRTppWeVipTiOJL7Ep1XP1awudYIOZfmJe5J5FGv1gEdcteSGB6UFeLlR+TyQ+4sgWdmwJ5hhCVQ==}
     peerDependencies:
       vue: ^3.0.0
 
@@ -2507,11 +2507,11 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@capacitor/android@7.4.3(@capacitor/core@7.4.3)':
+  '@capacitor/android@7.4.4(@capacitor/core@7.4.4)':
     dependencies:
-      '@capacitor/core': 7.4.3
+      '@capacitor/core': 7.4.4
 
-  '@capacitor/cli@7.4.3':
+  '@capacitor/cli@7.4.4':
     dependencies:
       '@ionic/cli-framework-output': 2.2.8
       '@ionic/utils-subprocess': 3.0.1
@@ -2533,21 +2533,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@capacitor/core@7.4.3':
+  '@capacitor/core@7.4.4':
     dependencies:
       tslib: 2.8.1
 
-  '@capacitor/ios@7.4.3(@capacitor/core@7.4.3)':
+  '@capacitor/ios@7.4.4(@capacitor/core@7.4.4)':
     dependencies:
-      '@capacitor/core': 7.4.3
+      '@capacitor/core': 7.4.4
 
-  '@capacitor/local-notifications@7.0.3(@capacitor/core@7.4.3)':
+  '@capacitor/local-notifications@7.0.3(@capacitor/core@7.4.4)':
     dependencies:
-      '@capacitor/core': 7.4.3
+      '@capacitor/core': 7.4.4
 
-  '@capacitor/preferences@7.0.2(@capacitor/core@7.4.3)':
+  '@capacitor/preferences@7.0.2(@capacitor/core@7.4.4)':
     dependencies:
-      '@capacitor/core': 7.4.3
+      '@capacitor/core': 7.4.4
 
   '@emnapi/runtime@1.5.0':
     dependencies:
@@ -2994,10 +2994,10 @@ snapshots:
 
   '@typescript-eslint/types@8.46.1': {}
 
-  '@vitejs/plugin-vue@6.0.1(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.5.3))':
+  '@vitejs/plugin-vue@6.0.1(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.22(typescript@5.5.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.29
-      vite: 7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
       vue: 3.5.22(typescript@5.5.3)
 
   '@vue/compiler-core@3.5.22':
@@ -3812,17 +3812,17 @@ snapshots:
 
   lilconfig@3.1.3: {}
 
-  lint-staged@16.2.4:
+  lint-staged@16.2.6:
     dependencies:
       commander: 14.0.1
-      listr2: 9.0.4
+      listr2: 9.0.5
       micromatch: 4.0.8
       nano-spawn: 2.0.0
       pidtree: 0.6.0
       string-argv: 0.3.2
       yaml: 2.8.1
 
-  listr2@9.0.4:
+  listr2@9.0.5:
     dependencies:
       cli-truncate: 5.1.0
       colorette: 2.0.20
@@ -4568,23 +4568,23 @@ snapshots:
 
   vite-plugin-brotli-size@1.1.0: {}
 
-  vite-plugin-css-injected-by-js@3.5.2(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-css-injected-by-js@3.5.2(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
-      vite: 7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
 
-  vite-plugin-mkcert@1.17.9(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-mkcert@1.17.9(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
       axios: 1.12.2(debug@4.4.3)
       debug: 4.4.3
       picocolors: 1.1.1
-      vite: 7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-qrcode@0.3.0(vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)):
+  vite-plugin-qrcode@0.3.0(vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)):
     dependencies:
       qrcode-terminal: 0.12.0
-      vite: 7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
+      vite: 7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1)
 
   vite-plugin-tsl-operator@1.4.3:
     dependencies:
@@ -4595,7 +4595,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite@7.1.11(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1):
+  vite@7.1.12(stylus@0.64.0)(terser@5.44.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4621,7 +4621,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-tiny-router@1.7.0(eslint@9.38.0)(vue@3.5.22(typescript@5.5.3)):
+  vue-tiny-router@1.7.1(eslint@9.38.0)(vue@3.5.22(typescript@5.5.3)):
     dependencies:
       '@stylistic/eslint-plugin': 5.5.0(eslint@9.38.0)
       vue: 3.5.22(typescript@5.5.3)
