@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="right">
-			<div class="mode">{{ modeTitle }}</div>
+			<div class="editLabel">Edit</div>
 			<div class="chevron">›</div>
 		</div>
 	</div>
@@ -174,6 +174,17 @@ export default {
 		font-weight 500
 		color #010101
 
+	.separator
+		font-family 'Jost', sans-serif
+		font-size 16px
+		color #A0A0A0
+
+	.modeInline
+		font-family 'Jost', sans-serif
+		font-size 16px
+		font-weight 600
+		color #010101
+
 	.subtitle
 		font-family 'Jost', sans-serif
 		font-size 13px
@@ -204,7 +215,7 @@ export default {
 	align-items center
 	gap 8px
 
-	.mode
+	.editLabel
 		font-family 'Jost', sans-serif
 		font-size 13px
 		color #6C5CE7
