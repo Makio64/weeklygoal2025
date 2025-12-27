@@ -15,6 +15,40 @@ export const NOTIFICATION_IDS = {
 export const ALL_NOTIFICATION_IDS = Object.values( NOTIFICATION_IDS )
 
 // ============================================
+// REMINDER MODES (UI presets)
+// ============================================
+export const REMINDER_MODES = {
+	COMPLETE: 'complete',
+	DAILY: 'daily',
+	BEGINNING_MIDDLE_END: 'beginningMiddleEnd',
+	TIME_TO_TIME: 'timeToTime',
+	NEVER: 'never',
+}
+
+export function getNotificationIdsForReminderMode( mode ) {
+	switch ( mode ) {
+		case REMINDER_MODES.NEVER:
+			return []
+		case REMINDER_MODES.DAILY:
+			return [NOTIFICATION_IDS.DAILY_REMINDER]
+		case REMINDER_MODES.BEGINNING_MIDDLE_END:
+			return [
+				NOTIFICATION_IDS.MONDAY_MOTIVATION,
+				NOTIFICATION_IDS.MIDWEEK_ENCOURAGEMENT,
+				NOTIFICATION_IDS.SUNDAY_REFLECTION,
+			]
+		case REMINDER_MODES.TIME_TO_TIME:
+			return [
+				NOTIFICATION_IDS.MONDAY_MOTIVATION,
+				NOTIFICATION_IDS.MIDWEEK_ENCOURAGEMENT,
+			]
+		case REMINDER_MODES.COMPLETE:
+		default:
+			return ALL_NOTIFICATION_IDS
+	}
+}
+
+// ============================================
 // PROGRESS UTILITIES
 // ============================================
 export function calculateWeeklyProgress() {

@@ -122,6 +122,8 @@ export default {
 			if ( goal ) {
 				goal.progress = progress
 				await saveGoals()
+				// Keep notification content up-to-date with progress changes
+				await notificationManager.onGoalsChanged()
 			}
 		},
 		editGoal( id ) {
