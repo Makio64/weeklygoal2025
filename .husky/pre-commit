@@ -1,6 +1,3 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 # Run security audit and attempt to auto-fix vulnerabilities
 echo "🔒 Running security audit..."
 pnpm audit --fix

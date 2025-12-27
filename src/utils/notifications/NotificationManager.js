@@ -1,9 +1,16 @@
 import Signal from '@/makio/core/Signal'
 
-import { cancelAllNotifications, setupAllNotifications } from './coordinator'
-import { getDailyReminderMessage, refreshDailyReminder } from './dailyMessage'
-import { detectAndStoreTimezone, getNotificationEnabled, requestPermission, setNotificationEnabled, showNotification } from './helpers'
-import { refreshMidWeekEncouragement } from './midWeekMessage'
+import { NOTIFICATION_IDS, NOTIFICATIONS } from './config'
+import {
+	cancelAllNotifications,
+	detectAndStoreTimezone,
+	getNotificationEnabled,
+	refreshAllNotifications,
+	requestPermission,
+	setNotificationEnabled,
+	setupAllNotifications,
+	showNotification,
+} from './scheduler'
 
 class NotificationManager {
 	enabled = false
@@ -49,19 +56,24 @@ class NotificationManager {
 	}
 
 	testNotification() {
-		showNotification( 'WeeklyGoal Reminder 📋', getDailyReminderMessage() )
+		const config = NOTIFICATIONS[NOTIFICATION_IDS.DAILY_REMINDER]
+		const message = config.getMessage()
+		showNotification( message.title, message.body )
 	}
 
 	showResetNotification() {
-		showNotification( 'New Week Started! 🚀', 'All goals reset. Time to crush this week!' )
+		showNotification( 'New Week Started!', 'All goals reset. Time to crush this week!' )
 	}
 
+	/**
+	 * Called when goals are added, removed, or progress changes
+	 * Refreshes ALL notifications to reflect current state
+	 */
 	async onGoalsChanged() {
 		if ( !this.enabled ) return
 
 		try {
-			await refreshDailyReminder()
-			await refreshMidWeekEncouragement()
+			await refreshAllNotifications()
 		} catch ( error ) {
 			console.error( 'Failed to update notifications on goal change:', error )
 		}
