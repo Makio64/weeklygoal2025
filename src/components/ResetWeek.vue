@@ -38,9 +38,10 @@ export default {
 	color #FF6B6B
 	margin-bottom 16px
 
-	&:hover
-		background #FFF5F5
-		border-color #FF6B6B
+	@media (hover: hover)
+		&:hover
+			background #FFF5F5
+			border-color #FF6B6B
 
 	&:active
 		transform scale(0.98)

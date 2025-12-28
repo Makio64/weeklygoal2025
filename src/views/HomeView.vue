@@ -168,7 +168,7 @@ export default {
 	margin 0 auto
 	background #f6f7ff
 	font-family 'Jost', sans-serif
-	min-height 100vh
+	min-height 100dvh
 
 	.header, .progressSection, .ctaSection
 		padding 0 24px

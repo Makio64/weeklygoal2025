@@ -15,6 +15,14 @@ export default {
 		show: { type: Boolean, default: false },
 	},
 	emits: ['close'],
+	watch: {
+		show( val ) {
+			const app = document.getElementById( 'app' )
+			if ( app ) {
+				app.style.overflowY = val ? 'hidden' : 'auto'
+			}
+		}
+	},
 	methods: {
 		handleBackdropClick() {
 			this.$emit( 'close' )
@@ -39,8 +47,13 @@ export default {
 		border-radius 12px
 		width 100%
 		max-width 375px
-		min-height 70vh
-		overflow hidden
+		max-height 90vh
+		overflow-y auto
+		-webkit-overflow-scrolling touch
+		overscroll-behavior contain
+		padding-top var(--sait)
+		padding-bottom var(--saib)
+		box-sizing border-box
 
 .modal-enter-active,
 .modal-leave-active

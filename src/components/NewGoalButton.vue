@@ -29,8 +29,9 @@ export default {
 	gap 8px
 	transition all 0.2s
 
-	&:hover
-		background #F5F5FF
+	@media (hover: hover)
+		&:hover
+			background #F5F5FF
 
 	&:active
 		transform scale(0.98)

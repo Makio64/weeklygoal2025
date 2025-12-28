@@ -321,10 +321,10 @@ export default {
 			margin-top 20px
 
 	.step1, .step2
-		height calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) + 10px)
+		height calc(100dvh - var(--sait) - var(--saib))
 		display flex
 		flex-direction column
-		padding-bottom env(safe-area-inset-bottom)
+		padding-bottom var(--saib)
 
 	.selectedGoalWrap
 		margin-bottom 16px
@@ -431,6 +431,8 @@ export default {
 	.categoriesWrap
 		flex 1
 		overflow-y auto
+		-webkit-overflow-scrolling touch
+		overscroll-behavior contain
 		overflow-x hidden
 		padding-right 4px
 		padding-bottom 20px

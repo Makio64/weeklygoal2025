@@ -59,7 +59,7 @@ export default {
 		scrollToTop() {
 			const appElement = document.getElementById( 'app' )
 			if ( appElement ) {
-				appElement.scrollTo( { top: 0, behavior: 'instant' } )
+				appElement.scrollTo( { top: 0, behavior: 'auto' } )
 			}
 		},
 	},
@@ -91,19 +91,34 @@ export default {
 
 body, html
 	user-select none
+	-webkit-touch-callout none
+	-webkit-text-size-adjust 100%
 	font-display()
 	margin 0
 	padding 0
 	scroll-behavior smooth
 	background #F6F7FF
+	-webkit-tap-highlight-color transparent
+	height 100%
+	overflow hidden
+
+button, input, textarea
+	-webkit-appearance none
+	appearance none
+	outline none
 
 #app
+	position absolute
+	inset 0
 	overflow-y auto
+	-webkit-overflow-scrolling touch
 	overflow-x hidden
+	overscroll-behavior-x none
 	padding-bottom var(--saib)
 	padding-top var(--sait)
 	padding-left var(--sail)
 	padding-right var(--sair)
+	box-sizing border-box
 
 html
 	-webkit-font-smoothing antialiased
@@ -118,6 +133,7 @@ html
 		justify-content flex-start
 		align-items center
 		background #F6F7FF
+		box-sizing border-box
 
 	.three, .pixi
 		position absolute
