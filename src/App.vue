@@ -16,6 +16,7 @@ import { detectLang } from './makio/utils/detect'
 // Configure engine with default settings
 engine.timeUnit = 's'
 
+import HistoryView from '@/views/HistoryView'
 import HomeView from '@/views/HomeView'
 import NewGoal from '@/views/NewGoal'
 //const HomeView = defineAsyncComponent( () => import( '@/views/HomeView' ) )
@@ -39,6 +40,10 @@ export default {
 				{
 					path: '/new-goal',
 					component: NewGoal,
+				},
+				{
+					path: '/history',
+					component: HistoryView,
 				},
 				// {
 				// 	path: '/pixi',

@@ -114,6 +114,13 @@ export async function getLastWeekRecap() {
 }
 
 /**
+ * Get full weekly history (up to 12 weeks)
+ */
+export async function getWeeklyHistory() {
+	return await preferences.get( WEEKLY_HISTORY_KEY, [] )
+}
+
+/**
  * Generate fake recap data for debugging
  */
 export function generateFakeRecap() {

@@ -42,6 +42,7 @@
 
 		<div class="ctaSection">
 			<!-- <DevelopmentTip /> -->
+			<HistoryButton @click="$router.push('/history')" />
 			<NotificationToggle />
 		</div>
 
@@ -52,6 +53,7 @@
 </template>
 
 <script>
+import HistoryButton from '@/components/HistoryButton.vue'
 import WeeklyRecap from '@/components/WeeklyRecap.vue'
 import { goals, goalSwiped, initializeGoals, saveGoals } from '@/store'
 import { createGoalsSnapshot, handleGoalChange } from '@/utils/goalHelpers'
@@ -61,6 +63,7 @@ import { generateFakeRecap, performWeeklyReset, shouldResetWeek } from '@/utils/
 export default {
 	name: 'HomeView',
 	components: {
+		HistoryButton,
 		WeeklyRecap,
 	},
 	data() {

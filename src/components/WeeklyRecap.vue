@@ -2,8 +2,7 @@
 	<Modal :show="show" @close="handleClose">
 		<div class="WeeklyRecap">
 			<div class="header">
-				<div class="icon">📊</div>
-				<h2 class="title">Last Week Recap</h2>
+				<h2 class="title">{{ isHistory ? 'Week Recap' : 'Last Week Recap' }}</h2>
 				<p class="subtitle">{{ formattedWeekRange }}</p>
 			</div>
 
@@ -26,7 +25,6 @@
 			</div>
 
 			<div v-if="shouldShowSuggestion" class="suggestion">
-				<div class="suggestionIcon">💡</div>
 				<div class="suggestionText">
 					<strong>Tip:</strong> Consider reducing your goals and focusing more on completion.
 					Quality over quantity! Start with fewer goals and add more as you build consistency.
@@ -50,7 +48,7 @@
 			</div>
 
 			<button class="closeButton" @click="handleClose">
-				Start New Week 🚀
+				{{ isHistory ? 'Close' : 'Start New Week 🚀' }}
 			</button>
 		</div>
 	</Modal>
@@ -80,6 +78,7 @@ export default {
 				},
 			} ),
 		},
+		isHistory: { type: Boolean, default: false },
 	},
 	emits: ['close'],
 	computed: {
@@ -127,10 +126,6 @@ export default {
 
 	.header
 		text-align center
-
-		.icon
-			font-size 48px
-			margin-bottom 12px
 
 		.title
 			font-size 28px
@@ -197,15 +192,10 @@ export default {
 
 	.suggestion
 		display flex
-		gap 12px
 		padding 16px
 		background #FFF9E6
 		border-left 4px solid #FFB800
 		border-radius 8px
-
-		.suggestionIcon
-			font-size 24px
-			flex-shrink 0
 
 		.suggestionText
 			font-size 14px
