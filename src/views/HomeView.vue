@@ -240,4 +240,8 @@ export default {
 		flex-direction column
 		gap 12px
 		margin-bottom 20px
+		padding 0 23px
+		box-sizing border-box
+		width 100%
+		max-width 375px
 </style>

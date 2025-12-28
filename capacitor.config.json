@@ -1,0 +1,20 @@
+{
+  "appId": "io.makio.weeklygoal",
+  "appName": "Weekl yGoal",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css",
+      "style": "DEFAULT",
+      "hidden": false,
+      "animation": "NONE"
+    }
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "backgroundColor": "#F6F7FF"
+  }
+}

@@ -138,9 +138,9 @@ export default {
 
 <style lang="stylus" scoped>
 .NotificationToggle
-	width 327px
-	margin 0 auto
-	padding 12px 14px
+	width 100%
+	box-sizing border-box
+	padding 8px 14px
 	background rgba(226, 228, 240, 0.2)
 	border 1px solid rgba(138, 144, 199, 0.16)
 	border-radius 6px
@@ -182,14 +182,15 @@ export default {
 	.modeInline
 		font-family 'Jost', sans-serif
 		font-size 16px
-		font-weight 600
-		color #010101
+		font-weight 500
+		color #A0A0A0
 
 	.subtitle
 		font-family 'Jost', sans-serif
 		font-size 13px
 		line-height 18px
 		color #A0A0A0
+		text-align left
 		white-space nowrap
 		overflow hidden
 		text-overflow ellipsis

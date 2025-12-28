@@ -104,14 +104,11 @@ export default {
 	font-display swap
 
 :root
-	--webviewt var(--android-safe-area-inset-top, var(--ios-safe-area-inset-top))
-	--webviewb var(--android-safe-area-inset-bottom, var(--ios-safe-area-inset-bottom))
-	--webviewl var(--android-safe-area-inset-left, var(--ios-safe-area-inset-left))
-	--webviewr var(--android-safe-area-inset-right, var(--ios-safe-area-inset-right))
-	--sait var(--webviewt, env(safe-area-inset-top))
-	--saib var(--webviewb, env(safe-area-inset-bottom))
-	--sail var(--webviewl, env(safe-area-inset-left))
-	--sair var(--webviewr, env(safe-area-inset-right))
+	// Capacitor 8 SystemBars injects `--safe-area-inset-*` on Android when WebView env vars are wrong.
+	--sait var(--safe-area-inset-top, env(safe-area-inset-top, 0px))
+	--saib var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))
+	--sail var(--safe-area-inset-left, env(safe-area-inset-left, 0px))
+	--sair var(--safe-area-inset-right, env(safe-area-inset-right, 0px))
 
 body, html
 	user-select none
@@ -126,6 +123,8 @@ body, html
 	overflow-x hidden
 	padding-bottom var(--saib)
 	padding-top var(--sait)
+	padding-left var(--sail)
+	padding-right var(--sair)
 
 html
 	-webkit-font-smoothing antialiased
