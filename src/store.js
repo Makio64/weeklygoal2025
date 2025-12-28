@@ -1,8 +1,6 @@
 import Signal from './makio/core/Signal'
 import { goalsRepository } from './utils/goalsRepository'
 
-export const contentLoaded = ref( false )
-
 // Goals store
 export const goals = ref( [] )
 export const weekStartDate = ref( new Date().toISOString() )

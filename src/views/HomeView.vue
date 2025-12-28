@@ -2,11 +2,11 @@
 	<div class="HomeView view">
 		<div class="header">
 			<div class="title">WeeklyGoal</div>
-			<div class="subtitle">Simple step leads to higher goals</div>
+			<div class="subtitle">Small steps lead to bigger goals</div>
 		</div>
 
 		<div class="progressSection">
-			<div class="progressText">{{ completionPercent }}% done!</div>
+			<div class="progressText"> {{ goalsDone }}/{{ goals.length }} goals complete · {{ completionPercent }}% done!</div>
 			<div class="progressBar">
 				<div class="progressFill" :style="{ width: completionPercent + '%' }" />
 			</div>

@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import { animate, engine } from 'animejs'
+import { engine } from 'animejs'
 import { TinyRouter } from 'vue-tiny-router'
 import { loadTranslations } from 'vue-tiny-translation'
-
-import { contentLoaded } from '@/store'
 
 import { detectLang } from './makio/utils/detect'
 
@@ -56,16 +54,6 @@ export default {
 				'/three': '/'
 			}
 		},
-		contentLoaded() {
-			return contentLoaded.value
-		},
-	},
-	watch: {
-		contentLoaded( newVal ) {
-			if ( newVal ) {
-				this.hideInitialLoader()
-			}
-		}
 	},
 	methods: {
 		scrollToTop() {
@@ -74,20 +62,6 @@ export default {
 				appElement.scrollTo( { top: 0, behavior: 'instant' } )
 			}
 		},
-		hideInitialLoader() {
-			const loader = document.getElementById( 'initial-loader' )
-			if ( loader ) {
-				animate( loader, {
-					opacity: [1, 0],
-					scale: [1, 1.2],
-					duration: 0.4,
-					ease: 'easeInOut',
-					complete: () => {
-						loader.remove()
-					}
-				} )
-			}
-		}
 	},
 	async mounted() {
 		// Load important stuff in parallel
@@ -144,18 +118,6 @@ html
 		justify-content flex-start
 		align-items center
 		background #F6F7FF
-
-	.loader
-		user-select none
-		pointer-events none
-		position absolute
-		z-index 10000
-		top calc(50% - 37px)
-		left calc(50% - 37px)
-		transition all 1.5s
-		&.hide
-			transform scale(1.2)
-			opacity 0
 
 	.three, .pixi
 		position absolute

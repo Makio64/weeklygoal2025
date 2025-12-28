@@ -18,8 +18,8 @@ export default {
 
 <style lang="stylus" scoped>
 .checkWrap
-	padding 8px
-	margin -8px
+	padding 12px
+	margin -12px
 	cursor pointer
 	transition transform 0.15s ease-out
 	user-select none
