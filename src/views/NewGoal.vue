@@ -79,7 +79,7 @@
 			</div>
 
 			<button class="continue" :disabled="!selectedGoal" @click="handleContinue">
-				{{ showRepetitionSelector ? 'I will success' : 'Continue' }}
+				{{ continueLabel }}
 			</button>
 		</div>
 
@@ -141,6 +141,13 @@ import categoriesGoals from '@/data/categories-goals.json'
 import { goals } from '@/store'
 import { saveAndNotify } from '@/utils/goalHelpers'
 
+const createUniqueGoalId = () => {
+	const used = new Set( goals.value.map( g => g.id ) )
+	let id = Date.now() * 1000 + Math.floor( Math.random() * 1000 )
+	while ( used.has( id ) ) id++
+	return id
+}
+
 export default {
 	name: 'NewGoal',
 	components: { Modal, CheckGoal },
@@ -152,20 +159,51 @@ export default {
 			showModal: false,
 			showRepetitionSelector: false,
 			categoriesWithGoals: categoriesGoals,
+			isEditMode: false,
+			editGoalId: null,
 		}
 	},
 	computed: {
 		current() {
 			return this.selectedGoal || {}
 		},
+		continueLabel() {
+			if ( !this.showRepetitionSelector ) return 'Continue'
+			return this.isEditMode ? 'Save' : 'I will success'
+		},
 	},
 	mounted() {
-		// Select random goal by default
+		// Edit mode: /new-goal?edit=<id>
+		const params = new URLSearchParams( window.location.search || '' )
+		const editParam = params.get( 'edit' )
+		const editId = editParam ? Number( editParam ) : null
+		if ( Number.isFinite( editId ) ) {
+			const g = goals.value.find( gg => gg.id === editId )
+			if ( g ) {
+				this.isEditMode = true
+				this.editGoalId = editId
+				this.selectedGoal = {
+					id: g.id,
+					name: g.name,
+					icon: g.icon,
+					category: g.category,
+					reps: g.repetitions,
+				}
+				this.showRepetitionSelector = true
+				return
+			}
+		}
+
+		// Create mode: select random goal by default
 		const allGoals = this.categoriesWithGoals.flatMap( cat =>
 			cat.goals.map( g => ( { ...g, category: cat.id } ) )
 		)
 		const randomIndex = Math.floor( Math.random() * allGoals.length )
-		this.selectedGoal = { ...allGoals[randomIndex], id: Date.now(), reps: 1 }
+		this.selectedGoal = { ...allGoals[randomIndex], id: createUniqueGoalId(), reps: 1 }
+	},
+	beforeUnmount() {
+		// Ensure modal is closed to prevent transition blocking clicks
+		this.showModal = false
 	},
 	methods: {
 		isGoalSelected( goal, categoryId ) {
@@ -182,12 +220,12 @@ export default {
 			)
 		},
 		selectGoal( goal, categoryId ) {
-			this.selectedGoal = { ...goal, category: categoryId, id: Date.now(), reps: 1 }
+			this.selectedGoal = { ...goal, category: categoryId, id: createUniqueGoalId(), reps: 1 }
 		},
 		addCustomGoal() {
 			if ( this.customGoal.trim() ) {
 				this.selectedGoal = {
-					id: Date.now(),
+					id: createUniqueGoalId(),
 					icon: '📝',
 					name: this.customGoal.trim(),
 					reps: 1,
@@ -200,8 +238,12 @@ export default {
 				// First click: show repetition selector
 				this.showRepetitionSelector = true
 			} else {
-				// Second click: open modal
-				this.openModal()
+				// Second click: save (edit) or open modal (create)
+				if ( this.isEditMode ) {
+					this.saveEdit()
+				} else {
+					this.openModal()
+				}
 			}
 		},
 		goStep2() {
@@ -217,6 +259,23 @@ export default {
 		},
 		openModal() {
 			this.showModal = true
+		},
+		async saveEdit() {
+			const g = goals.value.find( gg => gg.id === this.editGoalId )
+			if ( !g ) {
+				this.$router.push( '/' )
+				return
+			}
+
+			const newReps = Math.max( 1, Math.min( 6, Number( this.current.reps ) || 1 ) )
+			g.repetitions = newReps
+			// Keep progress valid
+			if ( g.progress > g.repetitions ) {
+				g.progress = g.repetitions
+			}
+
+			await saveAndNotify()
+			this.$router.push( '/' )
 		},
 		async confirm() {
 			goals.value.push( {

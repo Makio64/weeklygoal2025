@@ -55,6 +55,20 @@ function clearMouseState() {
 	Object.assign( mouse, { isDown: false, moveX: 0, moveY: 0, isMoveX: false, isMoveY: false, downEnd: Date.now() } )
 }
 
+function reset() {
+	clearMouseState()
+	Object.assign( mouse, {
+		x: stage.width * 0.5,
+		y: stage.height * 0.5,
+		totalDistance: 0,
+		percentX: 0.5,
+		percentY: 0.5,
+		normalizedX: 0,
+		normalizedY: 0
+	} )
+	Object.assign( prevMouse, { x: mouse.x, y: mouse.y } )
+}
+
 // Event handler references for cleanup
 let _leave, _start, _move, _end, _touchStart, _gesture, _context, _enter
 
@@ -88,22 +102,22 @@ if ( typeof window !== 'undefined' ) {
 
 	// Handle both pointer and touch events
 	_start = ( e ) => {
-		const x = e.touches ? e.touches[0].clientX : e.x
-		const y = e.touches ? e.touches[0].clientY : e.y
+		const x = e.touches ? e.touches[0].clientX : ( e.clientX !== undefined ? e.clientX : e.x )
+		const y = e.touches ? e.touches[0].clientY : ( e.clientY !== undefined ? e.clientY : e.y )
 		Object.assign( mouse, { isDown: true, downStart: Date.now(), x, y, totalDistance: 0 } )
 		onDown.dispatch( refreshMouseState( { x, y } ) )
 	}
 
 	_move = ( e ) => {
-		const x = e.touches ? e.touches[0].clientX : e.x
-		const y = e.touches ? e.touches[0].clientY : e.y
+		const x = e.touches ? e.touches[0].clientX : ( e.clientX !== undefined ? e.clientX : e.x )
+		const y = e.touches ? e.touches[0].clientY : ( e.clientY !== undefined ? e.clientY : e.y )
 		Object.assign( prevMouse, mouse )
 		onMove.dispatch( refreshMouseState( { x, y } ) )
 	}
 
 	_end = ( e ) => {
-		const x = e.changedTouches ? e.changedTouches[0].clientX : e.x
-		const y = e.changedTouches ? e.changedTouches[0].clientY : e.y
+		const x = e.changedTouches ? e.changedTouches[0].clientX : ( e.clientX !== undefined ? e.clientX : e.x )
+		const y = e.changedTouches ? e.changedTouches[0].clientY : ( e.clientY !== undefined ? e.clientY : e.y )
 		clearMouseState()
 		onUp.dispatch( refreshMouseState( { x, y } ) )
 
@@ -156,5 +170,5 @@ const dispose = () => {
 	onLeave.dispose()
 }
 
-export { dispose, mouse, onClick, onDown, onEnter, onLeave, onMove, onUp, prevMouse }
+export { dispose, mouse, onClick, onDown, onEnter, onLeave, onMove, onUp, prevMouse, reset }
 export default mouse

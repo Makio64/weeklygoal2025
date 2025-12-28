@@ -26,6 +26,31 @@ const isValidGoal = ( goal ) => {
 
 const validateGoals = ( goals ) => Array.isArray( goals ) && goals.every( isValidGoal )
 
+const createUniqueNumericId = ( usedIds ) => {
+	let id = Date.now() * 1000 + Math.floor( Math.random() * 1000 )
+	while ( usedIds.has( id ) ) id++
+	return id
+}
+
+const dedupeGoalIds = ( goals ) => {
+	const usedIds = new Set()
+	let changed = false
+
+	const deduped = goals.map( goal => {
+		if ( !usedIds.has( goal.id ) ) {
+			usedIds.add( goal.id )
+			return goal
+		}
+
+		changed = true
+		const newId = createUniqueNumericId( usedIds )
+		usedIds.add( newId )
+		return { ...goal, id: newId }
+	} )
+
+	return { goals: deduped, changed }
+}
+
 const migrateGoals = ( goals, fromVersion ) => {
 	// Future migration logic goes here; keep immutable by returning new references when needed
 	if ( fromVersion === 0 ) {
@@ -65,11 +90,20 @@ const loadGoals = async () => {
 
 		if ( storedVersion < CURRENT_VERSION ) {
 			const migratedGoals = migrateGoals( storedGoals, storedVersion )
-			await saveGoals( migratedGoals )
-			return migratedGoals
+			const { goals: migratedDeduped, changed } = dedupeGoalIds( migratedGoals )
+			await saveGoals( migratedDeduped )
+			if ( changed ) {
+				console.warn( 'Duplicate goal ids detected during migration; ids were regenerated' )
+			}
+			return migratedDeduped
 		}
 
-		return storedGoals
+		const { goals: deduped, changed } = dedupeGoalIds( storedGoals )
+		if ( changed ) {
+			console.warn( 'Duplicate goal ids detected; ids were regenerated' )
+			await saveGoals( deduped )
+		}
+		return deduped
 	} catch ( error ) {
 		console.error( 'Failed to load goals:', error )
 		return getDefaultGoals()

@@ -1,7 +1,7 @@
 <template>
-	<div class="Goal" :class="{ swiped }">
+	<div class="Goal" :class="{ swiped, transitioning: isTransitioning }">
 		<div v-if="categoryColor" class="categoryIndicator" :style="{ backgroundColor: categoryColor }" />
-		<div ref="content" class="goalContent">
+		<div ref="content" class="goalContent" :style="dragStyle">
 			<div class="iconName">
 				<span class="icon">{{ icon }}</span>
 				<span class="name">{{ name }}</span>
@@ -15,14 +15,14 @@
 				/>
 			</div>
 		</div>
-		<div class="progressBar">
+		<div class="progressBar" :style="dragStyle">
 			<div class="progressFill" :style="{ width: (progress / repetitions * 100) + '%' }" />
 		</div>
 		<div class="actions">
-			<!-- <button class="edit" @click.stop="$emit('edit')">
+			<button class="edit" @click.stop="handleEditClick">
 				<img src="/img/edit.png" alt="edit">
-			</button> -->
-			<button class="remove" @click.stop="$emit('remove')">
+			</button>
+			<button class="remove" @click.stop="handleRemoveClick">
 				<img src="/img/bin.png" alt="delete">
 			</button>
 		</div>
@@ -31,7 +31,14 @@
 
 <script>
 import categoriesGoals from '@/data/categories-goals.json'
-import { goalSwiped } from '@/store'
+import { swipedGoalId } from '@/store'
+
+const ACTION_BUTTON_WIDTH = 60
+const ACTION_BUTTON_COUNT = 2
+const MAX_OPEN_X = -( ACTION_BUTTON_WIDTH * ACTION_BUTTON_COUNT )
+const DIRECTION_SLOP_PX = 8
+const OPEN_THRESHOLD = 0.5
+const FLICK_VELOCITY_PX_PER_MS = 0.6
 
 export default {
 	name: 'Goal',
@@ -47,9 +54,23 @@ export default {
 	data() {
 		return {
 			swiped: false,
+			isTransitioning: false,
+			dragX: 0,
+
+			// gesture state
 			startX: 0,
 			startY: 0,
-			isSwiping: false,
+			dragStartX: 0,
+			lockDirection: null, // 'horizontal' | 'vertical' | null
+			isPointerDown: false,
+			pointerId: null,
+
+			// velocity estimate
+			lastMoveX: 0,
+			lastMoveT: 0,
+			velocityX: 0,
+
+			transitionTimer: null,
 		}
 	},
 	computed: {
@@ -58,60 +79,144 @@ export default {
 			const cat = categoriesGoals.find( c => c.id === this.category )
 			return cat ? cat.color : null
 		},
+		dragStyle() {
+			return { transform: `translateX(${this.dragX}px)` }
+		},
+	},
+	watch: {
+		// When another goal is swiped, close this one
+		swipedGoalId( newId ) {
+			if ( newId !== this.id && this.swiped ) {
+				this.closeSwipe()
+			}
+		}
 	},
 	mounted() {
-		this.$el.addEventListener( 'touchstart', this.handleTouchStart, { passive: true } )
-		this.$el.addEventListener( 'touchmove', this.handleTouchMove, { passive: false } )
-		this.$el.addEventListener( 'touchend', this.handleTouchEnd, { passive: true } )
-		document.addEventListener( 'click', this.handleClickOutside )
+		this.$el.addEventListener( 'pointerdown', this.handlePointerDown, { passive: true } )
+		window.addEventListener( 'pointermove', this.handlePointerMove, { passive: false } )
+		window.addEventListener( 'pointerup', this.handlePointerUp, { passive: true } )
+		window.addEventListener( 'pointercancel', this.handlePointerUp, { passive: true } )
 	},
 	beforeUnmount() {
-		this.$el.removeEventListener( 'touchstart', this.handleTouchStart )
-		this.$el.removeEventListener( 'touchmove', this.handleTouchMove )
-		this.$el.removeEventListener( 'touchend', this.handleTouchEnd )
-		document.removeEventListener( 'click', this.handleClickOutside )
+		if ( this.transitionTimer ) clearTimeout( this.transitionTimer )
+		
+		this.$el.removeEventListener( 'pointerdown', this.handlePointerDown )
+		window.removeEventListener( 'pointermove', this.handlePointerMove )
+		window.removeEventListener( 'pointerup', this.handlePointerUp )
+		window.removeEventListener( 'pointercancel', this.handlePointerUp )
+
+		if ( swipedGoalId.value === this.id ) {
+			swipedGoalId.value = null
+		}
 	},
 	methods: {
 		handleCheckClick( checkIndex ) {
-			if ( this.swiped ) return
-			this.$emit( 'update', checkIndex <= this.progress ? checkIndex - 1 : checkIndex )
-		},
-		handleTouchStart( e ) {
-			this.startX = e.touches[0].clientX
-			this.startY = e.touches[0].clientY
-			this.isSwiping = false
-		},
-		handleTouchMove( e ) {
-			const diffX = this.startX - e.touches[0].clientX
-			const diffY = this.startY - e.touches[0].clientY
-
-			// Only trigger swipe if horizontal movement is greater than vertical
-			if ( !this.isSwiping && Math.abs( diffY ) > Math.abs( diffX ) ) {
+			if ( this.swiped ) {
+				this.closeSwipe()
 				return
 			}
+			this.$emit( 'update', checkIndex <= this.progress ? checkIndex - 1 : checkIndex )
+		},
 
-			if ( Math.abs( diffX ) >= 20 ) {
-				this.isSwiping = true
-
-				if ( diffX >= 20 ) {
-					this.swiped = true
-					goalSwiped.dispatch( this.id )
-				} else {
-					this.swiped = false
-				}
+		setTransitioning( enabled ) {
+			this.isTransitioning = enabled
+			if ( this.transitionTimer ) {
+				clearTimeout( this.transitionTimer )
+				this.transitionTimer = null
+			}
+			if ( enabled ) {
+				this.transitionTimer = setTimeout( () => {
+					this.isTransitioning = false
+					this.transitionTimer = null
+				}, 220 )
 			}
 		},
-		handleTouchEnd() {
-			this.isSwiping = false
+		snapTo( x ) {
+			this.setTransitioning( true )
+			this.dragX = x
 		},
-		handleClickOutside( e ) {
-			// Close if clicking outside this goal
-			if ( this.swiped && !this.$el.contains( e.target ) ) {
-				this.swiped = false
-			}
+		openSwipe() {
+			this.swiped = true
+			this.snapTo( MAX_OPEN_X )
+			swipedGoalId.value = this.id
 		},
 		closeSwipe() {
 			this.swiped = false
+			this.snapTo( 0 )
+			if ( swipedGoalId.value === this.id ) {
+				swipedGoalId.value = null
+			}
+		},
+
+		handlePointerDown( e ) {
+			if ( e.target.closest( '.actions' ) ) return
+			if ( e.pointerType === 'mouse' && e.button !== 0 ) return
+
+			this.isPointerDown = true
+			this.pointerId = e.pointerId
+			this.startX = e.clientX
+			this.startY = e.clientY
+			this.dragStartX = this.dragX
+			this.lockDirection = null
+			this.velocityX = 0
+			this.lastMoveX = e.clientX
+			this.lastMoveT = performance.now()
+
+			this.setTransitioning( false )
+		},
+
+		handlePointerMove( e ) {
+			if ( !this.isPointerDown || e.pointerId !== this.pointerId ) return
+
+			const dx = e.clientX - this.startX
+			const dy = e.clientY - this.startY
+
+			if ( !this.lockDirection ) {
+				if ( Math.abs( dx ) < DIRECTION_SLOP_PX && Math.abs( dy ) < DIRECTION_SLOP_PX ) return
+				this.lockDirection = Math.abs( dx ) > Math.abs( dy ) ? 'horizontal' : 'vertical'
+			}
+
+			if ( this.lockDirection !== 'horizontal' ) return
+
+			e.preventDefault()
+
+			let nextX = this.dragStartX + dx
+			if ( nextX > 0 ) nextX *= 0.35
+			else if ( nextX < MAX_OPEN_X ) nextX = MAX_OPEN_X + ( nextX - MAX_OPEN_X ) * 0.35
+			
+			this.dragX = Math.min( 30, Math.max( MAX_OPEN_X - 30, nextX ) )
+
+			const now = performance.now()
+			const dt = now - this.lastMoveT
+			if ( dt > 0 ) this.velocityX = ( e.clientX - this.lastMoveX ) / dt
+			this.lastMoveX = e.clientX
+			this.lastMoveT = now
+		},
+
+		handlePointerUp( e ) {
+			if ( !this.isPointerDown || e.pointerId !== this.pointerId ) return
+			this.isPointerDown = false
+
+			if ( this.lockDirection !== 'horizontal' ) return
+
+			const openByDistance = this.dragX <= MAX_OPEN_X * OPEN_THRESHOLD
+			const openByFlick = this.velocityX <= -FLICK_VELOCITY_PX_PER_MS
+			const closeByFlick = this.velocityX >= FLICK_VELOCITY_PX_PER_MS
+
+			if ( openByFlick || ( openByDistance && !closeByFlick ) ) {
+				this.openSwipe()
+			} else {
+				this.closeSwipe()
+			}
+		},
+
+		handleEditClick() {
+			this.closeSwipe()
+			this.$emit( 'edit' )
+		},
+		handleRemoveClick() {
+			this.closeSwipe()
+			this.$emit( 'remove' )
 		},
 	},
 }
@@ -125,7 +230,6 @@ export default {
 	background #F0F1F8
 	border 1px solid #F3F3FF
 	border-radius 6px
-	margin-bottom 8px
 	overflow hidden
 	user-select none
 	cursor pointer
@@ -146,15 +250,15 @@ export default {
 		display flex
 		justify-content space-between
 		align-items center
-		transition transform 0.3s
 		background #F0F1F8
 		z-index 2
 		border-radius 6px 6px 0 0
 		margin-right -2px
+		will-change transform
 
-	&.swiped .goalContent,
-	&.swiped .progressBar
-		transform translateX(-60px)
+	&.transitioning .goalContent,
+	&.transitioning .progressBar
+		transition transform 0.22s ease-out
 
 	.iconName
 		display flex
@@ -167,7 +271,6 @@ export default {
 			font-size 20px
 			flex-shrink 0
 			pointer-events none
-			user-select none
 
 		.name
 			font-family 'Jost', sans-serif
@@ -177,7 +280,6 @@ export default {
 			overflow hidden
 			text-overflow ellipsis
 			white-space nowrap
-			user-select none
 			pointer-events none
 
 	.checks
@@ -192,9 +294,9 @@ export default {
 		background #E2E4F0
 		border-radius 0 0 6px 6px
 		overflow hidden
-		transition transform 0.3s
 		z-index 1
 		margin-right -2px
+		will-change transform
 
 		.progressFill
 			height 100%

@@ -15,23 +15,34 @@ export default class Signal {
 	constructor() {
 		this.listeners = new DoubleLinkedList()
 		this.listenersOnce = []
+		this._listenerNodes = new WeakMap()
 	}
 
 	add( listener ) {
-		const node = Signal.POOL.get()
+		// Prevent double-registration of the same listener
+		if ( this._listenerNodes.has( listener ) ) {
+			return
+		}
+
+		let node = Signal.POOL.get()
 		node.listener = listener
-		listener.__signalNode = node
+		node.prev = null
+		node.next = null
+		
+		this._listenerNodes.set( listener, node )
 
 		this.listeners.add( node )
 	}
 
 	remove( listener ) {
-		if ( !listener.__signalNode ) {
+		const node = this._listenerNodes.get( listener )
+		if ( !node ) {
 			return
 		}
-		this.listeners.remove( listener.__signalNode )
-		Signal.POOL.release( listener.__signalNode )
-		listener.__signalNode = null
+		this._listenerNodes.delete( listener )
+		this.listeners.remove( node )
+		node.listener = null
+		Signal.POOL.release( node )
 	}
 
 	once( listener ) {
@@ -53,32 +64,41 @@ export default class Signal {
 
 		let node = this.listeners.root
 		while ( node ) {
-			node.listener.apply( null, arguments )
-			node = node.next
+			const next = node.next
+			if ( node.listener ) {
+				node.listener.apply( null, arguments )
+			}
+			node = next
 		}
 	}
 
 	dispose() {
 		let node = this.listeners.root
 		while ( node ) {
+			const next = node.next
+			node.listener = null
+			node.prev = null
+			node.next = null
 			Signal.POOL.release( node )
-			node.listener.__signalNode = null
-			node = node.next
+			node = next
 		}
 		this.listeners = null
-
 		this.listenersOnce = null
+		this._listenerNodes = null
 	}
 
 	removeAll() {
 		let node = this.listeners.root
 		while ( node ) {
+			const next = node.next
+			node.listener = null
+			node.prev = null
+			node.next = null
 			Signal.POOL.release( node )
-			node.listener.__signalNode = null
-			node = node.next
+			node = next
 		}
 		this.listeners.reset()
-
 		this.listenersOnce = []
+		this._listenerNodes = new WeakMap()
 	}
 }

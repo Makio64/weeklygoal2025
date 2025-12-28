@@ -1,10 +1,9 @@
-import Signal from './makio/core/Signal'
 import { goalsRepository } from './utils/goalsRepository'
 
 // Goals store
 export const goals = ref( [] )
 export const weekStartDate = ref( new Date().toISOString() )
-export const goalSwiped = new Signal()
+export const swipedGoalId = ref( null )
 
 // Initialize goals from storage
 export async function initializeGoals() {

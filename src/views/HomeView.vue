@@ -1,5 +1,5 @@
 <template>
-	<div class="HomeView view">
+	<div class="HomeView view" @click="handleGlobalClick">
 		<div class="header">
 			<div class="title">WeeklyGoal</div>
 			<div class="subtitle">Small steps lead to bigger goals</div>
@@ -24,7 +24,6 @@
 						v-for="goal in goals"
 						:id="goal.id"
 						:key="goal.id"
-						ref="goalRefs"
 						:name="goal.name"
 						:icon="goal.icon"
 						:category="goal.category"
@@ -36,17 +35,13 @@
 					/>
 				</div>
 			</template>
-			<!-- <ResetWeek @click="resetWeek" /> -->
 			<AddNewGoal @click="addNewGoal" />
 		</div>
 
 		<div class="ctaSection">
-			<!-- <DevelopmentTip /> -->
 			<HistoryButton @click="$router.push('/history')" />
 			<NotificationToggle />
 		</div>
-
-		<!-- <FeedbackCTA /> -->
 
 		<WeeklyRecap :show="showRecapModal" :recap="weeklyRecap" @close="closeRecapModal" />
 	</div>
@@ -55,13 +50,18 @@
 <script>
 import HistoryButton from '@/components/HistoryButton.vue'
 import WeeklyRecap from '@/components/WeeklyRecap.vue'
-import { goals, goalSwiped, initializeGoals, saveGoals } from '@/store'
+import { reset as resetMouse } from '@/makio/utils/input/mouse'
+import { goals, initializeGoals, saveGoals, swipedGoalId } from '@/store'
 import { createGoalsSnapshot, handleGoalChange } from '@/utils/goalHelpers'
 import notificationManager from '@/utils/notifications'
 import { generateFakeRecap, performWeeklyReset, shouldResetWeek } from '@/utils/weeklyReset'
 
 export default {
 	name: 'HomeView',
+	beforeRouteLeave( next ) {
+		swipedGoalId.value = null
+		next()
+	},
 	components: {
 		HistoryButton,
 		WeeklyRecap,
@@ -89,7 +89,9 @@ export default {
 		},
 	},
 	async mounted() {
-		goalSwiped.add( this.handleGoalSwiped )
+		swipedGoalId.value = null
+		resetMouse()
+		
 		await initializeGoals()
 		await notificationManager.init()
 
@@ -103,22 +105,18 @@ export default {
 		window.addEventListener( 'keydown', this.handleKeyPress )
 	},
 	beforeUnmount() {
-		goalSwiped.remove( this.handleGoalSwiped )
+		swipedGoalId.value = null
 		window.removeEventListener( 'keydown', this.handleKeyPress )
 	},
 	methods: {
+		handleGlobalClick( e ) {
+			// If clicking outside any goal, close swiped goal
+			if ( swipedGoalId.value !== null && !e.target.closest( '.Goal' ) ) {
+				swipedGoalId.value = null
+			}
+		},
 		async onGoalChange() {
 			this.previousGoalsSnapshot = await handleGoalChange( this.previousGoalsSnapshot )
-		},
-		handleGoalSwiped( id ) {
-			const refs = this.$refs.goalRefs || []
-			const goalComponents = Array.isArray( refs ) ? refs : [refs]
-			goalComponents.forEach( ( goalComponent ) => {
-				if ( !goalComponent ) return
-				if ( goalComponent.$props?.id !== id ) {
-					goalComponent.closeSwipe?.()
-				}
-			} )
 		},
 		async updateGoal( id, progress ) {
 			const goal = this.goals.find( g => g.id === id )
@@ -130,7 +128,7 @@ export default {
 			}
 		},
 		editGoal( id ) {
-			console.log( 'Edit goal', id )
+			this.$router.push( `/new-goal?edit=${id}` )
 		},
 		async removeGoal( id ) {
 			const index = this.goals.findIndex( g => g.id === id )
@@ -141,14 +139,6 @@ export default {
 		},
 		addNewGoal() {
 			this.$router.push( '/new-goal' )
-		},
-		resetWeek() {
-			// Reset all goals progress to 0
-			this.goals.forEach( goal => {
-				goal.progress = 0
-			} )
-			// Show notification
-			notificationManager.showResetNotification()
 		},
 		async checkWeeklyReset() {
 			const needsReset = await shouldResetWeek()
@@ -178,6 +168,7 @@ export default {
 	margin 0 auto
 	background #f6f7ff
 	font-family 'Jost', sans-serif
+	min-height 100vh
 
 	.header, .progressSection, .ctaSection
 		padding 0 24px
@@ -226,6 +217,9 @@ export default {
 		margin-bottom 40px
 
 		.goals
+			display flex
+			flex-direction column
+			gap 8px
 			margin-bottom 20px
 
 		.emptyState

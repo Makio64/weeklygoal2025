@@ -11,8 +11,10 @@ export default class DoubleLinkedList {
 	}
 
 	add( node ) {
+		node.next = null
 		if ( !this.root ) {
 			this.root = this.last = node
+			node.prev = null
 		} else {
 			this.last.next = node
 			node.prev = this.last
@@ -22,6 +24,9 @@ export default class DoubleLinkedList {
 	}
 
 	remove( node ) {
+		// Validate node is in list (has connections OR is root/last)
+		if ( !node || ( node !== this.root && node !== this.last && !node.prev && !node.next ) ) return
+
 		if ( node.prev ) node.prev.next = node.next
 		if ( node.next ) node.next.prev = node.prev
 

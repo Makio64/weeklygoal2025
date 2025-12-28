@@ -46,6 +46,10 @@ export default {
 .modal-leave-active
 	transition opacity 0.3s
 
+.modal-leave-active,
+.modal-leave-to
+	pointer-events none
+
 .modal-enter-from,
 .modal-leave-to
 	opacity 0
