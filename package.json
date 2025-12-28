@@ -1,7 +1,7 @@
 {
 	"name": "makio-starter",
 	"private": true,
-	"version": "1.0.0",
+	"version": "1.2.0",
 	"type": "module",
 	"target": "esnext",
 	"scripts": {
@@ -22,7 +22,8 @@
 		"ios": "pnpm cap:sync && pnpm cap:run:ios",
 		"cap:open:android": "npx cap open android",
 		"cap:run:android": "pnpm cap:sync && npx cap run android",
-		"android": "pnpm cap:sync && pnpm cap:run:android"
+		"android": "pnpm cap:sync && pnpm cap:run:android",
+		"release": "node nodejs-tools/release.js"
 	},
 	"dependencies": {
 		"@capacitor/android": "^8.0.0",
@@ -54,6 +55,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
 		"postcss": "^8.5.6",
+		"prompts": "^2.4.2",
 		"rollup-plugin-visualizer": "^6.0.5",
 		"sharp": "^0.34.5",
 		"stylus": "^0.64.0",
