@@ -1,5 +1,5 @@
 <template>
-	<div class="Goal" :class="{ swiped, transitioning: isTransitioning }">
+	<div class="Goal" :class="{ swiped, transitioning: isTransitioning, swiping: isSwiping }">
 		<div v-if="categoryColor" class="categoryIndicator" :style="{ backgroundColor: categoryColor }" />
 		<div ref="content" class="goalContent" :style="dragStyle">
 			<div class="iconName">
@@ -55,6 +55,7 @@ export default {
 		return {
 			swiped: false,
 			isTransitioning: false,
+			isSwiping: false,
 			dragX: 0,
 
 			// gesture state
@@ -82,10 +83,13 @@ export default {
 		dragStyle() {
 			return { transform: `translateX(${this.dragX}px)` }
 		},
+		currentSwipedId() {
+			return swipedGoalId.value
+		}
 	},
 	watch: {
 		// When another goal is swiped, close this one
-		swipedGoalId( newId ) {
+		currentSwipedId( newId ) {
 			if ( newId !== this.id && this.swiped ) {
 				this.closeSwipe()
 			}
@@ -93,17 +97,17 @@ export default {
 	},
 	mounted() {
 		this.$el.addEventListener( 'pointerdown', this.handlePointerDown, { passive: true } )
-		window.addEventListener( 'pointermove', this.handlePointerMove, { passive: false } )
-		window.addEventListener( 'pointerup', this.handlePointerUp, { passive: true } )
-		window.addEventListener( 'pointercancel', this.handlePointerUp, { passive: true } )
+		this.$el.addEventListener( 'pointermove', this.handlePointerMove, { passive: false } )
+		this.$el.addEventListener( 'pointerup', this.handlePointerUp, { passive: true } )
+		this.$el.addEventListener( 'pointercancel', this.handlePointerUp, { passive: true } )
 	},
 	beforeUnmount() {
 		if ( this.transitionTimer ) clearTimeout( this.transitionTimer )
 		
 		this.$el.removeEventListener( 'pointerdown', this.handlePointerDown )
-		window.removeEventListener( 'pointermove', this.handlePointerMove )
-		window.removeEventListener( 'pointerup', this.handlePointerUp )
-		window.removeEventListener( 'pointercancel', this.handlePointerUp )
+		this.$el.removeEventListener( 'pointermove', this.handlePointerMove )
+		this.$el.removeEventListener( 'pointerup', this.handlePointerUp )
+		this.$el.removeEventListener( 'pointercancel', this.handlePointerUp )
 
 		if ( swipedGoalId.value === this.id ) {
 			swipedGoalId.value = null
@@ -174,11 +178,23 @@ export default {
 			if ( !this.lockDirection ) {
 				if ( Math.abs( dx ) < DIRECTION_SLOP_PX && Math.abs( dy ) < DIRECTION_SLOP_PX ) return
 				this.lockDirection = Math.abs( dx ) > Math.abs( dy ) ? 'horizontal' : 'vertical'
+				
+				if ( this.lockDirection === 'horizontal' ) {
+					// Lock global state immediately to close others
+					swipedGoalId.value = this.id
+					this.isSwiping = true
+					try {
+						this.$el.setPointerCapture( e.pointerId )
+					} catch {
+						// ignore
+					}
+				}
 			}
 
 			if ( this.lockDirection !== 'horizontal' ) return
 
-			e.preventDefault()
+			// IMPORTANT for iOS: prevent default to stop overscroll/refresh
+			if ( e.cancelable ) e.preventDefault()
 
 			let nextX = this.dragStartX + dx
 			if ( nextX > 0 ) nextX *= 0.35
@@ -196,6 +212,13 @@ export default {
 		handlePointerUp( e ) {
 			if ( !this.isPointerDown || e.pointerId !== this.pointerId ) return
 			this.isPointerDown = false
+			this.isSwiping = false
+
+			try {
+				this.$el.releasePointerCapture( e.pointerId )
+			} catch {
+				// ignore
+			}
 
 			if ( this.lockDirection !== 'horizontal' ) return
 
@@ -233,8 +256,11 @@ export default {
 	overflow hidden
 	user-select none
 	cursor pointer
-	height 48px
+	height 54px
 	touch-action pan-y
+
+	&.swiping
+		touch-action none
 
 	.categoryIndicator
 		position absolute
