@@ -74,6 +74,9 @@
 						>
 							{{ goal.icon }} {{ goal.name }}
 						</button>
+						<button class="categoryPill addBtn" @click="openAddModal(category.id)">
+							+
+						</button>
 					</div>
 				</div>
 			</div>
@@ -131,15 +134,46 @@
 				</div>
 			</div>
 		</Modal>
+
+		<!-- Add Custom Goal Modal -->
+		<Modal :show="showAddModal" @close="closeAddModal">
+			<div class="modal addModal">
+				<div class="card">
+					<div class="cardTitle">New Goal</div>
+					<div class="cardSubtitle">Create something meaningful to you</div>
+
+					<div class="inputGroup">
+						<button class="emojiButton" @click="showEmojiPicker = true">
+							{{ newGoalEmoji }}
+						</button>
+						<input
+							v-model="newGoalName"
+							placeholder="Goal Name"
+							class="nameInput"
+							@keyup.enter="confirmAddGoal"
+						>
+						<EmojiPicker
+							v-if="showEmojiPicker"
+							@select="selectEmoji"
+							@close="showEmojiPicker = false"
+						/>
+					</div>
+
+					<button class="btn" :disabled="!newGoalName" @click="confirmAddGoal">Add</button>
+				</div>
+			</div>
+		</Modal>
 	</div>
 </template>
 
 <script>
 import CheckGoal from '@/components/CheckGoal.vue'
+import EmojiPicker from '@/components/EmojiPicker.vue'
 import Modal from '@/components/Modal.vue'
 import categoriesGoals from '@/data/categories-goals.json'
-import { goals } from '@/store'
+import { addCustomGoal, customGoals, goals, initializeCustomGoals } from '@/store'
 import { saveAndNotify } from '@/utils/goalHelpers'
+import { animateIn, animateOut } from '@/utils/pageTransitions'
 
 const createUniqueGoalId = () => {
 	const used = new Set( goals.value.map( g => g.id ) )
@@ -150,7 +184,7 @@ const createUniqueGoalId = () => {
 
 export default {
 	name: 'NewGoal',
-	components: { Modal, CheckGoal },
+	components: { Modal, CheckGoal, EmojiPicker },
 	data() {
 		return {
 			step: 1,
@@ -161,6 +195,11 @@ export default {
 			categoriesWithGoals: categoriesGoals,
 			isEditMode: false,
 			editGoalId: null,
+			showAddModal: false,
+			showEmojiPicker: false,
+			addingToCategoryId: null,
+			newGoalName: '',
+			newGoalEmoji: '',
 		}
 	},
 	computed: {
@@ -172,7 +211,15 @@ export default {
 			return this.isEditMode ? 'Save' : 'I will success'
 		},
 	},
-	mounted() {
+	async mounted() {
+		animateIn( this.$el )
+		// Load custom goals and merge with static categories
+		await initializeCustomGoals()
+		this.categoriesWithGoals = categoriesGoals.map( cat => ( {
+			...cat,
+			goals: [...cat.goals, ...( customGoals.value[cat.id] || [] )],
+		} ) )
+
 		// Edit mode: /new-goal?edit=<id>
 		const params = new URLSearchParams( window.location.search || '' )
 		const editParam = params.get( 'edit' )
@@ -235,8 +282,13 @@ export default {
 		},
 		handleContinue() {
 			if ( !this.showRepetitionSelector ) {
-				// First click: show repetition selector
-				this.showRepetitionSelector = true
+				// First click: transition to repetition selector
+				animateOut( this.$el, () => {
+					this.showRepetitionSelector = true
+					this.$nextTick( () => {
+						animateIn( this.$el )
+					} )
+				} )
 			} else {
 				// Second click: save (edit) or open modal (create)
 				if ( this.isEditMode ) {
@@ -288,6 +340,49 @@ export default {
 			} )
 			await saveAndNotify()
 			this.$router.push( '/' )
+		},
+		openAddModal( categoryId ) {
+			this.addingToCategoryId = categoryId
+			this.newGoalName = ''
+			this.newGoalEmoji = '🎯'
+			this.showAddModal = true
+		},
+		closeAddModal() {
+			this.showAddModal = false
+			this.showEmojiPicker = false
+			this.addingToCategoryId = null
+			this.newGoalName = ''
+			this.newGoalEmoji = ''
+		},
+		selectEmoji( emoji ) {
+			this.newGoalEmoji = emoji
+			this.showEmojiPicker = false
+		},
+		async confirmAddGoal() {
+			if ( !this.newGoalName.trim() || !this.addingToCategoryId ) return
+
+			const category = this.categoriesWithGoals.find( c => c.id === this.addingToCategoryId )
+			if ( category ) {
+				const trimmedName = this.newGoalName.trim()
+				const capitalizedName = trimmedName.charAt( 0 ).toUpperCase() + trimmedName.slice( 1 )
+				const newGoal = {
+					name: capitalizedName,
+					icon: this.newGoalEmoji.trim() || '🎯',
+				}
+				// Add to local list
+				category.goals.push( newGoal )
+
+				// Persist custom goal to storage
+				await addCustomGoal( this.addingToCategoryId, newGoal )
+
+				// Select it immediately
+				this.selectGoal( newGoal, this.addingToCategoryId )
+			}
+
+			this.closeAddModal()
+		},
+		beforeRouteLeave( next ) {
+			animateOut( this.$el, next )
 		},
 	},
 }
@@ -513,6 +608,17 @@ export default {
 			&:active
 				transform scale(0.95)
 
+			&.addBtn
+				width 40px
+				min-height 40px
+				line-height 1
+				display flex
+				align-items center
+				justify-content center
+				font-size 20px
+				padding 0
+				color #5B6FF5
+
 	.writeOwn
 		width 100%
 		padding 12px
@@ -711,4 +817,92 @@ export default {
 
 				&:active
 					transform scale(0.98)
+
+	.addModal
+		.card
+			width 100%
+			display flex
+			flex-direction column
+			align-items center
+			box-sizing border-box
+
+		.cardSubtitle
+			font-family 'Jost', sans-serif
+			font-size 16px
+			color rgba(255, 255, 255, 0.8)
+			margin-bottom 24px
+			text-align center
+
+		.inputGroup
+			width 100%
+			display flex
+			gap 12px
+			margin-bottom 32px
+			position relative
+
+			.emojiButton
+				width 50px
+				height 50px
+				flex-shrink 0
+				display flex
+				align-items center
+				justify-content center
+				font-size 24px
+				border 1px solid #E2E4F0
+				border-radius 8px
+				background #FFF
+				cursor pointer
+				transition all 0.2s
+
+				&:hover
+					border-color #3445E1
+					transform scale(1.05)
+
+				&:active
+					transform scale(0.95)
+
+			.nameInput
+				flex 1
+				height 50px
+				padding 0 16px
+				font-family 'Jost', sans-serif
+				font-size 18px
+				border 1px solid #E2E4F0
+				border-radius 8px
+				background #FFF
+				color #333
+
+				&:focus
+					outline none
+					border-color #3445E1
+
+		.btn
+			width 100%
+			padding 16px
+			background #FFF
+			border none
+			border-radius 6px
+			font-family 'Jost', sans-serif
+			font-size 20px
+			font-weight 500
+			color #FFBF84
+			cursor pointer
+			transition all 0.2s
+
+			&:disabled
+				opacity 0.5
+				cursor not-allowed
+
+			&:not(:disabled):active
+				animation btn-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+
+@keyframes btn-pop
+	0%
+		transform scale(1)
+	30%
+		transform scale(0.92)
+	60%
+		transform scale(1.05)
+	100%
+		transform scale(1)
 </style>

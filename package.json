@@ -1,7 +1,7 @@
 {
 	"name": "makio-starter",
 	"private": true,
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"type": "module",
 	"target": "esnext",
 	"scripts": {
@@ -67,7 +67,7 @@
 		"vite-plugin-css-injected-by-js": "^3.5.2",
 		"vite-plugin-mkcert": "^1.17.9",
 		"vite-plugin-qrcode": "^0.3.0",
-		"vite-plugin-tsl-operator": "^1.4.3",
+		"vite-plugin-tsl-operator": "^1.4.5",
 		"vue-eslint-parser": "^10.2.0"
 	},
 	"pnpm": {
@@ -94,5 +94,5 @@
 			"eslint --fix"
 		]
 	},
-	"packageManager": "pnpm@10.26.2"
+	"packageManager": "pnpm@10.27.0"
 }

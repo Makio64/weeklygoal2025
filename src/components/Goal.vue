@@ -1,5 +1,5 @@
 <template>
-	<div class="Goal" :class="{ swiped, transitioning: isTransitioning, swiping: isSwiping }">
+	<div class="Goal" :class="{ swiped, transitioning: isTransitioning, swiping: isSwiping, 'read-only': readOnly }">
 		<div v-if="categoryColor" class="categoryIndicator" :style="{ backgroundColor: categoryColor }" />
 		<div ref="content" class="goalContent" :style="dragStyle">
 			<div class="iconName">
@@ -18,7 +18,7 @@
 		<div class="progressBar" :style="dragStyle">
 			<div class="progressFill" :style="{ width: (progress / repetitions * 100) + '%' }" />
 		</div>
-		<div class="actions">
+		<div v-if="!readOnly" class="actions">
 			<button class="edit" @click.stop="handleEditClick">
 				<img src="/img/edit.png" alt="edit">
 			</button>
@@ -50,6 +50,7 @@ export default {
 		category: String,
 		repetitions: { type: Number, default: 5 },
 		progress: { type: Number, default: 0 },
+		readOnly: { type: Boolean, default: false },
 	},
 	data() {
 		return {
@@ -96,10 +97,12 @@ export default {
 		}
 	},
 	mounted() {
-		this.$el.addEventListener( 'pointerdown', this.handlePointerDown, { passive: true } )
-		this.$el.addEventListener( 'pointermove', this.handlePointerMove, { passive: false } )
-		this.$el.addEventListener( 'pointerup', this.handlePointerUp, { passive: true } )
-		this.$el.addEventListener( 'pointercancel', this.handlePointerUp, { passive: true } )
+		if ( !this.readOnly ) {
+			this.$el.addEventListener( 'pointerdown', this.handlePointerDown, { passive: true } )
+			this.$el.addEventListener( 'pointermove', this.handlePointerMove, { passive: false } )
+			this.$el.addEventListener( 'pointerup', this.handlePointerUp, { passive: true } )
+			this.$el.addEventListener( 'pointercancel', this.handlePointerUp, { passive: true } )
+		}
 	},
 	beforeUnmount() {
 		if ( this.transitionTimer ) clearTimeout( this.transitionTimer )
@@ -115,6 +118,7 @@ export default {
 	},
 	methods: {
 		handleCheckClick( checkIndex ) {
+			if ( this.readOnly ) return
 			if ( this.swiped ) {
 				this.closeSwipe()
 				return
@@ -153,6 +157,7 @@ export default {
 		},
 
 		handlePointerDown( e ) {
+			if ( this.readOnly ) return
 			if ( e.target.closest( '.actions' ) ) return
 			if ( e.pointerType === 'mouse' && e.button !== 0 ) return
 
@@ -261,6 +266,9 @@ export default {
 
 	&.swiping
 		touch-action none
+
+	&.read-only
+		cursor default
 
 	.categoryIndicator
 		position absolute

@@ -7,7 +7,7 @@
 				</svg>
 			</button>
 			<div class="title">Past weeks</div>
-			<div class="spacer" />
+
 		</div>
 
 		<div class="content">
@@ -46,6 +46,7 @@
 <script>
 import WeekCard from '@/components/WeekCard.vue'
 import WeeklyRecap from '@/components/WeeklyRecap.vue'
+import { animateIn, animateOut } from '@/utils/pageTransitions'
 import { getWeeklyHistory } from '@/utils/weeklyReset'
 
 export default {
@@ -62,6 +63,7 @@ export default {
 		}
 	},
 	async mounted() {
+		animateIn( this.$el )
 		this.history = await getWeeklyHistory()
 	},
 	methods: {
@@ -76,6 +78,9 @@ export default {
 			this.showModal = false
 			this.selectedWeek = null
 		},
+		beforeRouteLeave( next ) {
+			animateOut( this.$el, next )
+		},
 	},
 }
 </script>
@@ -89,12 +94,16 @@ export default {
 	min-height 100dvh
 
 	.header
+		position relative
 		display flex
-		align-items flex-start
-		justify-content space-between
+		align-items center
+		justify-content center
 		padding 12px 24px 20px
 
 		.backButton
+			position absolute
+			left 24px
+			top 12px
 			width 32px
 			height 32px
 			background white
@@ -106,7 +115,7 @@ export default {
 			justify-content center
 			box-shadow 0 2px 8px rgba(0, 0, 0, 0.04)
 			transition all 0.2s
-			align-self flex-start
+			z-index 10
 
 			&:active
 				transform scale(0.95)
@@ -115,9 +124,6 @@ export default {
 			font-size 24px
 			font-weight 600
 			color #010101
-
-		.spacer
-			width 40px
 
 	.content
 		padding 0 24px

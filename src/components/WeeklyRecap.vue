@@ -8,11 +8,21 @@
 
 			<div class="stats">
 				<div class="mainStat">
-					<div class="percentage" :class="percentageClass">{{ stats.completionPercent }}%</div>
-					<div class="label">Completed</div>
+					<div class="circleContainer">
+						<SVGCircle
+							ref="progressCircle"
+							:radius="60"
+							:stroke-width="8"
+							:color="progressColor"
+						/>
+						<div class="percentageValue" :style="{ color: progressColor }">
+							{{ stats.completionPercent }}%
+						</div>
+					</div>
+					<div class="label">Done!</div>
 				</div>
 
-				<div class="detailStats">
+				<!-- <div class="detailStats">
 					<div class="statItem">
 						<div class="statValue">{{ stats.completedTasks }}/{{ stats.totalTasks }}</div>
 						<div class="statLabel">Tasks Done</div>
@@ -21,46 +31,53 @@
 						<div class="statValue">{{ stats.goalCount }}</div>
 						<div class="statLabel">Goals</div>
 					</div>
+				</div> -->
+			</div>
+
+
+			<div class="goals">
+				<h3 class="goalsTitle">Your Goals</h3>
+				<div class="goalsList">
+					<Goal
+						v-for="goal in recap.goals"
+						:id="goal.id"
+						:key="goal.id"
+						:name="goal.name"
+						:icon="goal.icon"
+						:category="goal.category"
+						:repetitions="goal.repetitions"
+						:progress="goal.progress"
+						:read-only="true"
+					/>
 				</div>
 			</div>
 
+			<div class="footer">
+				<button class="actionButton" @click="handleClose">
+					{{ isHistory ? 'Close' : 'Start New Week 🚀' }}
+				</button>
+			</div>
 			<div v-if="shouldShowSuggestion" class="suggestion">
 				<div class="suggestionText">
 					<strong>Tip:</strong> Consider reducing your goals and focusing more on completion.
 					Quality over quantity! Start with fewer goals and add more as you build consistency.
 				</div>
 			</div>
-
-			<div class="goals">
-				<h3 class="goalsTitle">Your Goals</h3>
-				<div class="goalsList">
-					<div v-for="goal in recap.goals" :key="goal.id" class="goalItem">
-						<div class="goalInfo">
-							<span class="goalIcon">{{ goal.icon }}</span>
-							<span class="goalName">{{ goal.name }}</span>
-						</div>
-						<div class="goalProgress">
-							<span class="goalCount">{{ goal.progress }}/{{ goal.repetitions }}</span>
-							<span v-if="goal.progress >= goal.repetitions" class="checkmark">✓</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<button class="closeButton" @click="handleClose">
-				{{ isHistory ? 'Close' : 'Start New Week 🚀' }}
-			</button>
 		</div>
 	</Modal>
 </template>
 
 <script>
+import Goal from './Goal.vue'
 import Modal from './Modal.vue'
+import SVGCircle from './ui/SVGCircle.vue'
 
 export default {
 	name: 'WeeklyRecap',
 	components: {
 		Modal,
+		Goal,
+		SVGCircle,
 	},
 	props: {
 		show: { type: Boolean, default: false },
@@ -88,11 +105,11 @@ export default {
 		shouldShowSuggestion() {
 			return this.stats.completionPercent < 80 && this.stats.goalCount > 0
 		},
-		percentageClass() {
+		progressColor() {
 			const percent = this.stats.completionPercent
-			if ( percent >= 80 ) return 'excellent'
-			if ( percent >= 60 ) return 'good'
-			return 'needs-improvement'
+			if ( percent >= 80 ) return '#00D68F' // Excellent
+			if ( percent >= 60 ) return '#6C5CE7' // Good
+			return '#FF6B6B' // Needs Improvement
 		},
 		formattedWeekRange() {
 			if ( !this.recap?.weekStart || !this.recap?.weekEnd ) return ''
@@ -107,10 +124,30 @@ export default {
 			return `${startStr} - ${endStr}`
 		},
 	},
+	watch: {
+		// Update the circle when the modal opens or stats change
+		show( newVal ) {
+			if ( newVal ) {
+				this.$nextTick( () => {
+					this.updateCircle()
+				} )
+			}
+		},
+		'recap.stats.completionPercent'() {
+			if ( this.show ) {
+				this.updateCircle()
+			}
+		}
+	},
 	methods: {
 		handleClose() {
 			this.$emit( 'close' )
 		},
+		updateCircle() {
+			if ( this.$refs.progressCircle ) {
+				this.$refs.progressCircle.setPercent( this.stats.completionPercent, false )
+			}
+		}
 	},
 }
 </script>
@@ -143,26 +180,28 @@ export default {
 		flex-direction column
 		gap 16px
 		padding 20px
-		background #F6F7FF
+		//background #F6F7FF
 		border-radius 12px
 
 		.mainStat
-			text-align center
+			display flex
+			flex-direction column
+			align-items center
+			gap 12px
 
-			.percentage
-				font-size 56px
-				font-weight 700
-				line-height 1
-				margin-bottom 8px
+			.circleContainer
+				position relative
+				width 120px
+				height 120px
+				display flex
+				align-items center
+				justify-content center
 
-				&.excellent
-					color #00D68F
-
-				&.good
-					color #6C5CE7
-
-				&.needs-improvement
-					color #FF6B6B
+				.percentageValue
+					position absolute
+					font-size 32px
+					font-weight 700
+					font-family 'Jost', sans-serif
 
 			.label
 				font-size 14px
@@ -173,12 +212,14 @@ export default {
 			display grid
 			grid-template-columns 1fr 1fr
 			gap 16px
+			margin-top 8px
 
 			.statItem
 				text-align center
 				padding 12px
 				background white
 				border-radius 8px
+				box-shadow 0 2px 4px rgba(0,0,0,0.02)
 
 				.statValue
 					font-size 24px
@@ -215,53 +256,23 @@ export default {
 		.goalsList
 			display flex
 			flex-direction column
-			gap 8px
+			gap 12px
 
-			.goalItem
-				display flex
-				justify-content space-between
-				align-items center
-				padding 12px
-				background #F6F7FF
-				border-radius 8px
+	.footer
+		margin-top 8px
 
-				.goalInfo
-					display flex
-					align-items center
-					gap 8px
-
-					.goalIcon
-						font-size 20px
-
-					.goalName
-						font-size 15px
-						color #010101
-
-				.goalProgress
-					display flex
-					align-items center
-					gap 8px
-
-					.goalCount
-						font-size 14px
-						font-weight 500
-						color #6C5CE7
-
-					.checkmark
-						color #00D68F
-						font-size 18px
-
-	.closeButton
+	.actionButton
 		width 100%
 		padding 16px
-		background linear-gradient(90deg, #6C5CE7 0%, #A29BFE 100%)
+		background #3445E1
 		border none
-		border-radius 12px
-		color white
-		font-size 16px
-		font-weight 600
+		border-radius 6px
 		font-family 'Jost', sans-serif
+		font-size 18px
+		font-weight 500
+		color #FFF
 		cursor pointer
+		box-shadow 0 4px 30px rgba(0, 0, 0, 0.24)
 		transition transform 0.2s
 
 		&:active
