@@ -16,31 +16,33 @@
 		</div>
 	</div>
 
-	<Modal :show="showPicker" @close="closePicker">
-		<div class="picker">
-			<div class="pickerHeader">
-				<div class="pickerTitle">Reminders</div>
-				<button class="pickerClose" @click="closePicker">Close</button>
-			</div>
+	<Teleport to="body">
+		<Modal :show="showPicker" @close="closePicker">
+			<div class="picker">
+				<div class="pickerHeader">
+					<div class="pickerTitle">Reminders</div>
+					<button class="pickerClose" @click="closePicker">Close</button>
+				</div>
 
-			<div class="pickerList">
-				<button
-					v-for="opt in modeOptions"
-					:key="opt.id"
-					class="pickerItem"
-					:class="{ isSelected: opt.id === mode }"
-					:disabled="isBusy"
-					@click="selectMode(opt.id)"
-				>
-					<div class="pickerItemLeft">
-						<div class="pickerItemTitle">{{ opt.title }}</div>
-						<div class="pickerItemDesc">{{ opt.desc }}</div>
-					</div>
-					<div v-if="opt.id === mode" class="check">✓</div>
-				</button>
+				<div class="pickerList">
+					<button
+						v-for="opt in modeOptions"
+						:key="opt.id"
+						class="pickerItem"
+						:class="{ isSelected: opt.id === mode }"
+						:disabled="isBusy"
+						@click="selectMode(opt.id)"
+					>
+						<div class="pickerItemLeft">
+							<div class="pickerItemTitle">{{ opt.title }}</div>
+							<div class="pickerItemDesc">{{ opt.desc }}</div>
+						</div>
+						<div v-if="opt.id === mode" class="check">✓</div>
+					</button>
+				</div>
 			</div>
-		</div>
-	</Modal>
+		</Modal>
+	</Teleport>
 </template>
 
 <script>

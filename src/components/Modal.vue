@@ -23,6 +23,12 @@ export default {
 			}
 		}
 	},
+	beforeUnmount() {
+		const app = document.getElementById( 'app' )
+		if ( app ) {
+			app.style.overflowY = 'auto'
+		}
+	},
 	methods: {
 		handleBackdropClick() {
 			this.$emit( 'close' )

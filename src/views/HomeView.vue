@@ -48,9 +48,9 @@
 
 				<transition name="expand">
 					<div v-if="showLearnMore" class="methodContent">
-						<div 
-							v-for="(benefit, index) in benefits" 
-							:key="index" 
+						<div
+							v-for="(benefit, index) in benefits"
+							:key="index"
 							class="benefitItem"
 						>
 							<span class="benefitIcon" v-html="benefit.icon" />

@@ -417,10 +417,9 @@ export default {
 			margin-top 20px
 
 	.step1, .step2
-		height calc(100dvh - var(--sait) - var(--saib))
+		flex 1
 		display flex
 		flex-direction column
-		padding-bottom var(--saib)
 
 	.selectedGoalWrap
 		margin-bottom 16px

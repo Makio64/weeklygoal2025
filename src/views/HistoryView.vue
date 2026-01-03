@@ -91,7 +91,6 @@ export default {
 	margin 0 auto
 	background #f6f7ff
 	font-family 'Jost', sans-serif
-	min-height 100dvh
 
 	.header
 		position relative

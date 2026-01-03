@@ -81,9 +81,12 @@ export default {
 	--sail var(--safe-area-inset-left, env(safe-area-inset-left, 0px))
 	--sair var(--safe-area-inset-right, env(safe-area-inset-right, 0px))
 
+*
+	user-select none !important
+	-webkit-user-select none !important
+	-webkit-touch-callout none !important
+
 body, html
-	user-select none
-	-webkit-touch-callout none
 	-webkit-text-size-adjust 100%
 	font-display()
 	margin 0
