@@ -22,13 +22,31 @@
 				</div>
 			</template>
 			<template v-else>
-				<div class="weeksList">
-					<WeekCard
-						v-for="(week, index) in history"
-						:key="index"
-						:week="week"
-						@select="openWeekDetails"
+				<HistoryStats
+					:average-completion="averageCompletion"
+					:total-weeks="totalWeeks"
+					:total-tasks-completed="totalTasksCompleted"
+					:best-week-percent="bestWeekPercent"
+				/>
+
+				<div class="chartSection">
+					<h3 class="sectionTitle">Weekly Progress</h3>
+					<HistoryTrendChart
+						:data="chartData"
+						@point-tap="openWeekDetails"
 					/>
+				</div>
+
+				<div class="weekListSection">
+					<h3 class="sectionTitle">All Weeks</h3>
+					<div class="compactWeeksList">
+						<CompactWeekRow
+							v-for="(week, index) in history"
+							:key="index"
+							:week="week"
+							@select="openWeekDetails"
+						/>
+					</div>
 				</div>
 			</template>
 		</div>
@@ -43,7 +61,9 @@
 </template>
 
 <script>
-import WeekCard from '@/components/WeekCard.vue'
+import CompactWeekRow from '@/components/CompactWeekRow.vue'
+import HistoryStats from '@/components/HistoryStats.vue'
+import HistoryTrendChart from '@/components/HistoryTrendChart.vue'
 import WeeklyRecap from '@/components/WeeklyRecap.vue'
 import { animateIn, animateOut } from '@/utils/pageTransitions'
 import { getWeeklyHistory } from '@/utils/weeklyReset'
@@ -51,7 +71,9 @@ import { getWeeklyHistory } from '@/utils/weeklyReset'
 export default {
 	name: 'HistoryView',
 	components: {
-		WeekCard,
+		HistoryStats,
+		HistoryTrendChart,
+		CompactWeekRow,
 		WeeklyRecap,
 	},
 	data() {
@@ -61,12 +83,42 @@ export default {
 			selectedWeek: null,
 		}
 	},
+	computed: {
+		averageCompletion() {
+			if ( this.history.length === 0 ) return 0
+			const sum = this.history.reduce( ( acc, w ) => acc + ( w.stats?.completionPercent || 0 ), 0 )
+			return Math.round( sum / this.history.length )
+		},
+		totalWeeks() {
+			return this.history.length
+		},
+		totalTasksCompleted() {
+			return this.history.reduce( ( acc, w ) => acc + ( w.stats?.completedTasks || 0 ), 0 )
+		},
+		bestWeekPercent() {
+			if ( this.history.length === 0 ) return 0
+			return Math.max( ...this.history.map( w => w.stats?.completionPercent || 0 ) )
+		},
+		chartData() {
+			return [...this.history].reverse().map( ( week, index ) => ( {
+				index,
+				percent: week.stats?.completionPercent || 0,
+				week,
+				label: this.formatShortDate( week.weekStart ),
+			} ) )
+		},
+	},
 	async mounted() {
 		document.getElementById( 'app' )?.scrollTo( { top: 0, behavior: 'auto' } )
 		animateIn( this.$el )
 		this.history = await getWeeklyHistory()
 	},
 	methods: {
+		formatShortDate( dateStr ) {
+			if ( !dateStr ) return ''
+			const date = new Date( dateStr )
+			return date.toLocaleDateString( 'en-US', { month: 'short', day: 'numeric' } )
+		},
 		goBack() {
 			this.$router.push( '/' )
 		},
@@ -157,8 +209,18 @@ export default {
 				color #A0A0A0
 				max-width 240px
 
-		.weeksList
-			display flex
-			flex-direction column
-			gap 12px
+		.sectionTitle
+			font-size 14px
+			font-weight 600
+			color #010101
+			margin-bottom 12px
+
+		.chartSection
+			margin-bottom 24px
+
+		.weekListSection
+			.compactWeeksList
+				display flex
+				flex-direction column
+				gap 8px
 </style>
