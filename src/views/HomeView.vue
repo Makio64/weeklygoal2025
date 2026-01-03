@@ -71,10 +71,6 @@
 		</div>
 
 		<WeeklyRecap :show="showRecapModal" :recap="weeklyRecap" @close="closeRecapModal" />
-
-		<button class="debugButton" @click="triggerDebugRecap">
-			Debug Recap
-		</button>
 	</div>
 </template>
 
@@ -159,6 +155,7 @@ export default {
 		},
 	},
 	async mounted() {
+		document.getElementById( 'app' )?.scrollTo( { top: 0, behavior: 'auto' } )
 		animateIn( this.$el )
 		swipedGoalId.value = null
 		resetMouse()
@@ -413,19 +410,4 @@ export default {
 		width 100%
 		max-width 375px
 
-	.debugButton
-		position fixed
-		bottom 10px
-		right 10px
-		opacity 0.3
-		font-size 10px
-		padding 4px
-		background #ccc
-		border 1px solid #999
-		border-radius 4px
-		z-index 9999
-		cursor pointer
-
-		&:hover
-			opacity 1
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="view">
-		<TinyRouter v-if="basicLoaded" :routes="routes" :redirects="redirects" @route-changed="scrollToTop" />
+		<TinyRouter v-if="basicLoaded" :routes="routes" :redirects="redirects" />
 	</div>
 </template>
 
@@ -52,14 +52,6 @@ export default {
 		redirects() {
 			return {
 				'/three': '/'
-			}
-		},
-	},
-	methods: {
-		scrollToTop() {
-			const appElement = document.getElementById( 'app' )
-			if ( appElement ) {
-				appElement.scrollTo( { top: 0, behavior: 'auto' } )
 			}
 		},
 	},

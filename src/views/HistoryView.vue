@@ -7,7 +7,6 @@
 				</svg>
 			</button>
 			<div class="title">Past weeks</div>
-
 		</div>
 
 		<div class="content">
@@ -63,6 +62,7 @@ export default {
 		}
 	},
 	async mounted() {
+		document.getElementById( 'app' )?.scrollTo( { top: 0, behavior: 'auto' } )
 		animateIn( this.$el )
 		this.history = await getWeeklyHistory()
 	},
@@ -94,12 +94,17 @@ export default {
 	min-height 100dvh
 
 	.header
-		display grid
-		grid-template-columns 48px 1fr 48px
+		position relative
+		display flex
 		align-items center
+		justify-content center
 		padding 12px 24px 20px
+		min-height 44px
 
 		.backButton
+			position absolute
+			left 24px
+			top 12px
 			width 32px
 			height 32px
 			background white
@@ -111,8 +116,7 @@ export default {
 			justify-content center
 			box-shadow 0 2px 8px rgba(0, 0, 0, 0.04)
 			transition all 0.2s
-			grid-column 1
-			justify-self start
+			z-index 10
 
 			&:active
 				transform scale(0.95)
@@ -121,9 +125,10 @@ export default {
 			font-size 24px
 			font-weight 600
 			color #010101
-			grid-column 2
 			text-align center
-			white-space nowrap
+			width 100%
+			padding 0 80px
+			box-sizing border-box
 
 	.content
 		padding 0 24px

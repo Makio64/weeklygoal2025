@@ -212,6 +212,7 @@ export default {
 		},
 	},
 	async mounted() {
+		document.getElementById( 'app' )?.scrollTo( { top: 0, behavior: 'auto' } )
 		animateIn( this.$el )
 		// Load custom goals and merge with static categories
 		await initializeCustomGoals()
@@ -747,6 +748,7 @@ export default {
 
 	.modal
 		background linear-gradient(261deg, #FFBF84 16.31%, #FFB9A3 76.83%)
+		border-radius 12px
 		min-height 70vh
 		display flex
 		flex-direction column
