@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.4.0
+
+### What's New
+
+**Weekly Progress Analytics**
+New statistics dashboard showing your average completion rate, total weeks tracked, tasks completed, and your best week performance. Color-coded indicators help you quickly see how you're doing.
+
+**Trend Visualization**
+See your progress at a glance with an interactive chart showing your completion percentage over time.
+
+**Redesigned History View**
+Cleaner layout with organized sections for stats, trends, and weekly details. Compact week rows make browsing your history easier.
+
+---
+
+### App Store / Play Store
+
+**What's New:**
+
+• Weekly Analytics – See your average completion rate, total tasks completed, and best week performance
+
+• Progress Charts – Track your consistency over time with beautiful trend visualization
+
+• Improved History View – Redesigned layout with stats dashboard and compact week rows
+
+---
+
 ## 1.3.0
 
 ### What's New
